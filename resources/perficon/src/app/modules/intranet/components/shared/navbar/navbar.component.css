@@ -1,0 +1,62 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+  background-color: rgb(42, 63, 84);
+}
+
+.sidenav > .mat-toolbar {
+  background-color: rgb(42, 63, 84);
+}
+
+.sidenav > .mat-nav-list > a {
+  color: white;
+}
+
+.sidenav > .mat-nav-list > a:hover {
+  background-color: rgb(53, 73, 93);
+}
+
+.active-list-item {
+  background-color: rgb(53, 73, 93) !important; /* Note: You could also use a custom theme */
+}
+
+.span-usuario {
+  width: 200px;
+  height: 60px;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  padding: auto;
+}
+
+.mat-toolbar {
+  height: 58px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+mat-toolbar a {
+  display: inline-block;
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.img-responsive {
+  width: 100%;
+  height: auto;
+}
+
+.mat-nav-list {
+  padding-top: 0px;
+}

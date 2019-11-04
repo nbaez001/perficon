@@ -1,0 +1,24 @@
+.login-card {
+    margin: 10% auto 0%;
+    width: 300px;
+    max-width: 300px;
+    text-align: center;
+    form {
+      mat-grid-tile {
+        button {
+          width: 90%;
+        }
+      }
+    }
+  }
+  
+  .login-card-header-image {
+    margin: 0px auto 10px;
+    background-image: url("../../../../../assets/images/icons/icono-perficon.png");
+    background-size: cover;
+  }
+  
+  mat-checkbox {
+    padding-left: 10px;
+  }
+  

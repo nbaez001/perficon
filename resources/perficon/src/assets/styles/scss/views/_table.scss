@@ -1,0 +1,36 @@
+@mixin mat-table-columns($columns) {
+  .mat-column- {
+    @each $colName, $props in $columns {
+      $width: map-get($props, "width");
+
+      &#{$colName} {
+        flex: $width !important;
+        width: $width !important;
+
+        @if map-has-key($props, "color") {
+          color: map-get($props, "color") !important;
+        }
+
+        @if map-has-key($props, "text-align") {
+          text-align: map-get($props, "text-align") !important;
+        }
+
+        @if map-has-key($props, "padding-left") {
+          padding-left: map-get($props, "padding-left") !important;
+        }
+      }
+    }
+  }
+}
+
+.table-container {
+  overflow: auto;
+  .mat-column-select {
+    overflow: initial;
+  }
+}
+
+.table-container table {
+  width: 100%;
+  table-layout: fixed;
+}
