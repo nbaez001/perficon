@@ -1,0 +1,42 @@
+@import "../../../../../assets/styles/scss/views/table";
+
+.page {
+  .table-resultados {
+    // margin-bottom: 0px;
+    .table-container {
+      max-height: 400px;
+    }
+  }
+}
+
+@include mat-table-columns(
+  (
+    id: (
+      width: 2rem
+    ),
+    nombre: (
+      width: 12rem
+    ),
+    codigo: (
+      width: 9rem
+    ),
+    valor: (
+      width: 9rem
+    ),
+    idUsuarioCrea: (
+      width: 6rem
+    ),
+    fecUsuarioCrea: (
+      width: 6rem
+    ),
+    idUsuarioMod: (
+      width: 8rem
+    ),
+    fecUsuarioMod: (
+      width: 6rem
+    ),
+    opt: (
+      width: 5rem
+    )
+  )
+);

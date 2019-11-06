@@ -22,3 +22,12 @@
 mat-dialog-content > .table-container {
   margin-top: 15px;
 }
+
+.mat-dialog-title {
+  font-size: 14px !important;
+  font-weight: bold;
+}
+
+.mat-dialog-content > * {
+  font-size: 14px !important;
+}

@@ -1,3 +1,5 @@
+export const webServiceEndpoint: string = 'http://perficon.test/api/';
+
 export const UNIDADES: Object[] = [
     { id: 1, nombre: 'UNIDAD TERRITORIAL DE AYACUCHO NORTE' },
     { id: 2, nombre: 'UNIDAD TERRITORIAL DE HUANCAVELICA' },
@@ -15,3 +17,18 @@ export const TIPOSVEHICULO: Object[] = [
     { id: 1, nombre: 'CAMIONETA' },
     { id: 2, nombre: 'MOTOCICLETA' }
 ];
+
+export const MENSAJES = {
+    INTRANET: {
+        CONFIGURACION: {
+            MAESTRA: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR MAESTRA'
+                },
+                REGISTRARCHILD: {
+                    TITLE: 'REGISTRAR HIJOS MAESTRA'
+                }
+            }
+        }
+    }
+};

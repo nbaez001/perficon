@@ -13,6 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+// Route::resource('maestra/lista', 'Configuration\MaestraController@list');
+// Route::apiResource('', 'Configuration\MaestraController');
+Route::post('maestra/lista', 'Configuration\MaestraController@list');
+Route::post('maestra/store', 'Configuration\MaestraController@store');
+Route::post('maestra/update', 'Configuration\MaestraController@update');
+Route::post('maestra/show', 'Configuration\MaestraController@show');
+
+

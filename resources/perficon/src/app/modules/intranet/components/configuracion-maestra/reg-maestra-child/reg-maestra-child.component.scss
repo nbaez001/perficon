@@ -1,0 +1,40 @@
+@import "../../../../../../assets/styles/scss/views/table";
+
+.table-container {
+  max-height: 400px;
+}
+
+@include mat-table-columns(
+  (
+    id: (
+      width: 2rem
+    ),
+    orden: (
+      width: 4rem
+    ),
+    nombre: (
+      width: 10rem
+    ),
+    codigo: (
+      width: 4rem
+    ),
+    valor: (
+      width: 4rem
+    ),
+    idUsuarioCrea: (
+      width: 5rem
+    ),
+    fecUsuarioCrea: (
+      width: 6rem
+    ),
+    idUsuarioMod: (
+      width: 5rem
+    ),
+    fecUsuarioMod: (
+      width: 6rem
+    ),
+    opt: (
+      width: 5rem
+    )
+  )
+);

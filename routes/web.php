@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('maestra/lista', 'Configuration\MaestraController@list');
+// Route::post('maestra/lista', 'Configuration\MaestraController@list');

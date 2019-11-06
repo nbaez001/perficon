@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { BandejaEgresosComponent } from './components/bandeja-egresos/bandeja-egresos.component';
+import { ConfiguracionMaestraComponent } from './components/configuracion-maestra/configuracion-maestra.component';
 
 const intranetRoutes: Routes = [
   {
@@ -19,6 +20,10 @@ const intranetRoutes: Routes = [
         path: 'bandeja-egresos',
         component: BandejaEgresosComponent,
         data: { title: 'Bandeja egresos' }
+      }, {
+        path: 'configuracion-maestras',
+        component: ConfiguracionMaestraComponent,
+        data: { title: 'Configuracion maestras' }
       }
     ]
   }

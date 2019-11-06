@@ -1,0 +1,26 @@
+<h5 mat-dialog-title>{{data.title}}</h5>
+<div mat-dialog-content>
+  <form [formGroup]="maestraGrp">
+    <mat-grid-list cols="12" rowHeight="50px">
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="nombre" placeholder="Nombre" type="text" [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased]>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="codigo" placeholder="Codigo" type="text" [ngClass]="{'is-invalid': formErrors.codigo}" [Uppercased]>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="valor" placeholder="Valor" type="text" [ngClass]="{'is-invalid': formErrors.valor}" [Uppercased]>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" type="button" (click)="regMaestra()">Guardar</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Salir</button>
+</div>

@@ -12,22 +12,14 @@ class MaestraController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function list(Request $request)
     {
-        $lista = DB::select('call PFC_S_MAESTRA(?)', [0]);
+        $data = json_decode($request->getContent(), true);
+        $lista = DB::select('call PFC_L_MAESTRA(?)', [$data['idMaestraPadre']]);
         return response()->json($lista);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -38,41 +30,35 @@ class MaestraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = json_decode($request->getContent(), true);
+        $resp = DB::select('call PFC_I_MAESTRA(?,?,?,?,?,?,?)', [$data['idMaestraPadre'], $data['orden'], $data['nombre'], $data['codigo'], $data['valor'], $data['idUsuarioCrea'], $data['fecUsuarioCrea']]);
+        return response()->json($resp);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\Maestra  $maestra
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Maestra $maestra)
+    public function show(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Maestra  $maestra
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Maestra $maestra)
-    {
-        //
+        $data = json_decode($request->getContent(), true);
+        $objeto = DB::select('call PFC_S_MAESTRA(?)', [$data['id']]);
+        return response()->json($objeto);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Maestra  $maestra
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Maestra $maestra)
+    public function update(Request $request)
     {
-        //
+        $data = json_decode($request->getContent(), true);
+        $resp = DB::select('call PFC_U_MAESTRA(?,?,?,?,?,?,?,?,?,?)', [$data['id'], $data['idMaestraPadre'], $data['orden'], $data['nombre'], $data['codigo'], $data['valor'], $data['idUsuarioCrea'], $data['fecUsuarioCrea'], $data['idUsuarioMod'], $data['fecUsuarioMod']]);
+        return response()->json($resp);
     }
 
     /**
