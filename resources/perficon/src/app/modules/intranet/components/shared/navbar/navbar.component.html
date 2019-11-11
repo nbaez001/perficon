@@ -7,9 +7,9 @@
     </mat-toolbar>
     <div class="span-usuario">
       <span>
-        {{persona.perfil}}
+        {{user.getPerfil}}
         <br>
-        ({{persona.abreviadoPerfil}})
+        ({{user.getAbrevPerfil}})
       </span>
     </div>
     <mat-nav-list>
@@ -23,7 +23,7 @@
         <mat-icon>score</mat-icon> Bandeja Movimientos
       </a>
       <a mat-list-item [routerLink]="['/intranet/configuracion-maestras']" routerLinkActive="active-list-item">
-        <mat-icon>gears</mat-icon> Configuracion maestras
+        <mat-icon>layers</mat-icon> Configuracion maestras
       </a>
     </mat-nav-list>
   </mat-sidenav>
@@ -36,7 +36,7 @@
       <span>Financial control</span>
       <span class="spacer"></span>
       <button mat-button [matMenuTriggerFor]="usuario">
-        {{persona.nombres}}
+        {{user.getNombres}}
         <mat-icon>expand_more</mat-icon>
       </button>
       <mat-menu #usuario="matMenu" xPosition="after" [overlapTrigger]="false">

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { IntranetRoutingModule } from './intranet-routing.module';
 import { HomeComponent } from './components/home/home.component';
@@ -21,7 +21,7 @@ import { RegMaestraChildComponent } from './components/configuracion-maestra/reg
     NavbarComponent,
     BandejaEgresosComponent,
     ConfiguracionMaestraComponent,
-    
+
     RegMaestraComponent,
     RegMaestraChildComponent
   ],
@@ -30,6 +30,9 @@ import { RegMaestraChildComponent } from './components/configuracion-maestra/reg
     IntranetRoutingModule,
     MaterialModule,
     Ng4LoadingSpinnerModule.forRoot()
+  ],
+  providers: [
+    DatePipe
   ]
 })
 export class IntranetModule { }

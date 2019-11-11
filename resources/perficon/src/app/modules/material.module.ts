@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatInputModule, MatCardModule, MatGridListModule, MatMenuModule, MatExpansionModule, MatSelectModule, MatTableModule, MatPaginatorModule, MatDialogModule, MatTooltipModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule, MatInputModule, MatCardModule, MatGridListModule, MatMenuModule, MatExpansionModule, MatSelectModule, MatTableModule, MatPaginatorModule, MatDialogModule, MatTooltipModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatProgressSpinnerModule } from '@angular/material';
 import { ResponsiveRowsDirective } from '../core/directives/responsive-rows.directive';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UppercaseDirective } from '../core/directives/uppercase.directive';
@@ -33,7 +33,8 @@ import { UppercaseDirective } from '../core/directives/uppercase.directive';
     MatTooltipModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     ReactiveFormsModule,
@@ -58,6 +59,7 @@ import { UppercaseDirective } from '../core/directives/uppercase.directive';
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatProgressSpinnerModule,
 
     ResponsiveRowsDirective, //DIRECTIVA GRID RESPONSIVE
     UppercaseDirective //DIRECTIVA UPPERCASE

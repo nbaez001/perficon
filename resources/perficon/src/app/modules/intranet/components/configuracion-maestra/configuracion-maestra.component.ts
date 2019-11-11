@@ -7,6 +7,7 @@ import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { RegMaestraComponent } from './reg-maestra/reg-maestra.component';
 import { MENSAJES } from 'src/app/common';
 import { RegMaestraChildComponent } from './reg-maestra-child/reg-maestra-child.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-configuracion-maestra',
@@ -15,8 +16,10 @@ import { RegMaestraChildComponent } from './reg-maestra-child/reg-maestra-child.
 })
 export class ConfiguracionMaestraComponent implements OnInit {
   listaMaestra: Maestra[];
+
   displayedColumns: string[];
   dataSource: MatTableDataSource<Maestra>;
+  isLoading: boolean = false;
 
   bdjMaestraGrp: FormGroup;
   messages = {
@@ -53,7 +56,6 @@ export class ConfiguracionMaestraComponent implements OnInit {
       }
     }
   };
-
   formErrors = {
     'name': '',
     'email': '',
@@ -90,7 +92,7 @@ export class ConfiguracionMaestraComponent implements OnInit {
     }, {
       columnDef: 'fecUsuarioCrea',
       header: 'Fecha creacion',
-      cell: (maestra: Maestra) => `${maestra.fecUsuarioCrea}`
+      cell: (maestra: Maestra) => this.datePipe.transform(maestra.fecUsuarioCrea, 'dd/MM/yyyy')
     }, {
       columnDef: 'idUsuarioMod',
       header: 'Usuario modificacion',
@@ -98,19 +100,19 @@ export class ConfiguracionMaestraComponent implements OnInit {
     }, {
       columnDef: 'fecUsuarioMod',
       header: 'Fecha modificacion',
-      cell: (maestra: Maestra) => (maestra.fecUsuarioMod != null) ? `${maestra.fecUsuarioMod}` : ''
+      cell: (maestra: Maestra) => this.datePipe.transform(maestra.fecUsuarioMod, 'dd/MM/yyyy')
     }];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private fb: FormBuilder, public dialog: MatDialog,
+  constructor(private fb: FormBuilder,
+    public dialog: MatDialog,
     private spinnerService: Ng4LoadingSpinnerService,
-    @Inject(MaestraService) private maestraService: MaestraService) { }
+    @Inject(MaestraService) private maestraService: MaestraService,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.spinnerService.show();
-
     this.bdjMaestraGrp = this.fb.group({
       name: ['', [Validators.required]]
     });
@@ -121,20 +123,10 @@ export class ConfiguracionMaestraComponent implements OnInit {
     this.inicializarVariables();
   }
 
-  public inicializarVariables(): void {
+  inicializarVariables(): void {
     this.dataSource = null;
     // this.banMonitoreoFrmGrp.get('estadoMonitoreoFrmCtrl').setValue(ESTADO_MONITOREO.pendienteInformacion);
-    let maestra = new Maestra();
-    maestra.idMaestraPadre = 0;
-    this.maestraService.listarMaestra(maestra).subscribe(
-      (data: Maestra[]) => {
-        this.listaMaestra = data;
-        this.cargarDatosTabla();
-      },
-      error => {
-        console.error('Error al consultar datos');
-      }
-    );
+    this.listarMaestra();
   }
 
   definirTabla(): void {
@@ -151,7 +143,25 @@ export class ConfiguracionMaestraComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
-    this.spinnerService.hide();
+  }
+
+  listarMaestra(): void {
+    this.dataSource = null;
+    this.isLoading = true;
+
+    let maestra = new Maestra();
+    maestra.idMaestraPadre = 0;
+    this.maestraService.listarMaestra(maestra).subscribe(
+      (data: Maestra[]) => {
+        this.listaMaestra = data;
+        this.cargarDatosTabla();
+        this.isLoading = false;
+      },
+      error => {
+        console.error('Error al consultar datos');
+        this.isLoading = false;
+      }
+    );
   }
 
   buscar() {
@@ -174,6 +184,9 @@ export class ConfiguracionMaestraComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
+      // this.listaMaestra.unshift(result);
+      // this.cargarDatosTabla();
+      this.listarMaestra();
     });
   }
 

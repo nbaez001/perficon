@@ -20,9 +20,9 @@ class CreateMaestraTable extends Migration
             $table->string('nombre',100);
             $table->string('codigo',10);
             $table->string('valor',50)->nullable();
-            $table->string('id_usuario_crea', 50);
+            $table->unsignedInteger('id_usuario_crea');
             $table->date('fec_usuario_crea');
-            $table->string('id_usuario_mod', 50)->nullable();
+            $table->unsignedInteger('id_usuario_mod')->nullable();
             $table->date('fec_usuario_mod')->nullable();
         });
     }

@@ -25,9 +25,9 @@ class CreateEgresoTable extends Migration
             $table->string('ubicacion', 100)->nullable();
             $table->string('dia', 10);
             $table->date('fecha');
-            $table->string('id_usuario_crea', 50);
+            $table->unsignedInteger('id_usuario_crea');
             $table->date('fec_usuario_crea');
-            $table->string('id_usuario_mod', 50)->nullable();
+            $table->unsignedInteger('id_usuario_mod')->nullable();
             $table->date('fec_usuario_mod')->nullable();
         });
     }

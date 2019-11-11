@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Maestra } from 'src/app/model/maestra.model';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { ApiResponse } from 'src/app/model/api-response.model';
 
 @Component({
   selector: 'app-reg-maestra',
@@ -11,10 +13,6 @@ import { MaestraService } from 'src/app/services/intranet/maestra.service';
   styleUrls: ['./reg-maestra.component.scss']
 })
 export class RegMaestraComponent implements OnInit {
-  listaMaestra: Maestra[];
-  displayedColumns: string[];
-  dataSource: MatTableDataSource<Maestra>;
-
   maestraGrp: FormGroup;
   messages = {
     'nombre': {
@@ -27,24 +25,20 @@ export class RegMaestraComponent implements OnInit {
       'required': 'Field is required'
     }
   };
-
   formErrors = {
     'nombre': '',
     'codigo': '',
     'valor': ''
   };
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
-  constructor(private fb: FormBuilder, public dialog: MatDialog,
+  constructor(private fb: FormBuilder,
+    public dialogRef: MatDialogRef<RegMaestraComponent>,
     private spinnerService: Ng4LoadingSpinnerService,
     @Inject(MaestraService) private maestraService: MaestraService,
+    @Inject(UsuarioService) private user: UsuarioService,
     @Inject(MAT_DIALOG_DATA) public data: DataDialog) { }
 
   ngOnInit() {
-    this.spinnerService.show();
-
     this.maestraGrp = this.fb.group({
       nombre: ['', [Validators.required]],
       codigo: ['', [Validators.required]],
@@ -60,8 +54,6 @@ export class RegMaestraComponent implements OnInit {
   }
 
   public inicializarVariables(): void {
-    // this.banMonitoreoFrmGrp.get('estadoMonitoreoFrmCtrl').setValue(ESTADO_MONITOREO.pendienteInformacion);
-    this.spinnerService.hide();
   }
 
   validateForm(): void {
@@ -105,6 +97,33 @@ export class RegMaestraComponent implements OnInit {
     if (this.maestraGrp.valid) {
       console.log('VALIDO');
       console.log(this.maestraGrp.value);
+
+      let mae = new Maestra();
+      mae.id = 0;
+      mae.idMaestraPadre = 0;
+      mae.orden = 0;
+      mae.nombre = this.maestraGrp.get('nombre').value;
+      mae.codigo = this.maestraGrp.get('codigo').value;
+      mae.valor = this.maestraGrp.get('valor').value;
+      mae.idUsuarioCrea = this.user.getIdUsuario;
+      mae.fecUsuarioCrea = new Date();
+
+      console.log(mae);
+      this.spinnerService.show();
+      this.maestraService.regMaestra(mae).subscribe(
+        (data: ApiResponse[]) => {
+          if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+            console.log('Exito al registrar');
+            this.dialogRef.close(mae);
+            this.spinnerService.hide();
+          } else {
+            console.error('Ocurrio un error al registrar maestra');
+          }
+        },
+        error => {
+          console.error('Error al registrar maestra');
+        }
+      );
     } else {
       this.logKeyValuePairs(this.maestraGrp);
       this.validateForm();

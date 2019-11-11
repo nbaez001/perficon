@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Persona } from 'src/app/model/persona.model';
 import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,10 +19,11 @@ export class NavbarComponent {
       map(result => result.matches)
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private router: Router) { }
+  constructor(private breakpointObserver: BreakpointObserver, private router: Router, @Inject(UsuarioService) private user: UsuarioService) { }
 
   ngOnInit() {
-    this.persona = JSON.parse(sessionStorage.getItem('persona'));
+    console.log(this.user);
+    // this.persona = JSON.parse(sessionStorage.getItem('persona'));
   }
 
   salir() {

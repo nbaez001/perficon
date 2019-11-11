@@ -5,8 +5,8 @@ export class Maestra {
     nombre: string;
     codigo: string;
     valor: string;
-    idUsuarioCrea: string;
+    idUsuarioCrea: number;
     fecUsuarioCrea: Date;
-    idUsuarioMod: string;
+    idUsuarioMod: number;
     fecUsuarioMod: Date;
 }

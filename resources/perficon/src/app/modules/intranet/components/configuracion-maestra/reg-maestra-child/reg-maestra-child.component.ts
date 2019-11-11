@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Maestra } from 'src/app/model/maestra.model';
-import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MAT_DIALOG_DATA } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
+import { DatePipe } from '@angular/common';
+import { ApiResponse } from 'src/app/model/api-response.model';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
   selector: 'app-reg-maestra-child',
@@ -17,50 +21,20 @@ export class RegMaestraChildComponent implements OnInit {
 
   maestraGrp: FormGroup;
   messages = {
-    'name': {
-      'required': 'Field is required',
-      'minlength': 'Insert al least 2 characters',
-      'maxlength': 'Max name size 20 characters'
+    'nombre': {
+      'required': 'Field is required'
     },
-    'email': {
-      'required': 'Field is required',
-      'email': 'Insert a valid email',
-      'customEmail': 'Email domain should be dell.com'
+    'codigo': {
+      'required': 'Field is required'
     },
-    'confirmEmail': {
-      'required': 'Field is required',
-      'email': 'Insert a valid email'
-    },
-    'phone': {
-      'required': 'Phone is required'
-    },
-    'skill': {
-      'name': {
-        'required': 'Field is required',
-        'minlength': 'Insert al least 5 characters',
-        'maxlength': 'max name size 20 characters'
-      },
-      'years': {
-        'required': 'Field is required',
-        'min': 'Min value is 1',
-        'max': 'Max value is 100'
-      },
-      'proficiency': {
-        'required': 'option is required'
-      }
+    'valor': {
+      'required': 'Field is required'
     }
   };
-
   formErrors = {
-    'name': '',
-    'email': '',
-    'confirmEmail': '',
-    'phone': '',
-    'skill': {
-      'name': '',
-      'years': '',
-      'proficiency': ''
-    }
+    'nombre': '',
+    'codigo': '',
+    'valor': ''
   };
 
   columnsGrilla = [
@@ -91,7 +65,7 @@ export class RegMaestraChildComponent implements OnInit {
     }, {
       columnDef: 'fecUsuarioCrea',
       header: 'Fecha creacion',
-      cell: (maestra: Maestra) => `${maestra.fecUsuarioCrea}`
+      cell: (maestra: Maestra) => this.datePipe.transform(maestra.fecUsuarioCrea, 'dd/MM/yyyy')
     }, {
       columnDef: 'idUsuarioMod',
       header: 'Usuario modificacion',
@@ -99,65 +73,77 @@ export class RegMaestraChildComponent implements OnInit {
     }, {
       columnDef: 'fecUsuarioMod',
       header: 'Fecha modificacion',
-      cell: (maestra: Maestra) => (maestra.fecUsuarioMod != null) ? `${maestra.fecUsuarioMod}` : ''
+      cell: (maestra: Maestra) => this.datePipe.transform(maestra.fecUsuarioMod, 'dd/MM/yyyy')
     }];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private fb: FormBuilder, public dialog: MatDialog,
+  constructor(private fb: FormBuilder,
+    public dialogRef: MatDialogRef<RegMaestraChildComponent>,
     private spinnerService: Ng4LoadingSpinnerService,
     @Inject(MaestraService) private maestraService: MaestraService,
-    @Inject(MAT_DIALOG_DATA) public data: DataDialog) { }
+    @Inject(ValidationService) private validationService: ValidationService,
+    @Inject(UsuarioService) private user: UsuarioService,
+    @Inject(MAT_DIALOG_DATA) public data: DataDialog,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.spinnerService.show();
-
     this.maestraGrp = this.fb.group({
-      name: ['', [Validators.required]]
+      nombre: ['', [Validators.required]],
+      codigo: ['', [Validators.required]],
+      valor: ['', []]
     });
 
-    this.listaMaestra = [];
+    this.maestraGrp.valueChanges.subscribe((val: any) => {
+      this.validationService.getValidationErrors(this.maestraGrp, this.messages, this.formErrors, false);
+    });
 
-    this.definirTabla();
     this.inicializarVariables();
   }
 
   public inicializarVariables(): void {
-    this.dataSource = null;
-    // this.banMonitoreoFrmGrp.get('estadoMonitoreoFrmCtrl').setValue(ESTADO_MONITOREO.pendienteInformacion);
-    let maestra = new Maestra();
-    maestra.idMaestraPadre = this.data.maestra.id;
-    this.maestraService.listarMaestra(maestra).subscribe(
-      (data: Maestra[]) => {
-        this.listaMaestra = data;
-        this.cargarDatosTabla();
-      },
-      error => {
-        console.error('Error al consultar datos');
-      }
-    );
   }
 
-  definirTabla(): void {
-    this.displayedColumns = [];
-    this.columnsGrilla.forEach(c => {
-      this.displayedColumns.push(c.columnDef);
-    });
-    this.displayedColumns.push('opt');
+  validateForm(): void {
+    this.validationService.getValidationErrors(this.maestraGrp, this.messages, this.formErrors, true);
   }
 
-  public cargarDatosTabla(): void {
-    if (this.listaMaestra.length > 0) {
-      this.dataSource = new MatTableDataSource(this.listaMaestra);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+  regMaestra(): void {
+    console.log(this.maestraGrp);
+    if (this.maestraGrp.valid) {
+      console.log('VALIDO');
+      console.log(this.maestraGrp.value);
+
+      let mae = new Maestra();
+      mae.id = 0;
+      mae.idMaestraPadre = 0;
+      mae.orden = 0;
+      mae.nombre = this.maestraGrp.get('nombre').value;
+      mae.codigo = this.maestraGrp.get('codigo').value;
+      mae.valor = this.maestraGrp.get('valor').value;
+      mae.idUsuarioCrea = this.user.getIdUsuario;
+      mae.fecUsuarioCrea = new Date();
+
+      console.log(mae);
+      this.spinnerService.show();
+      this.maestraService.regMaestra(mae).subscribe(
+        (data: ApiResponse[]) => {
+          if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+            console.log('Exito al registrar');
+            this.dialogRef.close(mae);
+            this.spinnerService.hide();
+          } else {
+            console.error('Ocurrio un error al registrar maestra');
+          }
+        },
+        error => {
+          console.error('Error al registrar maestra');
+        }
+      );
+    } else {
+      this.validateForm();
     }
-    this.spinnerService.hide();
-  }
-
-  buscar() {
-    console.log('Buscar');
   }
 
 }
