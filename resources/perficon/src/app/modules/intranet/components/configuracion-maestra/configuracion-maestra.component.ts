@@ -178,7 +178,7 @@ export class ConfiguracionMaestraComponent implements OnInit {
       disableClose: false,
       data: {
         title: MENSAJES.INTRANET.CONFIGURACION.MAESTRA.REGISTRAR.TITLE,
-        maestra: obj
+        objeto: obj
       }
     });
 
@@ -196,7 +196,7 @@ export class ConfiguracionMaestraComponent implements OnInit {
       disableClose: false,
       data: {
         title: MENSAJES.INTRANET.CONFIGURACION.MAESTRA.REGISTRARCHILD.TITLE,
-        maestra: obj
+        objeto: obj
       }
     });
 

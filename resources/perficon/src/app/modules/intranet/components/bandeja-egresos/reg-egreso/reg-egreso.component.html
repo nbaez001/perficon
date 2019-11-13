@@ -1,0 +1,76 @@
+<ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
+<h5 mat-dialog-title>{{data.title}}</h5>
+<div mat-dialog-content>
+  <form [formGroup]="egresoGrp">
+    <mat-grid-list cols="12" rowHeight="50px">
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <mat-label>Tipo egreso</mat-label>
+          <mat-select formControlName="tipoEgreso" [ngClass]="{'is-invalid': formErrors.tipoEgreso}">
+            <mat-option *ngFor="let tipoEgreso of tiposEgreso" [value]="tipoEgreso">
+              {{tipoEgreso.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="nombre" placeholder="Nombre" type="text"
+            [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased]>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <mat-label>Unidad medida</mat-label>
+          <mat-select formControlName="unidadMedida" [ngClass]="{'is-invalid': formErrors.unidadMedida}">
+            <mat-option *ngFor="let tipoEgreso of unidadesMedida" [value]="unidadMedida">
+              {{unidadMedida.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="cantidad" placeholder="Cantidad" type="number"
+            [ngClass]="{'is-invalid': formErrors.cantidad}">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="precio" placeholder="Precio" type="number"
+            [ngClass]="{'is-invalid': formErrors.precio}">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="total" placeholder="Total" type="number"
+            [ngClass]="{'is-invalid': formErrors.total}" disabled="true">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="ubicacion" placeholder="Ubicacion" type="text"
+            [ngClass]="{'is-invalid': formErrors.ubicacion}" [Uppercased]>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="12" rowHeight="70px">
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 12, md: 12, lg: 12, xl: 12}">
+        <mat-form-field>
+          <textarea formControlName="descripcion" matInput placeholder="Descripcion"></textarea>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" type="button" (click)="regMaestra()">Guardar</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Salir</button>
+</div>

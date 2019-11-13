@@ -23,6 +23,9 @@ export class NavbarComponent {
 
   ngOnInit() {
     console.log(this.user);
+    if (this.user.getIdUsuario == null) {
+      this.router.navigate(['sesion/login']);
+    }
     // this.persona = JSON.parse(sessionStorage.getItem('persona'));
   }
 

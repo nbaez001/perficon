@@ -32,17 +32,8 @@ class MaestraController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-
-        // $date2 = DateTime::createFromFormat('Y-m-d\TH:i:sO', $data['fecUsuarioCrea']);
         $date = new DateTime($data['fecUsuarioCrea']);
         $result = $date->format('Y-m-d');
-        //         $format = 'Y-m-d\TH:i:s.v\Z';
-        // $stringDateTime = (new \DateTime())->format($format);
-        // var_dump(date_create($stringDateTime));
-        // $dateTime = DateTime::createFromFormat(
-        //     DateTime::ISO8601,
-        //     $data['fecUsuarioCrea']
-        // );
 
         $resp = DB::select('call PFC_I_MAESTRA(?,?,?,?,?,?,?)', [$data['idMaestraPadre'], $data['orden'], $data['nombre'], $data['codigo'], $data['valor'], $data['idUsuarioCrea'], $result]);
         return response()->json($resp);
@@ -70,7 +61,11 @@ class MaestraController extends Controller
     public function update(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $resp = DB::select('call PFC_U_MAESTRA(?,?,?,?,?,?,?,?,?,?)', [$data['id'], $data['idMaestraPadre'], $data['orden'], $data['nombre'], $data['codigo'], $data['valor'], $data['idUsuarioCrea'], $data['fecUsuarioCrea'], $data['idUsuarioMod'], $data['fecUsuarioMod']]);
+
+        $dateMod = new DateTime($data['fecUsuarioMod']);
+        $resMod = $dateMod->format('Y-m-d');
+
+        $resp = DB::select('call PFC_U_MAESTRA(?,?,?,?,?,?,?,?)', [$data['id'], $data['idMaestraPadre'], $data['orden'], $data['nombre'], $data['codigo'], $data['valor'], $data['idUsuarioMod'], $resMod]);
         return response()->json($resp);
     }
 

@@ -37,6 +37,12 @@
     font-size: 0.8em;
     font-weight: 500;
   }
+  .mat-paginator-sticky {
+    bottom: 0px !important;
+    left: 0px !important;
+    position: sticky !important;
+    z-index: 10 !important;
+  }
 }
 
 .table-container table {

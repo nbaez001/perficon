@@ -17,11 +17,11 @@ class CreateEgresoTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('id_tipo_egreso');
             $table->unsignedInteger('id_unidad_medida');
-            $table->string('motivo', 100);
+            $table->string('nombre', 100);
             $table->unsignedInteger('cantidad');
             $table->decimal('precio', 8, 2);
-            $table->decimal('subtotal', 8, 2);
-            $table->string('observacion', 500)->nullable();
+            $table->decimal('total', 8, 2);
+            $table->string('descripcion', 500)->nullable();
             $table->string('ubicacion', 100)->nullable();
             $table->string('dia', 10);
             $table->date('fecha');

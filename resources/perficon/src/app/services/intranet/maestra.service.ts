@@ -20,4 +20,8 @@ export class MaestraService {
         return this.http.post<ApiResponse[]>(`${webServiceEndpoint}maestra/store`, request);
     }
 
+    public editMaestra(request: Maestra): Observable<ApiResponse[]> {
+        return this.http.post<ApiResponse[]>(`${webServiceEndpoint}maestra/update`, request);
+    }
+
 }

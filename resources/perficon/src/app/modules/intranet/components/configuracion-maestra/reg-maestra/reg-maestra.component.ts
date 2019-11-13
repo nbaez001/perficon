@@ -6,6 +6,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ApiResponse } from 'src/app/model/api-response.model';
+import { DataDialog } from 'src/app/model/data-dialog.model';
 
 @Component({
   selector: 'app-reg-maestra',
@@ -134,9 +135,4 @@ export class RegMaestraComponent implements OnInit {
     console.log('Buscar');
   }
 
-}
-
-export interface DataDialog {
-  title: string;
-  maestra: Maestra;
 }

@@ -10,11 +10,13 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { ConfiguracionMaestraComponent } from './components/configuracion-maestra/configuracion-maestra.component';
 import { RegMaestraComponent } from './components/configuracion-maestra/reg-maestra/reg-maestra.component';
 import { RegMaestraChildComponent } from './components/configuracion-maestra/reg-maestra-child/reg-maestra-child.component';
+import { RegEgresoComponent } from './components/bandeja-egresos/reg-egreso/reg-egreso.component';
 
 @NgModule({
   entryComponents: [
     RegMaestraComponent,
-    RegMaestraChildComponent
+    RegMaestraChildComponent,
+    RegEgresoComponent
   ],
   declarations: [
     HomeComponent,
@@ -23,7 +25,8 @@ import { RegMaestraChildComponent } from './components/configuracion-maestra/reg
     ConfiguracionMaestraComponent,
 
     RegMaestraComponent,
-    RegMaestraChildComponent
+    RegMaestraChildComponent,
+    RegEgresoComponent
   ],
   imports: [
     CommonModule,

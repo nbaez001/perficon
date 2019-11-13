@@ -14,7 +14,7 @@ export class ValidationService {
       if (abstractControl instanceof FormGroup) {
         this.getValidationErrors(abstractControl, messages[key], formErrors[key], type);
       } else {
-        if(type){
+        if (type) {
           abstractControl.markAsTouched();
         }
         formErrors[key] = '';
@@ -26,6 +26,17 @@ export class ValidationService {
             }
           }
         }
+      }
+    });
+  }
+
+  setAsUntoched(group: FormGroup): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      let abstractControl = group.get(key);
+      if (abstractControl instanceof FormGroup) {
+        this.setAsUntoched(abstractControl);
+      } else {
+        abstractControl.markAsUntouched();
       }
     });
   }

@@ -1,21 +1,13 @@
 export const webServiceEndpoint: string = 'http://perficon.test/api/';
 
-export const UNIDADES: Object[] = [
-    { id: 1, nombre: 'UNIDAD TERRITORIAL DE AYACUCHO NORTE' },
-    { id: 2, nombre: 'UNIDAD TERRITORIAL DE HUANCAVELICA' },
-    { id: 3, nombre: 'UNIDAD TERRITORIAL DE CUSCO' }
-];
-
-export const TAMBOS: Object[] = [
-    { id: 1, nombre: 'ANCARPATA' },
-    { id: 2, nombre: 'BARRIO VISTA ALEGRE' },
-    { id: 3, nombre: 'CCERAOCRO' },
-    { id: 4, nombre: 'CHACHASPATA' }
-];
-
-export const TIPOSVEHICULO: Object[] = [
-    { id: 1, nombre: 'CAMIONETA' },
-    { id: 2, nombre: 'MOTOCICLETA' }
+export const DIAS: Object[] = [
+    { id: 1, nombre: 'LUNES' },
+    { id: 2, nombre: 'MARTES' },
+    { id: 3, nombre: 'MIERCOLES' },
+    { id: 4, nombre: 'JUEVES' },
+    { id: 5, nombre: 'VIERNES' },
+    { id: 6, nombre: 'SABADO' },
+    { id: 7, nombre: 'DOMINGO' },
 ];
 
 export const MENSAJES = {
@@ -27,6 +19,13 @@ export const MENSAJES = {
                 },
                 REGISTRARCHILD: {
                     TITLE: 'REGISTRAR HIJOS MAESTRA'
+                }
+            }
+        },
+        BANDEJAEGRESOS: {
+            EGRESO: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR EGRESO'
                 }
             }
         }
