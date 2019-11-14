@@ -26,6 +26,9 @@ export const MENSAJES = {
             EGRESO: {
                 REGISTRAR: {
                     TITLE: 'REGISTRAR EGRESO'
+                },
+                EDITAR: {
+                    TITLE: 'REGISTRAR EGRESO'
                 }
             }
         }

@@ -12,8 +12,8 @@ export class EgresoService {
   constructor(private http: HttpClient) {
   }
 
-  public listarEgreso(request: Egreso): Observable<Egreso[]> {
-    return this.http.post<Egreso[]>(`${webServiceEndpoint}egreso/lista`, request);
+  public listarEgreso(): Observable<Egreso[]> {
+    return this.http.post<Egreso[]>(`${webServiceEndpoint}egreso/lista`, {});
   }
 
   public regEgreso(request: Egreso): Observable<ApiResponse[]> {

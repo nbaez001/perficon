@@ -11,6 +11,7 @@ import { ConfiguracionMaestraComponent } from './components/configuracion-maestr
 import { RegMaestraComponent } from './components/configuracion-maestra/reg-maestra/reg-maestra.component';
 import { RegMaestraChildComponent } from './components/configuracion-maestra/reg-maestra-child/reg-maestra-child.component';
 import { RegEgresoComponent } from './components/bandeja-egresos/reg-egreso/reg-egreso.component';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 @NgModule({
   entryComponents: [
@@ -35,7 +36,8 @@ import { RegEgresoComponent } from './components/bandeja-egresos/reg-egreso/reg-
     Ng4LoadingSpinnerModule.forRoot()
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }//DATEPICKER MUESTRA LA FECHA EN FORMATO DD/MM/YYYY
   ]
 })
 export class IntranetModule { }

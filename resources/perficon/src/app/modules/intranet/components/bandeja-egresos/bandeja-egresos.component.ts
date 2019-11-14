@@ -2,13 +2,14 @@ import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { MatTableDataSource, MatDialog, MatPaginator, MatSort } from '@angular/material';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { DIAS } from 'src/app/common';
+import { DIAS, MENSAJES } from 'src/app/common';
 import { Maestra } from 'src/app/model/maestra.model';
 import { Egreso } from 'src/app/model/egreso.model';
 import { DatePipe } from '@angular/common';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { RegEgresoComponent } from './reg-egreso/reg-egreso.component';
+import { EgresoService } from 'src/app/services/intranet/egreso.service';
 
 @Component({
   selector: 'app-bandeja-egresos',
@@ -68,6 +69,8 @@ export class BandejaEgresosComponent implements OnInit {
 
   displayedColumns: string[];
   dataSource: MatTableDataSource<Egreso>;
+  isLoading: boolean = false;
+
   listaEgresos: Egreso[] = [];
   columnsGrilla = [
     {
@@ -115,6 +118,7 @@ export class BandejaEgresosComponent implements OnInit {
   constructor(private fb: FormBuilder, public dialog: MatDialog,
     private spinnerService: Ng4LoadingSpinnerService,
     private datePipe: DatePipe,
+    @Inject(EgresoService) private egresoService: EgresoService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(ValidationService) private validationService: ValidationService) { }
 
@@ -134,6 +138,7 @@ export class BandejaEgresosComponent implements OnInit {
     // this.banMonitoreoFrmGrp.get('estadoMonitoreoFrmCtrl').setValue(ESTADO_MONITOREO.pendienteInformacion);
     this.cargarDatosTabla();
     this.comboTiposEgreso();
+    this.listarEgresos();
   }
 
   definirTabla(): void {
@@ -165,6 +170,25 @@ export class BandejaEgresosComponent implements OnInit {
     );
   }
 
+  listarEgresos(): void {
+    this.dataSource = null;
+    this.isLoading = true;
+
+    let maestra = new Maestra();
+    maestra.idMaestraPadre = 0;
+    this.egresoService.listarEgreso().subscribe(
+      (data: Egreso[]) => {
+        this.listaEgresos = data;
+        this.cargarDatosTabla();
+        this.isLoading = false;
+      },
+      error => {
+        console.error('Error al consultar datos');
+        this.isLoading = false;
+      }
+    );
+  }
+
   buscar() {
     console.log('Buscar');
   }
@@ -176,7 +200,18 @@ export class BandejaEgresosComponent implements OnInit {
   regEgreso(obj): void {
     const dialogRef = this.dialog.open(RegEgresoComponent, {
       width: '600px',
-      data: { name: 'NERIO'}
+      data: { title: MENSAJES.INTRANET.BANDEJAEGRESOS.EGRESO.REGISTRAR.TITLE, objeto: obj }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    });
+  }
+
+  editEgreso(obj): void {
+    const dialogRef = this.dialog.open(RegEgresoComponent, {
+      width: '600px',
+      data: { title: MENSAJES.INTRANET.BANDEJAEGRESOS.EGRESO.EDITAR.TITLE, objeto: obj }
     });
 
     dialogRef.afterClosed().subscribe(result => {

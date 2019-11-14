@@ -24,4 +24,7 @@ Route::post('maestra/store', 'Configuration\MaestraController@store');
 Route::post('maestra/update', 'Configuration\MaestraController@update');
 Route::post('maestra/show', 'Configuration\MaestraController@show');
 
-
+Route::post('egreso/lista', 'Administracion\EgresoController@list');
+Route::post('egreso/store', 'Administracion\EgresoController@store');
+Route::post('egreso/update', 'Administracion\EgresoController@update');
+Route::post('egreso/show', 'Administracion\EgresoController@show');

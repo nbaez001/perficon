@@ -23,7 +23,7 @@
         <mat-form-field>
           <mat-label>Unidad medida</mat-label>
           <mat-select formControlName="unidadMedida" [ngClass]="{'is-invalid': formErrors.unidadMedida}">
-            <mat-option *ngFor="let tipoEgreso of unidadesMedida" [value]="unidadMedida">
+            <mat-option *ngFor="let unidadMedida of unidadesMedida" [value]="unidadMedida">
               {{unidadMedida.nombre}}
             </mat-option>
           </mat-select>
@@ -44,12 +44,12 @@
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="total" placeholder="Total" type="number"
-            [ngClass]="{'is-invalid': formErrors.total}" disabled="true">
+            [ngClass]="{'is-invalid': formErrors.total}">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput [matDatepicker]="picker" placeholder="Fecha">
+          <input matInput formControlName="fecha" [matDatepicker]="picker" placeholder="Fecha">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
@@ -64,13 +64,14 @@
     <mat-grid-list cols="12" rowHeight="70px">
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 12, md: 12, lg: 12, xl: 12}">
         <mat-form-field>
-          <textarea formControlName="descripcion" matInput placeholder="Descripcion"></textarea>
+          <textarea formControlName="descripcion" matInput placeholder="Descripcion" [Uppercased]></textarea>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
   </form>
 </div>
 <div mat-dialog-actions align="center">
-  <button mat-raised-button color="primary" type="button" (click)="regMaestra()">Guardar</button>
+  <button mat-raised-button color="primary" type="button" (click)="editEgreso()" *ngIf="data.objeto">Modificar</button>
+  <button mat-raised-button color="primary" type="button" (click)="regEgreso()" *ngIf="!data.objeto">Guardar</button>
   <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Salir</button>
 </div>
