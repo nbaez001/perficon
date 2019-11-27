@@ -5,7 +5,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DIAS, MENSAJES } from 'src/app/common';
 import { Maestra } from 'src/app/model/maestra.model';
 import { Egreso } from 'src/app/model/egreso.model';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { ValidationService } from 'src/app/services/validation.service';
 import { RegEgresoComponent } from './reg-egreso/reg-egreso.component';
@@ -150,6 +150,7 @@ export class BandejaEgresosComponent implements OnInit {
   }
 
   public cargarDatosTabla(): void {
+    this.dataSource = null;
     if (this.listaEgresos.length > 0) {
       this.dataSource = new MatTableDataSource(this.listaEgresos);
       this.dataSource.paginator = this.paginator;
@@ -171,7 +172,6 @@ export class BandejaEgresosComponent implements OnInit {
   }
 
   listarEgresos(): void {
-    this.dataSource = null;
     this.isLoading = true;
 
     let maestra = new Maestra();
@@ -204,11 +204,15 @@ export class BandejaEgresosComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      if (result) {
+        this.listaEgresos.unshift(result);
+        this.cargarDatosTabla();
+      }
     });
   }
 
   editEgreso(obj): void {
+    let index = this.listaEgresos.indexOf(obj);
     const dialogRef = this.dialog.open(RegEgresoComponent, {
       width: '600px',
       data: { title: MENSAJES.INTRANET.BANDEJAEGRESOS.EGRESO.EDITAR.TITLE, objeto: obj }
@@ -216,6 +220,11 @@ export class BandejaEgresosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+      if (result) {
+        this.listaEgresos.splice(index, 1);
+        this.listaEgresos.unshift(result);
+        this.cargarDatosTabla();
+      }
     });
   }
 

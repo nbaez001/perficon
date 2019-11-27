@@ -32,4 +32,8 @@ export class NavbarComponent {
   salir() {
     this.router.navigate(['sesion/login']);
   }
+
+  get getUser() {
+    return this.user;
+  }
 }

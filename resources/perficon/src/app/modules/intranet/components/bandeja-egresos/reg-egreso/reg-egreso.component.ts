@@ -21,6 +21,7 @@ export class RegEgresoComponent implements OnInit {
   tiposEgreso: Maestra[] = [];
   unidadesMedida: Maestra[] = [];
   dias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
+  egresoEdit: Egreso;
 
   egresoGrp: FormGroup;
   messages = {
@@ -97,18 +98,20 @@ export class RegEgresoComponent implements OnInit {
     this.comboTiposEgreso();
     this.comboUnidadesMedida();
     if (this.data.objeto) {
-      let egresoEdit: Egreso = JSON.parse(JSON.stringify(this.data.objeto));
-      this.egresoGrp.get('tipoEgreso').setValue((this.tiposEgreso.filter(el => el.id == egresoEdit.idTipoEgreso))[0]);
-      this.egresoGrp.get('unidadMedida').setValue((this.unidadesMedida.filter(el => el.id == egresoEdit.idUnidadMedida))[0]);
-      this.egresoGrp.get('nombre').setValue(egresoEdit.nombre);
-      this.egresoGrp.get('cantidad').setValue(egresoEdit.cantidad);
-      this.egresoGrp.get('precio').setValue(egresoEdit.precio);
-      this.egresoGrp.get('total').setValue(egresoEdit.total);
-      this.egresoGrp.get('descripcion').setValue(egresoEdit.descripcion);
-      this.egresoGrp.get('ubicacion').setValue(egresoEdit.ubicacion);
-      this.egresoGrp.get('fecha').setValue(new Date(this.datePipe.transform(egresoEdit.fecha, 'dd/MM/yyyy')));
+      this.egresoEdit = JSON.parse(JSON.stringify(this.data.objeto));
+      this.egresoGrp.get('tipoEgreso').setValue((this.tiposEgreso.filter(el => el.id == this.egresoEdit.idTipoEgreso))[0]);
+      this.egresoGrp.get('unidadMedida').setValue((this.unidadesMedida.filter(el => el.id == this.egresoEdit.idUnidadMedida))[0]);
+      this.egresoGrp.get('nombre').setValue(this.egresoEdit.nombre);
+      this.egresoGrp.get('cantidad').setValue(this.egresoEdit.cantidad);
+      this.egresoGrp.get('precio').setValue(this.egresoEdit.precio);
+      this.egresoGrp.get('total').setValue(this.egresoEdit.total);
+      this.egresoGrp.get('descripcion').setValue(this.egresoEdit.descripcion);
+      this.egresoGrp.get('ubicacion').setValue(this.egresoEdit.ubicacion);
+      this.egresoGrp.get('fecha').setValue(new Date(this.datePipe.transform(this.egresoEdit.fecha, 'MM/dd/yyyy')));
     } else {
       this.egresoGrp.get('fecha').setValue(new Date());
+      this.egresoGrp.get('tipoEgreso').setValue(this.tiposEgreso[0]);
+      this.egresoGrp.get('unidadMedida').setValue(this.unidadesMedida[0]);
     }
   }
 
@@ -122,7 +125,12 @@ export class RegEgresoComponent implements OnInit {
     this.maestraService.listarMaestra(maestra).subscribe(
       (data: Maestra[]) => {
         this.tiposEgreso = data;
-        this.egresoGrp.get('tipoEgreso').setValue(this.tiposEgreso[0]);
+
+        if (this.data.objeto) {
+          this.egresoGrp.get('tipoEgreso').setValue((this.tiposEgreso.filter(el => el.id == this.egresoEdit.idTipoEgreso))[0]);
+        } else {
+          this.egresoGrp.get('tipoEgreso').setValue(this.tiposEgreso[2]);
+        }
       }, error => {
         console.log(error);
       }
@@ -135,7 +143,12 @@ export class RegEgresoComponent implements OnInit {
     this.maestraService.listarMaestra(maestra).subscribe(
       (data: Maestra[]) => {
         this.unidadesMedida = data;
-        this.egresoGrp.get('unidadMedida').setValue(this.unidadesMedida[0]);
+
+        if (this.data.objeto) {
+          this.egresoGrp.get('unidadMedida').setValue((this.unidadesMedida.filter(el => el.id == this.egresoEdit.idUnidadMedida))[0]);
+        } else {
+          this.egresoGrp.get('unidadMedida').setValue(this.unidadesMedida[0]);
+        }
       }, error => {
         console.log(error);
       }
@@ -147,7 +160,9 @@ export class RegEgresoComponent implements OnInit {
       let obj = new Egreso();
       obj.id = 0;
       obj.idTipoEgreso = this.egresoGrp.get('tipoEgreso').value.id;
+      obj.nomTipoEgreso = this.egresoGrp.get('tipoEgreso').value.nombre;
       obj.idUnidadMedida = this.egresoGrp.get('unidadMedida').value.id;
+      obj.nomUnidadMedida = this.egresoGrp.get('unidadMedida').value.nombre;
       obj.nombre = this.egresoGrp.get('nombre').value;
       obj.cantidad = this.egresoGrp.get('cantidad').value;
       obj.precio = this.egresoGrp.get('precio').value;
@@ -155,7 +170,7 @@ export class RegEgresoComponent implements OnInit {
       obj.descripcion = this.egresoGrp.get('descripcion').value;
       obj.ubicacion = this.egresoGrp.get('ubicacion').value;
       obj.fecha = this.egresoGrp.get('fecha').value;
-      obj.dia = this.dias[obj.fecha.getDay() - 1];
+      obj.dia = this.dias[(obj.fecha.getDay() == 0 ? 7 : obj.fecha.getDay()) - 1];
       obj.idUsuarioCrea = this.user.getIdUsuario;
       obj.fecUsuarioCrea = new Date();
 
@@ -166,6 +181,7 @@ export class RegEgresoComponent implements OnInit {
         (data: ApiResponse[]) => {
           if (typeof data[0] != undefined && data[0].rcodigo == 0) {
             console.log('Exito al registrar');
+            obj.id = data[0].rid;
             this.dialogRef.close(obj);
             this.spinnerService.hide();
           } else {
@@ -184,7 +200,9 @@ export class RegEgresoComponent implements OnInit {
     if (this.egresoGrp.valid) {
       let obj: Egreso = JSON.parse(JSON.stringify(this.data.objeto));
       obj.idTipoEgreso = this.egresoGrp.get('tipoEgreso').value.id;
+      obj.nomTipoEgreso = this.egresoGrp.get('tipoEgreso').value.nombre;
       obj.idUnidadMedida = this.egresoGrp.get('unidadMedida').value.id;
+      obj.nomUnidadMedida = this.egresoGrp.get('unidadMedida').value.nombre;
       obj.nombre = this.egresoGrp.get('nombre').value;
       obj.cantidad = this.egresoGrp.get('cantidad').value;
       obj.precio = this.egresoGrp.get('precio').value;
@@ -192,7 +210,7 @@ export class RegEgresoComponent implements OnInit {
       obj.descripcion = this.egresoGrp.get('descripcion').value;
       obj.ubicacion = this.egresoGrp.get('ubicacion').value;
       obj.fecha = this.egresoGrp.get('fecha').value;
-      obj.dia = this.dias[obj.fecha.getDay() - 1];
+      obj.dia = this.dias[(obj.fecha.getDay() == 0 ? 7 : obj.fecha.getDay()) - 1];
       obj.idUsuarioMod = this.user.getIdUsuario;
       obj.fecUsuarioMod = new Date();
 
@@ -215,6 +233,14 @@ export class RegEgresoComponent implements OnInit {
     } else {
       this.validateForm();
     }
+  }
+
+  calcularTotal(): void {
+    this.egresoGrp.get('total').setValue((this.egresoGrp.get('cantidad').value * this.egresoGrp.get('precio').value).toFixed(2));
+  }
+
+  calcularCantidad(): void {
+    this.egresoGrp.get('cantidad').setValue((this.egresoGrp.get('total').value / this.egresoGrp.get('precio').value).toFixed(2));
   }
 
 }

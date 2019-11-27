@@ -9,7 +9,7 @@ import { UppercaseDirective } from '../core/directives/uppercase.directive';
 @NgModule({
   declarations: [
     ResponsiveRowsDirective, //DIRECTIVA GRID RESPONSIVE
-    UppercaseDirective //DIRECTIVA UPPERCASE
+    UppercaseDirective, //DIRECTIVA UPPERCASE
   ],
   imports: [
     ReactiveFormsModule,
@@ -62,7 +62,7 @@ import { UppercaseDirective } from '../core/directives/uppercase.directive';
     MatProgressSpinnerModule,
 
     ResponsiveRowsDirective, //DIRECTIVA GRID RESPONSIVE
-    UppercaseDirective //DIRECTIVA UPPERCASE
+    UppercaseDirective, //DIRECTIVA UPPERCASE
   ]
 })
 export class MaterialModule { }

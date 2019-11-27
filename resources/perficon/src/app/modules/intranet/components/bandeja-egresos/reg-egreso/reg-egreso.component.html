@@ -5,18 +5,18 @@
     <mat-grid-list cols="12" rowHeight="50px">
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <mat-label>Tipo egreso</mat-label>
-          <mat-select formControlName="tipoEgreso" [ngClass]="{'is-invalid': formErrors.tipoEgreso}">
-            <mat-option *ngFor="let tipoEgreso of tiposEgreso" [value]="tipoEgreso">
-              {{tipoEgreso.nombre}}
-            </mat-option>
-          </mat-select>
+          <input matInput formControlName="nombre" placeholder="Nombre" type="text"
+            [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased] cdkFocusInitial>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="nombre" placeholder="Nombre" type="text"
-            [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased]>
+          <mat-label>Tipo egreso</mat-label>
+          <mat-select formControlName="tipoEgreso" [ngClass]="{'is-invalid': formErrors.tipoEgreso}">
+            <mat-option *ngFor="let tipoEgreso of tiposEgreso" [value]="tipoEgreso">
+              {{tipoEgreso.nombre}} - {{tipoEgreso.orden}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
@@ -32,19 +32,19 @@
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="cantidad" placeholder="Cantidad" type="number"
-            [ngClass]="{'is-invalid': formErrors.cantidad}">
+            [ngClass]="{'is-invalid': formErrors.cantidad}" (change)="calcularTotal()">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="precio" placeholder="Precio" type="number"
-            [ngClass]="{'is-invalid': formErrors.precio}">
+            [ngClass]="{'is-invalid': formErrors.precio}" (change)="calcularTotal()">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="total" placeholder="Total" type="number"
-            [ngClass]="{'is-invalid': formErrors.total}">
+            [ngClass]="{'is-invalid': formErrors.total}" (change)="calcularCantidad()">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
@@ -73,5 +73,5 @@
 <div mat-dialog-actions align="center">
   <button mat-raised-button color="primary" type="button" (click)="editEgreso()" *ngIf="data.objeto">Modificar</button>
   <button mat-raised-button color="primary" type="button" (click)="regEgreso()" *ngIf="!data.objeto">Guardar</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Salir</button>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Salir</button>
 </div>

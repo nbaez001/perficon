@@ -7,9 +7,9 @@
     </mat-toolbar>
     <div class="span-usuario">
       <span>
-        {{user.getPerfil}}
+        {{getUser.getPerfil}}
         <br>
-        ({{user.getAbrevPerfil}})
+        ({{getUser.getAbrevPerfil}})
       </span>
     </div>
     <mat-nav-list>
@@ -36,7 +36,7 @@
       <span>Financial control</span>
       <span class="spacer"></span>
       <button mat-button [matMenuTriggerFor]="usuario">
-        {{user.getNombres}}
+        {{getUser.getNombres}}
         <mat-icon>expand_more</mat-icon>
       </button>
       <mat-menu #usuario="matMenu" xPosition="after" [overlapTrigger]="false">
