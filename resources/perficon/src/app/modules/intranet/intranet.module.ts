@@ -12,22 +12,35 @@ import { RegMaestraComponent } from './components/configuracion-maestra/reg-maes
 import { RegMaestraChildComponent } from './components/configuracion-maestra/reg-maestra-child/reg-maestra-child.component';
 import { RegEgresoComponent } from './components/bandeja-egresos/reg-egreso/reg-egreso.component';
 import { MAT_DATE_LOCALE } from '@angular/material';
+import { CuentaBancoComponent } from './components/cuenta-banco/cuenta-banco.component';
+import { RegCuentaBancoComponent } from './components/cuenta-banco/reg-cuenta-banco/reg-cuenta-banco.component';
+import { MovimientoBancoComponent } from './components/movimiento-banco/movimiento-banco.component';
+import { RegMovBancoComponent } from './components/movimiento-banco/reg-mov-banco/reg-mov-banco.component';
+import { ConfirmComponent } from './components/shared/confirm/confirm.component';
 
 @NgModule({
   entryComponents: [
     RegMaestraComponent,
     RegMaestraChildComponent,
-    RegEgresoComponent
+    RegEgresoComponent,
+    RegCuentaBancoComponent,
+    RegMovBancoComponent,
+    ConfirmComponent,
   ],
   declarations: [
+    RegMaestraComponent,
+    RegMaestraChildComponent,
+    RegEgresoComponent,
+    RegCuentaBancoComponent,
+    RegMovBancoComponent,
+    ConfirmComponent,
+
     HomeComponent,
     NavbarComponent,
     BandejaEgresosComponent,
     ConfiguracionMaestraComponent,
-
-    RegMaestraComponent,
-    RegMaestraChildComponent,
-    RegEgresoComponent
+    CuentaBancoComponent,
+    MovimientoBancoComponent,
   ],
   imports: [
     CommonModule,

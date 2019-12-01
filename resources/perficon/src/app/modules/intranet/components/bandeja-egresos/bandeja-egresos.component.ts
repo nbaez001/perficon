@@ -26,45 +26,10 @@ export class BandejaEgresosComponent implements OnInit {
       'required': 'Field is required',
       'minlength': 'Insert al least 2 characters',
       'maxlength': 'Max name size 20 characters'
-    },
-    'email': {
-      'required': 'Field is required',
-      'email': 'Insert a valid email',
-      'customEmail': 'Email domain should be dell.com'
-    },
-    'confirmEmail': {
-      'required': 'Field is required',
-      'email': 'Insert a valid email'
-    },
-    'phone': {
-      'required': 'Phone is required'
-    },
-    'skill': {
-      'name': {
-        'required': 'Field is required',
-        'minlength': 'Insert al least 5 characters',
-        'maxlength': 'max name size 20 characters'
-      },
-      'years': {
-        'required': 'Field is required',
-        'min': 'Min value is 1',
-        'max': 'Max value is 100'
-      },
-      'proficiency': {
-        'required': 'option is required'
-      }
     }
   };
   formErrors = {
-    'name': '',
-    'email': '',
-    'confirmEmail': '',
-    'phone': '',
-    'skill': {
-      'name': '',
-      'years': '',
-      'proficiency': ''
-    }
+    'name': ''
   };
 
   displayedColumns: string[];
@@ -139,6 +104,7 @@ export class BandejaEgresosComponent implements OnInit {
     this.cargarDatosTabla();
     this.comboTiposEgreso();
     this.listarEgresos();
+    this.spinnerService.hide();
   }
 
   definirTabla(): void {
@@ -156,7 +122,6 @@ export class BandejaEgresosComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
-    this.spinnerService.hide();
   }
 
   comboTiposEgreso(): void {

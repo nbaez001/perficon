@@ -19,12 +19,33 @@
       <a mat-list-item [routerLink]="['/intranet/bandeja-egresos']" routerLinkActive="active-list-item">
         <mat-icon>style</mat-icon> Bandeja egresos
       </a>
+      <a mat-list-item [routerLink]="['/intranet/bandeja-movimientos']" routerLinkActive="active-list-item">
+        <mat-icon>assignment</mat-icon> Bandeja movimientos
+      </a>
       <!-- <a mat-list-item [routerLink]="['/intranet/bandeja-movimientos']" routerLinkActive="active-list-item">
         <mat-icon>score</mat-icon> Bandeja Movimientos
       </a> -->
-      <a mat-list-item [routerLink]="['/intranet/configuracion-maestras']" routerLinkActive="active-list-item">
+      <a mat-list-item routerLinkActive="active-list-item" (click)="showSubmenu1 = !showSubmenu1">
         <mat-icon>layers</mat-icon> Configuracion maestras
+        <span class="spacer"></span>
+        <mat-icon>expand_more</mat-icon>
       </a>
+      <div *ngIf="showSubmenu1">
+        <a mat-list-item [routerLink]="['/intranet/configuracion-maestras']" routerLinkActive="active-list-item"
+          [ngStyle]="{'padding-left': '20px'}">
+          <span class="child-link"></span>
+          Control maestras
+        </a>
+        <a mat-list-item [routerLink]="['/intranet/cuenta-banco']" routerLinkActive="active-list-item"
+          [ngStyle]="{'padding-left': '20px'}">
+          <span class="child-link"></span>
+          Cuenta bancaria
+        </a>
+      </div>
+
+
+
+
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

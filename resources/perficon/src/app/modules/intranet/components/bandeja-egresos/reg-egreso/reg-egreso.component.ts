@@ -51,7 +51,6 @@ export class RegEgresoComponent implements OnInit {
     'ubicacion': {
     }
   };
-
   formErrors = {
     'tipoEgreso': '',
     'nombre': '',
@@ -115,10 +114,6 @@ export class RegEgresoComponent implements OnInit {
     }
   }
 
-  validateForm(): void {
-    this.validationService.getValidationErrors(this.egresoGrp, this.messages, this.formErrors, true);
-  }
-
   comboTiposEgreso(): void {
     let maestra = new Maestra();
     maestra.idMaestraPadre = 1;//10=>TIPOS EGRESO
@@ -174,13 +169,10 @@ export class RegEgresoComponent implements OnInit {
       obj.idUsuarioCrea = this.user.getIdUsuario;
       obj.fecUsuarioCrea = new Date();
 
-      console.log(obj)
-
       this.spinnerService.show();
       this.egresoService.regEgreso(obj).subscribe(
         (data: ApiResponse[]) => {
           if (typeof data[0] != undefined && data[0].rcodigo == 0) {
-            console.log('Exito al registrar');
             obj.id = data[0].rid;
             this.dialogRef.close(obj);
             this.spinnerService.hide();
@@ -192,7 +184,7 @@ export class RegEgresoComponent implements OnInit {
         }
       );
     } else {
-      this.validateForm();
+      this.validationService.getValidationErrors(this.egresoGrp, this.messages, this.formErrors, true);
     }
   }
 
@@ -231,7 +223,7 @@ export class RegEgresoComponent implements OnInit {
         }
       );
     } else {
-      this.validateForm();
+      this.validationService.getValidationErrors(this.egresoGrp, this.messages, this.formErrors, true);
     }
   }
 

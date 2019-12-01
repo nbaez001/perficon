@@ -1,0 +1,54 @@
+<ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
+<h5 mat-dialog-title>{{data.title}}</h5>
+<div mat-dialog-content>
+  <form [formGroup]="formularioGrp">
+    <mat-grid-list cols="12" rowHeight="50px">
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <mat-label>Cuenta Banco</mat-label>
+          <mat-select formControlName="cuentaBanco" [ngClass]="{'is-invalid': formErrors.cuentaBanco}">
+            <mat-option *ngFor="let cuentaBanco of listaCuentasbanco" [value]="cuentaBanco">
+              {{cuentaBanco.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field appearance="legacy">
+          <mat-label>Tipo movimiento</mat-label>
+          <mat-select formControlName="tipoMovimiento">
+            <mat-option *ngFor="let tipoMovimiento of tiposMovimiento" [value]="tipoMovimiento">
+              {{tipoMovimiento.nombre}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="detalle" placeholder="Detalle" type="text"
+            [ngClass]="{'is-invalid': formErrors.detalle}" [Uppercased] cdkFocusInitial>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="monto" placeholder="Monto" type="number"
+            [ngClass]="{'is-invalid': formErrors.monto}">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="fecha" [matDatepicker]="picker" placeholder="Fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" type="button" (click)="editMovimientoBanco()"
+    *ngIf="data.objeto">Modificar</button>
+  <button mat-raised-button color="primary" type="button" (click)="regMovimientoBanco()"
+    *ngIf="!data.objeto">Guardar</button>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Salir</button>
+</div>

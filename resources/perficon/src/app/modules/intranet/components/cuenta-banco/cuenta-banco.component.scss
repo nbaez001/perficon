@@ -1,0 +1,45 @@
+@import "../../../../../assets/styles/scss/views/table";
+
+.page {
+  .table-resultados {
+    // margin-bottom: 0px;
+    .table-container {
+      max-height: 400px;
+    }
+  }
+}
+
+@include mat-table-columns(
+  (
+    id: (
+      width: 2rem
+    ),
+    nroCuenta: (
+      width: 8rem
+    ),
+    cci: (
+      width: 12rem
+    ),
+    nombre: (
+      width: 9rem
+    ),
+    saldo: (
+      width: 6rem
+    ),
+    idUsuarioCrea: (
+      width: 6rem
+    ),
+    fecUsuarioCrea: (
+      width: 5rem
+    ),
+    idUsuarioMod: (
+      width: 6rem
+    ),
+    fecUsuarioMod: (
+      width: 5rem
+    ),
+    opt: (
+      width: 5rem
+    )
+  )
+);

@@ -57,3 +57,15 @@
   align-items: center !important;
   position: sticky;
 }
+
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type,
+th.mat-header-cell:first-of-type {
+  padding-left: 10px;
+}
+
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type,
+th.mat-header-cell:last-of-type {
+  padding-right: 0px;
+}

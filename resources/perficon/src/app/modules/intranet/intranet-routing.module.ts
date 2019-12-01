@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { BandejaEgresosComponent } from './components/bandeja-egresos/bandeja-egresos.component';
 import { ConfiguracionMaestraComponent } from './components/configuracion-maestra/configuracion-maestra.component';
+import { CuentaBancoComponent } from './components/cuenta-banco/cuenta-banco.component';
+import { MovimientoBancoComponent } from './components/movimiento-banco/movimiento-banco.component';
 
 const intranetRoutes: Routes = [
   {
@@ -21,9 +23,17 @@ const intranetRoutes: Routes = [
         component: BandejaEgresosComponent,
         data: { title: 'Bandeja egresos' }
       }, {
+        path: 'bandeja-movimientos',
+        component: MovimientoBancoComponent,
+        data: { title: 'Bandeja movimientos' }
+      }, {
         path: 'configuracion-maestras',
         component: ConfiguracionMaestraComponent,
         data: { title: 'Configuracion maestras' }
+      }, {
+        path: 'cuenta-banco',
+        component: CuentaBancoComponent,
+        data: { title: 'Cuentas bancarias' }
       }
     ]
   }

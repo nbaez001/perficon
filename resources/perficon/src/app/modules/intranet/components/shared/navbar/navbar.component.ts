@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,6 +12,8 @@ import { UsuarioService } from 'src/app/services/usuario.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  @Input() showSubmenu1: boolean;
+  
   persona: Persona;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)

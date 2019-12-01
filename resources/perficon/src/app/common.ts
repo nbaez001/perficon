@@ -1,5 +1,5 @@
-// export const webServiceEndpoint: string = 'http://perficon.test/api/';
-export const webServiceEndpoint: string = 'http://perficon.elnazarenovraem.edu.pe/api/';
+export const webServiceEndpoint: string = 'http://perficon.test/api/';
+// export const webServiceEndpoint: string = 'http://perficon.elnazarenovraem.edu.pe/api/';
 
 export const DIAS: Object[] = [
     { id: 1, nombre: 'LUNES' },
@@ -21,6 +21,14 @@ export const MENSAJES = {
                 REGISTRARCHILD: {
                     TITLE: 'REGISTRAR HIJOS MAESTRA'
                 }
+            },
+            CUENTABANCO: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR CUENTA BANCARIA'
+                },
+                MODIFICAR: {
+                    TITLE: 'MODIFICAR CUENTA BANCARIA'
+                }
             }
         },
         BANDEJAEGRESOS: {
@@ -29,7 +37,17 @@ export const MENSAJES = {
                     TITLE: 'REGISTRAR EGRESO'
                 },
                 EDITAR: {
-                    TITLE: 'REGISTRAR EGRESO'
+                    TITLE: 'MODIFICAR EGRESO'
+                }
+            }
+        },
+        BANDEJAMOVIMIENTO: {
+            MOVIMIENTO: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR MOVIMIENTO'
+                },
+                EDITAR: {
+                    TITLE: 'EDITAR MOVIMIENTO'
                 }
             }
         }

@@ -1,0 +1,36 @@
+@import "../../../../../assets/styles/scss/views/table";
+
+.page-vehiculo {
+  .table-resultados {
+    // margin-bottom: 0px;
+    .table-container {
+      max-height: 400px;
+    }
+  }
+}
+
+@include mat-table-columns(
+  (
+    id: (
+      width: 2rem
+    ),
+    nomCuentaBanco: (
+      width: 10rem
+    ),
+    nomTipoMovimiento: (
+      width: 8rem
+    ),
+    detalle: (
+      width: 8rem
+    ),
+    monto: (
+      width: 6rem
+    ),
+    fecha: (
+      width: 5rem
+    ),
+    opt: (
+      width: 2.5rem
+    )
+  )
+);
