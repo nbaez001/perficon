@@ -20,4 +20,7 @@ export class SaldoMensualService {
     return this.http.post<ApiResponse[]>(`${webServiceEndpoint}saldo-mensual/calcular`, request);
   }
 
+  public obtenerSaldoActual(request: SaldoMensual): Observable<ApiResponse[]> {
+    return this.http.post<ApiResponse[]>(`${webServiceEndpoint}saldo-mensual/obtener-actual`, request);
+  }
 }

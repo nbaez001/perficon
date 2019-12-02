@@ -1,7 +1,30 @@
 <app-navbar>
-  <p>
-    Personal finantial control
-  </p>
-  <br>
-  <button mat-raised-button color="primary">Registrar</button>
+  <mat-card class="home-card">
+    <mat-card-header>
+      <mat-card-title>Perficon</mat-card-title>
+      <mat-card-subtitle>Monto actual:
+        <ng-container *ngIf="cargando">
+          <div class="lds-ellipsis">
+            <div style="background-color: royalblue;"></div>
+            <div style="background-color: royalblue;"></div>
+            <div style="background-color: royalblue;"></div>
+            <div style="background-color: royalblue;"></div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!cargando">
+          S/.{{saldoActual.monto | number:'1.2-2'}}
+        </ng-container>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img style="width: 90%;" mat-card-image src="../../../../../assets/images/icons/perficon-home.png"
+      alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p>
+        Control financiero.
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button>LIKE</button>
+    </mat-card-actions>
+  </mat-card>
 </app-navbar>

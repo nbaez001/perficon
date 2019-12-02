@@ -31,13 +31,13 @@ class EgresoController extends Controller
     public function store(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        
+
         $dateCrea = new DateTime($data['fecUsuarioCrea']);
         $resultCrea = $dateCrea->format('Y-m-d');
         $date = new DateTime($data['fecha']);
         $result = $date->format('Y-m-d');
 
-        $resp = DB::select('call PFC_I_EGRESO(?,?,?,?,?,?,?,?,?,?,?,?)', [$data['idTipoEgreso'], $data['idUnidadMedida'], $data['nombre'], $data['cantidad'], $data['precio'],$data['total'],$data['descripcion'],$data['ubicacion'],$data['dia'],$result, $data['idUsuarioCrea'], $resultCrea]);
+        $resp = DB::select('call PFC_I_EGRESO(?,?,?,?,?,?,?,?,?,?,?,?)', [$data['idTipoEgreso'], $data['idUnidadMedida'], $data['nombre'], $data['cantidad'], $data['precio'], $data['total'], $data['descripcion'], $data['ubicacion'], $data['dia'], $result, $data['idUsuarioCrea'], $resultCrea]);
         return response()->json($resp);
     }
 
@@ -62,13 +62,15 @@ class EgresoController extends Controller
      */
     public function update(Request $request)
     {
-        // $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true);
 
-        // $dateMod = new DateTime($data['fecUsuarioMod']);
-        // $resMod = $dateMod->format('Y-m-d');
+        $dateMod = new DateTime($data['fecUsuarioMod']);
+        $resultMod = $dateMod->format('Y-m-d');
+        $date = new DateTime($data['fecha']);
+        $result = $date->format('Y-m-d');
 
-        // $resp = DB::select('call PFC_U_EGRESO(?,?,?,?,?,?,?,?)', [$data['id'], $data['idMaestraPadre'], $data['orden'], $data['nombre'], $data['codigo'], $data['valor'], $data['idUsuarioMod'], $resMod]);
-        // return response()->json($resp);
+        $resp = DB::select('call PFC_U_EGRESO(?,?,?,?,?,?,?,?,?,?,?,?,?)', [$data['id'], $data['idTipoEgreso'], $data['idUnidadMedida'], $data['nombre'], $data['cantidad'], $data['precio'], $data['total'], $data['descripcion'], $data['ubicacion'], $data['dia'], $result, $data['idUsuarioMod'], $resultMod]);
+        return response()->json($resp);
     }
 
     /**

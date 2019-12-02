@@ -1,0 +1,33 @@
+.mat-dialog-title {
+  margin: 0px !important;
+}
+
+.mat-dialog-actions {
+  &[align="end"] {
+    justify-content: flex-end;
+  }
+
+  &[align="center"] {
+    justify-content: center;
+  }
+}
+
+.mat-grid-tile .mat-figure {
+  justify-content: left !important;
+  button {
+    margin-left: 10px;
+  }
+}
+
+mat-dialog-content > .table-container {
+  margin-top: 15px;
+}
+
+.mat-dialog-title {
+  font-size: 14px !important;
+  font-weight: bold;
+}
+
+.mat-dialog-content > * {
+  font-size: 14px !important;
+}

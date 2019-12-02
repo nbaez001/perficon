@@ -8,9 +8,4 @@ export class CuentaBanco {
     fecUsuarioCrea: Date;
     idUsuarioMod: number;
     fecUsuarioMod: Date;
-
-    constructor(id: number, nombre: string) {
-        this.id = id;
-        this.nombre = nombre;
-    }
 }

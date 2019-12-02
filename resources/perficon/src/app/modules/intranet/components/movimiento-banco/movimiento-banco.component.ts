@@ -126,7 +126,9 @@ export class MovimientoBancoComponent implements OnInit {
     this.cuentaBancoService.listarCuentaBanco().subscribe(
       (data: CuentaBanco[]) => {
         this.listaCuentasBanco = data;
-        let cb = new CuentaBanco(0, 'TODOS');
+        let cb = new CuentaBanco();
+        cb.id = 0;
+        cb.nombre = 'TODOS';
         this.listaCuentasBanco.unshift(cb);
 
         this.bandejaGrp.get('cuentaBanco').setValue(this.listaCuentasBanco[0]);

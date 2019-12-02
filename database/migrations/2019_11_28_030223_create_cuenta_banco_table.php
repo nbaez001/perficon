@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEgresoTable extends Migration
+class CreateCuentaBancoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,12 @@ class CreateEgresoTable extends Migration
      */
     public function up()
     {
-        Schema::create('egreso', function (Blueprint $table) {
+        Schema::create('cuenta_banco', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('id_tipo_egreso');
-            $table->unsignedInteger('id_unidad_medida');
-            $table->string('nombre', 100);
-            $table->decimal('cantidad', 8, 2);
-            $table->decimal('precio', 8, 2);
-            $table->decimal('total', 8, 2);
-            $table->string('descripcion', 500)->nullable();
-            $table->string('ubicacion', 100)->nullable();
-            $table->string('dia', 10);
-            $table->date('fecha');
+            $table->string('nro_cuenta', 20);
+            $table->string('cci', 20);
+            $table->string('nombre', 50);
+            $table->decimal('saldo', 8, 2);
             $table->unsignedInteger('id_usuario_crea');
             $table->date('fec_usuario_crea');
             $table->unsignedInteger('id_usuario_mod')->nullable();
@@ -39,6 +33,6 @@ class CreateEgresoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('egreso');
+        Schema::dropIfExists('cuenta_banco');
     }
 }

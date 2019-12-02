@@ -6,7 +6,7 @@
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <mat-label>Cuenta Banco</mat-label>
-          <mat-select formControlName="cuentaBanco" [ngClass]="{'is-invalid': formErrors.cuentaBanco}">
+          <mat-select formControlName="cuentaBanco">
             <mat-option *ngFor="let cuentaBanco of listaCuentasbanco" [value]="cuentaBanco">
               {{cuentaBanco.nombre}}
             </mat-option>
@@ -25,14 +25,12 @@
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="detalle" placeholder="Detalle" type="text"
-            [ngClass]="{'is-invalid': formErrors.detalle}" [Uppercased] cdkFocusInitial>
+          <input matInput formControlName="detalle" placeholder="Detalle" type="text" [Uppercased] cdkFocusInitial>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="monto" placeholder="Monto" type="number"
-            [ngClass]="{'is-invalid': formErrors.monto}">
+          <input matInput formControlName="monto" placeholder="Monto" type="number">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">

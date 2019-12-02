@@ -22,8 +22,15 @@
         <mat-grid-tile [responsiveRows]="{xs:12, sm: 12, md:12, lg:12, xl:12}">
           <mat-checkbox>Recordar</mat-checkbox>
         </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="12" rowHeight="25px" *ngIf="mostrar">
+        <mat-grid-tile [responsiveRows]="{xs:12, sm: 12, md:12, lg:12, xl:12}" class="alerta">
+          Usuario o contraseña incorrectos
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="12" rowHeight="50px">
         <mat-grid-tile [responsiveRows]="{xs:12, sm: 12, md:12, lg:12, xl:12}">
-          <button mat-button color="primary" (click)="autenticar()">Ingresar</button>
+          <button mat-raised-button color="primary" (click)="autenticar()">Ingresar</button>
         </mat-grid-tile>
       </mat-grid-list>
     </form>

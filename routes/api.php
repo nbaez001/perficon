@@ -28,3 +28,17 @@ Route::post('egreso/lista', 'Administracion\EgresoController@list');
 Route::post('egreso/store', 'Administracion\EgresoController@store');
 Route::post('egreso/update', 'Administracion\EgresoController@update');
 Route::post('egreso/show', 'Administracion\EgresoController@show');
+
+Route::post('cuenta-banco/lista', 'Configuration\CuentaBancoController@list');
+Route::post('cuenta-banco/store', 'Configuration\CuentaBancoController@store');
+Route::post('cuenta-banco/update', 'Configuration\CuentaBancoController@update');
+Route::post('cuenta-banco/show', 'Configuration\CuentaBancoController@show');
+
+Route::post('movimiento-banco/lista', 'Administracion\MovimientoBancoController@list');
+Route::post('movimiento-banco/store', 'Administracion\MovimientoBancoController@store');
+Route::post('movimiento-banco/delete', 'Administracion\MovimientoBancoController@destroy');
+Route::post('movimiento-banco/show', 'Administracion\MovimientoBancoController@show');
+
+Route::post('saldo-mensual/obtener', 'Administracion\SaldoMensualController@obtener');
+Route::post('saldo-mensual/calcular', 'Administracion\SaldoMensualController@calcular');
+Route::post('saldo-mensual/obtener-actual', 'Administracion\SaldoMensualController@obtenerActual');

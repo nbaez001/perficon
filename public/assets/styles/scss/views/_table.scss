@@ -1,0 +1,71 @@
+@mixin mat-table-columns($columns) {
+  .mat-column- {
+    @each $colName, $props in $columns {
+      $width: map-get($props, "width");
+
+      &#{$colName} {
+        flex: $width !important;
+        width: $width !important;
+
+        @if map-has-key($props, "color") {
+          color: map-get($props, "color") !important;
+        }
+
+        @if map-has-key($props, "text-align") {
+          text-align: map-get($props, "text-align") !important;
+        }
+
+        @if map-has-key($props, "padding-left") {
+          padding-left: map-get($props, "padding-left") !important;
+        }
+      }
+    }
+  }
+}
+
+.table-container {
+  overflow: auto;
+  .mat-column-select {
+    overflow: initial;
+  }
+  .empty {
+    padding: 20px;
+    text-align: center;
+    position: sticky;
+    bottom: 0px;
+    left: 0px;
+    font-size: 0.8em;
+    font-weight: 500;
+  }
+  .mat-paginator-sticky {
+    bottom: 0px !important;
+    left: 0px !important;
+    position: sticky !important;
+    z-index: 10 !important;
+  }
+}
+
+.table-container table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.spinerTable {
+  padding-top: 5px;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: sticky;
+}
+
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type,
+th.mat-header-cell:first-of-type {
+  padding-left: 10px;
+}
+
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type,
+th.mat-header-cell:last-of-type {
+  padding-right: 0px;
+}

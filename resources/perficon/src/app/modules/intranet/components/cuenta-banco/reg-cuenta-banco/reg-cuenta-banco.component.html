@@ -6,25 +6,25 @@
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="nroCuenta" placeholder="Numero de cuenta" type="text"
-            [ngClass]="{'is-invalid': formErrors.nombre}">
+            [ngClass]="{'is-invalid': formErrors.nroCuenta}">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="cci" placeholder="CCI" type="text"
-            [ngClass]="{'is-invalid': formErrors.nombre}">
+            [ngClass]="{'is-invalid': formErrors.cci}">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="nombre" placeholder="Nombre banco" type="text"
-            [ngClass]="{'is-invalid': formErrors.codigo}" [Uppercased]>
+            [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased]>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="saldo" placeholder="Saldo" type="number"
-            [ngClass]="{'is-invalid': formErrors.nombre}">
+            [ngClass]="{'is-invalid': formErrors.saldo}">
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>
