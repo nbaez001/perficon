@@ -1,30 +1,85 @@
 <app-navbar>
-  <mat-card class="home-card">
-    <mat-card-header>
-      <mat-card-title>Perficon</mat-card-title>
-      <mat-card-subtitle>Monto actual:
-        <ng-container *ngIf="cargando">
-          <div class="lds-ellipsis">
-            <div style="background-color: royalblue;"></div>
-            <div style="background-color: royalblue;"></div>
-            <div style="background-color: royalblue;"></div>
-            <div style="background-color: royalblue;"></div>
-          </div>
-        </ng-container>
-        <ng-container *ngIf="!cargando">
-          S/.{{saldoActual.monto | number:'1.2-2'}}
-        </ng-container>
-      </mat-card-subtitle>
-    </mat-card-header>
-    <img style="width: 90%;" mat-card-image src="../../../../../assets/images/icons/perficon-home.png"
-      alt="Photo of a Shiba Inu">
-    <mat-card-content>
-      <p>
-        Control financiero.
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button>LIKE</button>
-    </mat-card-actions>
-  </mat-card>
+  <div class="page-bandeja">
+    <ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
+    <mat-grid-list cols="12" rowHeight="400px">
+      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 4, md: 4, lg: 4, xl: 6}">
+        <mat-card class="home-card">
+          <mat-card-header>
+            <mat-card-title>Dinero en mano</mat-card-title>
+            <mat-card-subtitle>Monto actual:
+              <ng-container *ngIf="cargando">
+                <div class="lds-ellipsis">
+                  <div style="background-color: royalblue;"></div>
+                  <div style="background-color: royalblue;"></div>
+                  <div style="background-color: royalblue;"></div>
+                  <div style="background-color: royalblue;"></div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!cargando">
+                S/.{{saldoActual.monto | number:'1.2-2'}}
+              </ng-container>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <img mat-card-image src="../../../../../assets/images/icons/perficon-home.png" alt="Photo of a Shiba Inu">
+          <mat-card-content>
+            <p>
+              Control financiero.
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button [routerLink]="[ '/intranet/bandeja-egresos']" mat-raised-button>Ver egresos</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 8, md: 8, lg: 8, xl: 6}">
+        <mat-card class="home-card">
+          <mat-card-header>
+            <mat-card-title>Estadistica por tipo egreso</mat-card-title>
+            <mat-card-subtitle>Monto actual:
+              <ng-container *ngIf="cargando">
+                <div class="lds-ellipsis">
+                  <div style="background-color: royalblue;"></div>
+                  <div style="background-color: royalblue;"></div>
+                  <div style="background-color: royalblue;"></div>
+                  <div style="background-color: royalblue;"></div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="!cargando">
+                S/.{{saldoActual.monto | number:'1.2-2'}}
+              </ng-container>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <canvas id="pieChart"></canvas>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button>LIKE</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+
+
+
+
+
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Linea de egresos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <canvas id="lineChart"></canvas>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="bar-chart">
+      <mat-card-header>
+        <mat-card-title>Linea de egresos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <canvas id="barChart"></canvas>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </app-navbar>

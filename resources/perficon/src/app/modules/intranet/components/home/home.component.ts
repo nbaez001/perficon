@@ -3,6 +3,8 @@ import { SaldoMensualService } from 'src/app/services/intranet/saldo-mensual.ser
 import { SaldoMensual } from 'src/app/model/saldo-mensual.model';
 import { ApiResponse } from 'src/app/model/api-response.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Chart } from 'chart.js';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-home',
@@ -12,13 +14,129 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class HomeComponent implements OnInit {
   saldoActual: SaldoMensual = new SaldoMensual();
   cargando: boolean = true;
+  LineChart = [];
+  BarChart = [];
+  PieChart = [];
 
   constructor(
     @Inject(SaldoMensualService) private saldoMensualService: SaldoMensualService,
-    @Inject(UsuarioService) private user: UsuarioService) { }
+    @Inject(UsuarioService) private user: UsuarioService,
+    private spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
+    this.spinnerService.show();
     this.calcularSaldoMensual();
+    this.LineChart = new Chart('lineChart', {
+      type: 'line',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
+        datasets: [{
+          label: 'Gasto promedio por meses',
+          data: [9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
+          fill: true,
+          lineTension: 0.2,
+          borderColor: 'red',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        title: {
+          text: 'Grafico de egresos',
+          display: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+
+    this.BarChart = new Chart('barChart', {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'Gasto por dia',
+          data: [9, 7, 3, 5, 2, 10],
+          backgroundColor: [
+            'rgba(255,99,132,0.2)',
+            'rgba(54,162,235,0.2)',
+            'rgba(255,206,86,0.2)',
+            'rgba(75,192,192,0.2)',
+            'rgba(153,102,255,0.2)',
+            'rgba(255,159,64,0.2)',
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54,162,235,1)',
+            'rgba(255,206,86,1)',
+            'rgba(75,192,192,1)',
+            'rgba(153,102,255,1)',
+            'rgba(255,159,64,1)',
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        title: {
+          text: 'Grafico de egresos',
+          display: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+
+    this.PieChart = new Chart('pieChart', {
+      type: 'pie',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'Gasto por dia',
+          data: [9, 7, 3, 5, 2, 10],
+          backgroundColor: [
+            'rgba(255,99,132,0.2)',
+            'rgba(54,162,235,0.2)',
+            'rgba(255,206,86,0.2)',
+            'rgba(75,192,192,0.2)',
+            'rgba(153,102,255,0.2)',
+            'rgba(255,159,64,0.2)',
+          ],
+          borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54,162,235,1)',
+            'rgba(255,206,86,1)',
+            'rgba(75,192,192,1)',
+            'rgba(153,102,255,1)',
+            'rgba(255,159,64,1)',
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        title: {
+          text: 'Grafico de egresos',
+          display: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+
+    this.spinnerService.hide();
   }
 
   calcularSaldoMensual() {

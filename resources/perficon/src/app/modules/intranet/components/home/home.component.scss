@@ -1,13 +1,39 @@
 .home-card {
-  width: 300px;
-  max-width: 300px;
+  width: 100%;
   text-align: center;
+  margin-bottom: 0px;
   mat-card-title {
     text-align: left;
   }
   mat-card-subtitle {
     font-weight: bold;
   }
+  mat-card-content {
+    canvas {
+      min-height: 235px;
+      max-height: 235px;
+      width: auto;
+      max-width: 95%;
+    }
+  }
+  .mat-card-image {
+    height: 200px;
+    width: auto;
+    max-width: 90%;
+  }
+}
+
+// .chart-grid > ::ng-deep .mat-figure {
+//   padding-bottom: 0px;
+//   margin-bottom: 0px;
+// }
+
+.bar-chart {
+  max-width: 65%;
+}
+
+.chart-card {
+  max-width: 95%;
 }
 
 .lds-ellipsis {
