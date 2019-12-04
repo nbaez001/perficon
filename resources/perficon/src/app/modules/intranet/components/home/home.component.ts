@@ -5,6 +5,9 @@ import { ApiResponse } from 'src/app/model/api-response.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { Chart } from 'chart.js';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { PieChartRequest } from 'src/app/model/dto/pie-chart.request';
+import { ReportService } from 'src/app/services/intranet/report.service';
+import { backgroundColorChart, borderColorChart } from 'src/app/common';
 
 @Component({
   selector: 'app-home',
@@ -21,11 +24,15 @@ export class HomeComponent implements OnInit {
   constructor(
     @Inject(SaldoMensualService) private saldoMensualService: SaldoMensualService,
     @Inject(UsuarioService) private user: UsuarioService,
+    @Inject(ReportService) private reportService: ReportService,
     private spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
     this.spinnerService.show();
     this.calcularSaldoMensual();
+
+    this.cargarPieChart();
+
     this.LineChart = new Chart('lineChart', {
       type: 'line',
       data: {
@@ -95,48 +102,59 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    this.PieChart = new Chart('pieChart', {
-      type: 'pie',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'Gasto por dia',
-          data: [9, 7, 3, 5, 2, 10],
-          backgroundColor: [
-            'rgba(255,99,132,0.2)',
-            'rgba(54,162,235,0.2)',
-            'rgba(255,206,86,0.2)',
-            'rgba(75,192,192,0.2)',
-            'rgba(153,102,255,0.2)',
-            'rgba(255,159,64,0.2)',
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54,162,235,1)',
-            'rgba(255,206,86,1)',
-            'rgba(75,192,192,1)',
-            'rgba(153,102,255,1)',
-            'rgba(255,159,64,1)',
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        title: {
-          text: 'Grafico de egresos',
-          display: true
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-
     this.spinnerService.hide();
+  }
+
+  cargarPieChart() {
+    let req = new PieChartRequest();
+    req.anio = new Date().getFullYear();
+
+    this.reportService.pieChartReport(req).subscribe(
+      (data: ApiResponse[]) => {
+        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+          let backColors: string[] = [];
+          let borderColors: string[] = [];
+
+          let result = JSON.parse(data[0].result)[0];
+          result.labels.forEach(function (val, i) {
+            backColors.push(backgroundColorChart[i]);
+            borderColors.push(borderColorChart[i]);
+          });
+
+          this.PieChart = new Chart('pieChart', {
+            type: 'pie',
+            data: {
+              labels: result.labels,
+              datasets: [{
+                label: 'Gasto por dia',
+                data: result.data,
+                backgroundColor: result.backgroundColors,
+                borderColor: result.borderColors,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Grafico de egresos',
+                display: true
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+
+        } else {
+          console.error('Ocurrio un error al registrar egreso');
+        }
+      }, error => {
+        console.log(error);
+      }
+    );
   }
 
   calcularSaldoMensual() {
