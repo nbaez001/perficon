@@ -7,7 +7,10 @@ import { Chart } from 'chart.js';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PieChartRequest } from 'src/app/model/dto/pie-chart.request';
 import { ReportService } from 'src/app/services/intranet/report.service';
-import { backgroundColorChart, borderColorChart } from 'src/app/common';
+import { backgroundColorChart, borderColorChart, tablasMaestra } from 'src/app/common';
+import { LineChartRequest } from 'src/app/model/dto/line-chart.request';
+import { CommonService } from 'src/app/services/common.service';
+import { BarChartRequest } from 'src/app/model/dto/bar-chart.request';
 
 @Component({
   selector: 'app-home',
@@ -17,14 +20,23 @@ import { backgroundColorChart, borderColorChart } from 'src/app/common';
 export class HomeComponent implements OnInit {
   saldoActual: SaldoMensual = new SaldoMensual();
   cargando: boolean = true;
+  isLoadingLine: boolean = true;
+  isLoadingBar: boolean = true;
+
   LineChart = [];
   BarChart = [];
   PieChart = [];
+
+  meses = [{ 'id': 0, nombre: 'ENERO' }];
+
+  tipoEgresoMayor: any;
+  cargandoPieChart: boolean = true;
 
   constructor(
     @Inject(SaldoMensualService) private saldoMensualService: SaldoMensualService,
     @Inject(UsuarioService) private user: UsuarioService,
     @Inject(ReportService) private reportService: ReportService,
+    @Inject(CommonService) private commonService: CommonService,
     private spinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
@@ -32,104 +44,168 @@ export class HomeComponent implements OnInit {
     this.calcularSaldoMensual();
 
     this.cargarPieChart();
-
-    this.LineChart = new Chart('lineChart', {
-      type: 'line',
-      data: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
-        datasets: [{
-          label: 'Gasto promedio por meses',
-          data: [9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
-          fill: true,
-          lineTension: 0.2,
-          borderColor: 'red',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        title: {
-          text: 'Grafico de egresos',
-          display: true
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
-
-    this.BarChart = new Chart('barChart', {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'Gasto por dia',
-          data: [9, 7, 3, 5, 2, 10],
-          backgroundColor: [
-            'rgba(255,99,132,0.2)',
-            'rgba(54,162,235,0.2)',
-            'rgba(255,206,86,0.2)',
-            'rgba(75,192,192,0.2)',
-            'rgba(153,102,255,0.2)',
-            'rgba(255,159,64,0.2)',
-          ],
-          borderColor: [
-            'rgba(255,99,132,1)',
-            'rgba(54,162,235,1)',
-            'rgba(255,206,86,1)',
-            'rgba(75,192,192,1)',
-            'rgba(153,102,255,1)',
-            'rgba(255,159,64,1)',
-          ],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        title: {
-          text: 'Grafico de egresos',
-          display: true
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
-          }]
-        }
-      }
-    });
+    this.cargarLineChart();
+    this.cargarBarChart();
 
     this.spinnerService.hide();
+  }
+
+  cargarLineChart() {
+    let req = new LineChartRequest();
+    req.anio = new Date().getFullYear();
+    req.mes = new Date().getMonth();
+
+    this.reportService.lineChartReport(req).subscribe(
+      (data: ApiResponse[]) => {
+        this.isLoadingLine = false;
+        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+          let labels: string[] = [];
+          let datas: number[] = [];
+
+          let result = JSON.parse(data[0].result);
+          result = result.reverse();
+          result.forEach((val, i) => {
+            labels.push(this.commonService.obtenerNombreMes(val.label).nombre);
+            datas.push(val.data);
+          });
+
+          this.LineChart = new Chart('lineChart', {
+            type: 'line',
+            data: {
+              labels: labels,//['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
+              datasets: [{
+                label: 'Gasto promedio por meses',
+                data: datas,//[9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
+                fill: true,
+                lineTension: 0.2,
+                borderColor: 'red',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Linea de egresos',
+                display: true
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+        } else {
+          console.error('Ocurrio un error al buscar egreso');
+        }
+      }, error => {
+        console.log(error);
+        this.isLoadingLine = false;
+      }
+    );
   }
 
   cargarPieChart() {
     let req = new PieChartRequest();
     req.anio = new Date().getFullYear();
+    req.idTabla = 1;//MAESTRA TIPO EGRESO
 
     this.reportService.pieChartReport(req).subscribe(
       (data: ApiResponse[]) => {
+        this.cargandoPieChart = false;
         if (typeof data[0] != undefined && data[0].rcodigo == 0) {
           let backColors: string[] = [];
           let borderColors: string[] = [];
+          let labels: string[] = [];
+          let datas: number[] = [];
 
-          let result = JSON.parse(data[0].result)[0];
-          result.labels.forEach(function (val, i) {
+          let result = JSON.parse(data[0].result);
+          result.forEach(function (val, i) {
             backColors.push(backgroundColorChart[i]);
             borderColors.push(borderColorChart[i]);
+            labels.push(val.label);
+            datas.push(val.data);
           });
+          this.filtrarTipoEgresoMayor(result);
 
           this.PieChart = new Chart('pieChart', {
             type: 'pie',
             data: {
-              labels: result.labels,
+              labels: labels,
               datasets: [{
                 label: 'Gasto por dia',
-                data: result.data,
-                backgroundColor: result.backgroundColors,
-                borderColor: result.borderColors,
+                data: datas,
+                backgroundColor: backColors,
+                borderColor: borderColors,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Grafico de egresos',
+                display: true
+              },
+              legend: {
+                display: false
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+        } else {
+          console.error('Ocurrio un error al registrar egreso');
+        }
+      }, error => {
+        console.log(error);
+        this.cargandoPieChart = false;
+      }
+    );
+  }
+
+  cargarBarChart() {
+    let fec = new Date();
+    let req = new BarChartRequest();
+    req.anio = fec.getFullYear();
+    req.mes = fec.getMonth();
+    req.dia = fec.getDate();
+    req.cantDias = this.commonService.cantDiasMes(fec);
+    req.cantDiasPrev = this.commonService.cantDiasMesPrev(fec);
+
+    this.reportService.barChartReport(req).subscribe(
+      (data: ApiResponse[]) => {
+        this.isLoadingBar = false;
+        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+          let backColors: string[] = [];
+          let borderColors: string[] = [];
+          let labels: string[] = [];
+          let datas: number[] = [];
+
+          let result = JSON.parse(data[0].result);
+          let calc = 0;
+          result = result.reverse();
+          result.forEach(function (val, i) {
+            calc = i - (Math.floor(i / backgroundColorChart.length) * backgroundColorChart.length);
+            backColors.push(backgroundColorChart[calc]);
+            borderColors.push(borderColorChart[calc]);
+            labels.push(val.label);
+            datas.push(val.data);
+          });
+
+          this.BarChart = new Chart('barChart', {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Gasto por dia',
+                data: datas,
+                backgroundColor: backColors,
+                borderColor: borderColors,
                 borderWidth: 1
               }]
             },
@@ -147,17 +223,17 @@ export class HomeComponent implements OnInit {
               }
             }
           });
-
         } else {
           console.error('Ocurrio un error al registrar egreso');
         }
       }, error => {
         console.log(error);
+        this.isLoadingBar = false;
       }
     );
   }
 
-  calcularSaldoMensual() {
+  calcularSaldoMensual() {//CALCULA EL MONTO DEL MES
     let fecha = new Date();
 
     let sm = new SaldoMensual();
@@ -209,5 +285,13 @@ export class HomeComponent implements OnInit {
       }
     );
   }
+
+  filtrarTipoEgresoMayor(lista): void {
+    this.tipoEgresoMayor = lista.reduce(function (prev, current) {
+      return (prev.data > current.data) ? prev : current
+    })
+  }
+
+
 
 }

@@ -99,3 +99,9 @@ export const borderColorChart: string[] = [
     'rgba(51,51,153,1)',
     'rgba(114,55,114,1)',
 ];
+
+export const tablasMaestra = [
+    { idTabla: 1, tipoEgreso: 'TIPO EGRESO' },
+    { idTabla: 2, tipoEgreso: 'UNIDAD MEDIDA' },
+    { idTabla: 3, tipoEgreso: 'TIPO MOVIMIENTO' },
+];

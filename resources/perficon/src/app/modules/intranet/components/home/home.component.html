@@ -1,8 +1,8 @@
 <app-navbar>
   <div class="page-bandeja">
     <ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
-    <mat-grid-list cols="12" rowHeight="400px">
-      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 4, md: 4, lg: 4, xl: 6}">
+    <mat-grid-list cols="12" rowHeight="412px">
+      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 12, md: 4, lg: 4, xl: 6}">
         <mat-card class="home-card">
           <mat-card-header>
             <mat-card-title>Dinero en mano</mat-card-title>
@@ -31,12 +31,16 @@
           </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
-      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 8, md: 8, lg: 8, xl: 6}">
+      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 12, md: 8, lg: 8, xl: 6}">
         <mat-card class="home-card">
           <mat-card-header>
-            <mat-card-title>Estadistica por tipo egreso</mat-card-title>
-            <mat-card-subtitle>Monto actual:
-              <ng-container *ngIf="cargando">
+            <mat-card-title style="flex: content;">
+              Estadistica por tipo egreso
+              <mat-progress-spinner [diameter]="20" color="primary" mode="indeterminate" *ngIf="cargandoPieChart">
+              </mat-progress-spinner>
+            </mat-card-title>
+            <mat-card-subtitle>Mayor:
+              <ng-container *ngIf="cargandoPieChart">
                 <div class="lds-ellipsis">
                   <div style="background-color: royalblue;"></div>
                   <div style="background-color: royalblue;"></div>
@@ -44,29 +48,24 @@
                   <div style="background-color: royalblue;"></div>
                 </div>
               </ng-container>
-              <ng-container *ngIf="!cargando">
-                S/.{{saldoActual.monto | number:'1.2-2'}}
+              <ng-container *ngIf="!cargandoPieChart">
+                {{tipoEgresoMayor.label}} (S/.{{tipoEgresoMayor.data | number:'1.2-2'}})
               </ng-container>
             </mat-card-subtitle>
           </mat-card-header>
-          <mat-card-content>
+          <mat-card-content style="height: 280px;">
             <canvas id="pieChart"></canvas>
           </mat-card-content>
-          <mat-card-actions>
-            <button mat-raised-button>LIKE</button>
-          </mat-card-actions>
         </mat-card>
       </mat-grid-tile>
     </mat-grid-list>
 
-
-
-
-
-
     <mat-card class="chart-card">
       <mat-card-header>
-        <mat-card-title>Linea de egresos</mat-card-title>
+        <mat-card-title>Linea de egresos
+          <mat-progress-spinner [diameter]="20" color="primary" mode="indeterminate" *ngIf="isLoadingLine">
+          </mat-progress-spinner>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <canvas id="lineChart"></canvas>
@@ -75,7 +74,10 @@
 
     <mat-card class="bar-chart">
       <mat-card-header>
-        <mat-card-title>Linea de egresos</mat-card-title>
+        <mat-card-title>Linea de egresos
+          <mat-progress-spinner [diameter]="20" color="primary" mode="indeterminate" *ngIf="isLoadingBar">
+          </mat-progress-spinner>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <canvas id="barChart"></canvas>

@@ -42,3 +42,7 @@ Route::post('movimiento-banco/show', 'Administracion\MovimientoBancoController@s
 Route::post('saldo-mensual/obtener', 'Administracion\SaldoMensualController@obtener');
 Route::post('saldo-mensual/calcular', 'Administracion\SaldoMensualController@calcular');
 Route::post('saldo-mensual/obtener-actual', 'Administracion\SaldoMensualController@obtenerActual');
+
+Route::post('dashboard/pie-chart', 'Administracion\DashBoardController@pieChart');
+Route::post('dashboard/line-chart', 'Administracion\DashBoardController@lineChart');
+Route::post('dashboard/bar-chart', 'Administracion\DashBoardController@barChart');
