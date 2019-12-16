@@ -61,13 +61,13 @@ export class MovimientoBancoComponent implements OnInit {
       header: 'Tipo movimiento',
       cell: (mov: MovimientoBanco) => `${mov.nomTipoMovimiento}`
     }, {
-      columnDef: 'detalle',
-      header: 'Detalle',
-      cell: (mov: MovimientoBanco) => `${mov.detalle}`
-    }, {
       columnDef: 'monto',
       header: 'Monto',
       cell: (mov: MovimientoBanco) => `${mov.monto}`
+    }, {
+      columnDef: 'detalle',
+      header: 'Detalle',
+      cell: (mov: MovimientoBanco) => `${mov.detalle}`
     }, {
       columnDef: 'fecha',
       header: 'Fecha',

@@ -37,20 +37,11 @@ export class CuentaBancoComponent implements OnInit {
     'name': '',
     'email': ''
   };
-
   columnsGrilla = [
     {
       columnDef: 'id',
       header: 'N°',
       cell: (cuentaBanco: CuentaBanco) => `${cuentaBanco.id}`
-    }, {
-      columnDef: 'nroCuenta',
-      header: 'Numero cuenta',
-      cell: (cuentaBanco: CuentaBanco) => `${cuentaBanco.nroCuenta}`
-    }, {
-      columnDef: 'cci',
-      header: 'CCI',
-      cell: (cuentaBanco: CuentaBanco) => `${cuentaBanco.cci}`
     }, {
       columnDef: 'nombre',
       header: 'Nombre banco',
@@ -59,6 +50,14 @@ export class CuentaBancoComponent implements OnInit {
       columnDef: 'saldo',
       header: 'Saldo',
       cell: (cuentaBanco: CuentaBanco) => `${cuentaBanco.saldo}`
+    }, {
+      columnDef: 'nroCuenta',
+      header: 'Numero cuenta',
+      cell: (cuentaBanco: CuentaBanco) => `${cuentaBanco.nroCuenta}`
+    }, {
+      columnDef: 'cci',
+      header: 'CCI',
+      cell: (cuentaBanco: CuentaBanco) => `${cuentaBanco.cci}`
     }, {
       columnDef: 'idUsuarioCrea',
       header: 'Usuario creador',

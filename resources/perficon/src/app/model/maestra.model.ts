@@ -9,4 +9,11 @@ export class Maestra {
     fecUsuarioCrea: Date;
     idUsuarioMod: number;
     fecUsuarioMod: Date;
+
+    constructor();
+    constructor(obj: any);
+    constructor(obj?: any) {
+        this.id = obj && obj.id || 0;
+        this.nombre = obj && obj.nombre || 0;
+    }
 }
