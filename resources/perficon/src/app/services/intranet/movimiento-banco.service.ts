@@ -4,6 +4,7 @@ import { MovimientoBanco } from 'src/app/model/movimiento-banco.model';
 import { Observable } from 'rxjs';
 import { webServiceEndpoint } from 'src/app/common';
 import { ApiResponse } from 'src/app/model/api-response.model';
+import { MovimientoBancoRequest } from 'src/app/model/dto/movimiento-banco.request';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class MovimientoBancoService {
 
   constructor(private http: HttpClient) { }
 
-  public listarMovimientoBanco(): Observable<MovimientoBanco[]> {
-    return this.http.post<MovimientoBanco[]>(`${webServiceEndpoint}movimiento-banco/lista`, {});
+  public listarMovimientoBanco(request: MovimientoBancoRequest): Observable<ApiResponse[]> {
+    return this.http.post<ApiResponse[]>(`${webServiceEndpoint}movimiento-banco/lista`, request);
   }
 
   public regMovimientoBanco(request: MovimientoBanco): Observable<ApiResponse[]> {

@@ -17,8 +17,20 @@ class EgresoController extends Controller
      */
     public function list(Request $request)
     {
-        // $data = json_decode($request->getContent(), true);
-        $lista = DB::select('call PFC_L_EGRESO()');
+        $data = json_decode($request->getContent(), true);
+
+        $resultInicio = null;
+        $resultFin = null;
+        if ($data['fechaInicio'] != null) {
+            $dateInicio = new DateTime($data['fechaInicio']);
+            $resultInicio = $dateInicio->format('Y-m-d');
+        }
+        if ($data['fechaFin'] != null) {
+            $dateFin = new DateTime($data['fechaFin']);
+            $resultFin = $dateFin->format('Y-m-d');
+        }
+
+        $lista = DB::select('call PFC_L_EGRESO(?,?,?,?,?)', [$data['idTipoEgreso'], $data['dia'], $data['indicio'], $resultInicio, $resultFin]);
         return response()->json($lista);
     }
 

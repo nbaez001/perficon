@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 
 import { IntranetRoutingModule } from './intranet-routing.module';
 import { HomeComponent } from './components/home/home.component';
@@ -50,6 +50,7 @@ import { ConfirmComponent } from './components/shared/confirm/confirm.component'
   ],
   providers: [
     DatePipe,
+    DecimalPipe,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }//DATEPICKER MUESTRA LA FECHA EN FORMATO DD/MM/YYYY
   ]
 })

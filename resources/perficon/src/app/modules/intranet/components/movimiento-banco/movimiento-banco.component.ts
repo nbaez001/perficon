@@ -14,6 +14,7 @@ import { Maestra } from 'src/app/model/maestra.model';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { ApiResponse } from 'src/app/model/api-response.model';
 import { ConfirmComponent } from '../shared/confirm/confirm.component';
+import { MovimientoBancoRequest } from 'src/app/model/dto/movimiento-banco.request';
 
 @Component({
   selector: 'app-movimiento-banco',
@@ -49,10 +50,6 @@ export class MovimientoBancoComponent implements OnInit {
   listaMovimientoBancos: MovimientoBanco[] = [];
   columnsGrilla = [
     {
-      columnDef: 'id',
-      header: 'N°',
-      cell: (mov: MovimientoBanco) => `${mov.id}`
-    }, {
       columnDef: 'nomCuentaBanco',
       header: 'Cuenta bancaria',
       cell: (mov: MovimientoBanco) => `${mov.nomCuentaBanco}`
@@ -91,8 +88,8 @@ export class MovimientoBancoComponent implements OnInit {
     this.bandejaGrp = this.fb.group({
       cuentaBanco: ['', [Validators.required]],
       indicio: ['', []],
-      inicioFecha: ['', []],
-      finFecha: ['', []]
+      fechaInicio: ['', []],
+      fechaFin: ['', []]
     });
 
     this.definirTabla();
@@ -101,7 +98,7 @@ export class MovimientoBancoComponent implements OnInit {
 
   public inicializarVariables(): void {
     this.comboCuentaBancaria();
-    this.listarMovimientoBancos();
+    this.buscar();
     this.spinnerService.hide();
   }
 
@@ -110,6 +107,7 @@ export class MovimientoBancoComponent implements OnInit {
     this.columnsGrilla.forEach(c => {
       this.displayedColumns.push(c.columnDef);
     });
+    this.displayedColumns.unshift('id');
     this.displayedColumns.push('opt');
   }
 
@@ -138,23 +136,36 @@ export class MovimientoBancoComponent implements OnInit {
     );
   }
 
-  listarMovimientoBancos(): void {
+  buscar() {
+    let request = new MovimientoBancoRequest();
+    request.idCuentaBanco = (!this.bandejaGrp.get('cuentaBanco').value) ? 0 : this.bandejaGrp.get('cuentaBanco').value.id;
+    request.indicio = this.bandejaGrp.get('indicio').value;
+    request.fechaInicio = this.bandejaGrp.get('fechaInicio').value;
+    request.fechaFin = this.bandejaGrp.get('fechaFin').value;
+
+    console.log(request);
+
+    this.dataSource = null;
     this.isLoading = true;
-    this.movService.listarMovimientoBanco().subscribe(
-      (data: MovimientoBanco[]) => {
-        this.listaMovimientoBancos = data;
-        this.cargarDatosTabla();
-        this.isLoading = false;
+
+    this.movService.listarMovimientoBanco(request).subscribe(
+      (data: ApiResponse[]) => {
+        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+          let result = JSON.parse(data[0].result);
+
+          this.listaMovimientoBancos = result;
+          this.cargarDatosTabla();
+          this.isLoading = false;
+        } else {
+          console.log(data);
+          this.isLoading = false;
+        }
       },
       error => {
         console.error('Error al consultar datos');
         this.isLoading = false;
       }
     );
-  }
-
-  buscar() {
-    console.log('Buscar');
   }
 
   exportarExcel() {

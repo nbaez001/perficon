@@ -16,9 +16,22 @@ class MovimientoBancoController extends Controller
      * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function list(Request $request)
     {
-        $lista = DB::select('call PFC_L_MOVIMIENTO_BANCO()');
+        $data = json_decode($request->getContent(), true);
+
+        $resultInicio = null;
+        $resultFin = null;
+        if ($data['fechaInicio'] != null) {
+            $dateInicio = new DateTime($data['fechaInicio']);
+            $resultInicio = $dateInicio->format('Y-m-d');
+        }
+        if ($data['fechaFin'] != null) {
+            $dateFin = new DateTime($data['fechaFin']);
+            $resultFin = $dateFin->format('Y-m-d');
+        }
+
+        $lista = DB::select('call PFC_L_MOVIMIENTO_BANCO(?,?,?,?)', [$data['idCuentaBanco'], $data['indicio'], $resultInicio, $resultFin]);
         return response()->json($lista);
     }
 

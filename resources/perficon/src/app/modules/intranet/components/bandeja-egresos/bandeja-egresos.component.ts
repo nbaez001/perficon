@@ -55,15 +55,15 @@ export class BandejaEgresosComponent implements OnInit {
     }, {
       columnDef: 'cantidad',
       header: 'Cantidad',
-      cell: (egreso: Egreso) => `${egreso.cantidad}`
+      cell: (egreso: Egreso) => `${this.decimalPipe.transform(egreso.cantidad, '1.1-1')}`
     }, {
       columnDef: 'precio',
       header: 'Precio',
-      cell: (egreso: Egreso) => `${egreso.precio}`
+      cell: (egreso: Egreso) => `${this.decimalPipe.transform(egreso.precio, '1.2-2')}`
     }, {
       columnDef: 'total',
       header: 'Total',
-      cell: (egreso: Egreso) => `${egreso.total}`
+      cell: (egreso: Egreso) => `${this.decimalPipe.transform(egreso.total, '1.2-2')}`
     }, {
       columnDef: 'dia',
       header: 'Dia',
@@ -81,6 +81,7 @@ export class BandejaEgresosComponent implements OnInit {
   constructor(private fb: FormBuilder, public dialog: MatDialog,
     private spinnerService: Ng4LoadingSpinnerService,
     private datePipe: DatePipe,
+    private decimalPipe: DecimalPipe,
     @Inject(EgresoService) private egresoService: EgresoService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(ValidationService) private validationService: ValidationService) { }
@@ -101,7 +102,22 @@ export class BandejaEgresosComponent implements OnInit {
   }
 
   public inicializarVariables(): void {
+    if (sessionStorage.getItem('restDias')) {
+      let dias = parseInt(sessionStorage.getItem('restDias'));
+      let fec = new Date();
+      let time = fec.getTime() - (dias * 24 * 60 * 60 * 1000);
+      let fechaRep = new Date(time);
+      console.log(fec);
+      console.log(fechaRep);
+
+      this.bdjEgresoGrp.get('fechaInicio').setValue(fechaRep);
+      this.bdjEgresoGrp.get('fechaFin').setValue(fechaRep);
+      sessionStorage.setItem('restDias', null);
+    }
+
     this.comboTiposEgreso();
+    this.comboDias();
+    this.buscar();
     this.spinnerService.hide();
   }
 
@@ -131,7 +147,6 @@ export class BandejaEgresosComponent implements OnInit {
         this.tiposEgreso = data;
         this.tiposEgreso.unshift(new Maestra({ id: 0, nombre: 'TODOS' }));
         this.bdjEgresoGrp.get('tipoEgreso').setValue(this.tiposEgreso[0]);
-        this.comboDias();
       }, error => {
         console.log(error);
       }
@@ -142,16 +157,17 @@ export class BandejaEgresosComponent implements OnInit {
     this.dias = JSON.parse(JSON.stringify(DIAS));
     this.dias.unshift({ id: 0, nombre: 'TODOS' })
     this.bdjEgresoGrp.get('dia').setValue(this.dias[0]);
-    this.buscar();
   }
 
   buscar(): void {
     let request = new EgresoRequest();
-    request.idTipoEgreso = this.bdjEgresoGrp.get('tipoEgreso').value.id;
-    request.dia = (this.bdjEgresoGrp.get('dia').value.id) == 0 ? '' : this.bdjEgresoGrp.get('dia').value.nombre;
+    request.idTipoEgreso = (!this.bdjEgresoGrp.get('tipoEgreso').value) ? 0 : this.bdjEgresoGrp.get('tipoEgreso').value.id;
+    request.dia = (!this.bdjEgresoGrp.get('dia').value || this.bdjEgresoGrp.get('dia').value.id == 0) ? '' : this.bdjEgresoGrp.get('dia').value.nombre;
     request.indicio = this.bdjEgresoGrp.get('indicio').value;
     request.fechaInicio = this.bdjEgresoGrp.get('fechaInicio').value;
     request.fechaFin = this.bdjEgresoGrp.get('fechaFin').value;
+
+    console.log(request);
 
     this.dataSource = null;
     this.isLoading = true;

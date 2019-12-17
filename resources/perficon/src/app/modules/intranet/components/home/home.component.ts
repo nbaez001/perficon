@@ -11,6 +11,8 @@ import { backgroundColorChart, borderColorChart, tablasMaestra } from 'src/app/c
 import { LineChartRequest } from 'src/app/model/dto/line-chart.request';
 import { CommonService } from 'src/app/services/common.service';
 import { BarChartRequest } from 'src/app/model/dto/bar-chart.request';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -27,6 +29,8 @@ export class HomeComponent implements OnInit {
   BarChart = [];
   PieChart = [];
 
+  result = [];
+
   meses = [{ 'id': 0, nombre: 'ENERO' }];
 
   tipoEgresoMayor: any;
@@ -37,7 +41,9 @@ export class HomeComponent implements OnInit {
     @Inject(UsuarioService) private user: UsuarioService,
     @Inject(ReportService) private reportService: ReportService,
     @Inject(CommonService) private commonService: CommonService,
-    private spinnerService: Ng4LoadingSpinnerService) { }
+    private spinnerService: Ng4LoadingSpinnerService,
+    private router: Router,
+    private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.spinnerService.show();
@@ -186,10 +192,10 @@ export class HomeComponent implements OnInit {
           let labels: string[] = [];
           let datas: number[] = [];
 
-          let result = JSON.parse(data[0].result);
+          this.result = JSON.parse(data[0].result);
           let calc = 0;
-          result = result.reverse();
-          result.forEach(function (val, i) {
+          this.result = this.result.reverse();
+          this.result.forEach(function (val, i) {
             calc = i - (Math.floor(i / backgroundColorChart.length) * backgroundColorChart.length);
             backColors.push(backgroundColorChart[calc]);
             borderColors.push(borderColorChart[calc]);
@@ -220,6 +226,15 @@ export class HomeComponent implements OnInit {
                     beginAtZero: true
                   }
                 }]
+              },
+              onClick: (c, i) => {
+                // let e = i[0];
+                // var x_value = this.data.labels[e._index];
+                // var y_value = this.data.datasets[0].data[e._index];
+                // console.log(e._index)
+                // console.log(x_value);
+                // console.log(y_value);
+                this.verDetalleEgresos(c, i);
               }
             }
           });
@@ -231,6 +246,11 @@ export class HomeComponent implements OnInit {
         this.isLoadingBar = false;
       }
     );
+  }
+
+  verDetalleEgresos(c: any, i: any): void {
+    sessionStorage.setItem('restDias', (30 - i[0]._index).toString());
+    this.router.navigate(['intranet/bandeja-egresos']);
   }
 
   calcularSaldoMensual() {//CALCULA EL MONTO DEL MES

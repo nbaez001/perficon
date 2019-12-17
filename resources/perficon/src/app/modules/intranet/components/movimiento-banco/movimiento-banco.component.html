@@ -20,12 +20,12 @@
             </mat-grid-tile>
             <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
               <mat-form-field appearance="legacy">
-                <input matInput formControlName="indicio" placeholder="Indicio busqueda">
+                <input matInput formControlName="indicio" placeholder="Indicio busqueda" [Uppercased]>
               </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
               <mat-form-field appearance="legacy">
-                <input matInput formControlName="inicioFecha" [matDatepicker]="picker"
+                <input matInput formControlName="fechaInicio" [matDatepicker]="picker"
                   placeholder="Fecha inicio busqueda">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
@@ -33,7 +33,7 @@
             </mat-grid-tile>
             <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 4, lg: 3, xl: 3}">
               <mat-form-field appearance="legacy">
-                <input matInput formControlName="finFecha" [matDatepicker]="picker2" placeholder="Fecha fin busqueda">
+                <input matInput formControlName="fechaFin" [matDatepicker]="picker2" placeholder="Fecha fin busqueda">
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
@@ -64,6 +64,11 @@
       <mat-card-content class="card-container">
         <div class="table-container clear-both">
           <table mat-table [dataSource]="dataSource" matSort>
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> N° </th>
+              <td mat-cell *matCellDef="let row; let i = index"> {{paginator.pageSize * paginator.pageIndex + i + 1}}
+              </td>
+            </ng-container>
 
             <ng-container *ngFor="let column of columnsGrilla" [matColumnDef]="column.columnDef">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column.header }} </th>
