@@ -248,9 +248,18 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  verDetalleEgresos(c: any, i: any): void {
-    sessionStorage.setItem('restDias', (30 - i[0]._index).toString());
-    this.router.navigate(['intranet/bandeja-egresos']);
+  verDetalleEgresos(evt: any, i: any): void {
+    if (evt.type == 'click') {
+      console.log('Mouse Click');
+      console.log(evt);
+      console.log(evt.detail);
+      if (evt.detail > 1) {
+        sessionStorage.setItem('restDias', (30 - i[0]._index).toString());
+        this.router.navigate(['intranet/bandeja-egresos']);
+      }
+    } else {
+      console.log('Touch');
+    }
   }
 
   calcularSaldoMensual() {//CALCULA EL MONTO DEL MES

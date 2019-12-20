@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { MovimientoBanco } from 'src/app/model/movimiento-banco.model';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { MovimientoBancoService } from 'src/app/services/intranet/movimiento-banco.service';
 import { CuentaBancoService } from 'src/app/services/intranet/cuenta-banco.service';
 import { ValidationService } from 'src/app/services/validation.service';
@@ -60,7 +60,8 @@ export class MovimientoBancoComponent implements OnInit {
     }, {
       columnDef: 'monto',
       header: 'Monto',
-      cell: (mov: MovimientoBanco) => `${mov.monto}`
+      cell: (mov: MovimientoBanco) => `S/. ${this.decimalPipe.transform(mov.monto, '1.2-2')}`,
+      style: 'right-column'
     }, {
       columnDef: 'detalle',
       header: 'Detalle',
@@ -78,6 +79,7 @@ export class MovimientoBancoComponent implements OnInit {
   constructor(private fb: FormBuilder, public dialog: MatDialog,
     private spinnerService: Ng4LoadingSpinnerService,
     private datePipe: DatePipe,
+    private decimalPipe: DecimalPipe,
     @Inject(MovimientoBancoService) private movService: MovimientoBancoService,
     @Inject(CuentaBancoService) private cuentaBancoService: CuentaBancoService,
     @Inject(ValidationService) private validationService: ValidationService) { }

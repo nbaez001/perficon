@@ -30,13 +30,13 @@
           <mat-icon>search</mat-icon>
           <strong> BUSCAR</strong>
         </button>
-        <button mat-raised-button (click)="regMaestra(null)">
+        <button mat-raised-button (click)="regMaestra(null)" matTooltip="Nueva maestra">
           <mat-icon>add_box</mat-icon>
-          <strong> NUEVA MAESTRA</strong>
+          <strong> NUEVA</strong>
         </button>
-        <button mat-raised-button (click)="exportarExcel()">
-          <mat-icon>file_copy</mat-icon>
-          <strong>EXPORTAR A EXCEL</strong>
+        <button mat-raised-button (click)="exportarExcel()" matTooltip="Exportar a excel">
+          <mat-icon svgIcon="excel"></mat-icon>
+          <strong>EXPORTAR</strong>
         </button>
       </mat-card-actions>
     </mat-card>

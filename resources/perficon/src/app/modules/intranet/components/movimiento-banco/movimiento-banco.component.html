@@ -46,12 +46,12 @@
           <mat-icon>search</mat-icon>
           <strong> BUSCAR</strong>
         </button>
-        <button mat-raised-button (click)="regMovimientoBanco(null)">
+        <button mat-raised-button (click)="regMovimientoBanco(null)" matTooltip="Nuevo movimiento">
           <mat-icon>add_box</mat-icon>
           <strong> NUEVO</strong>
         </button>
-        <button mat-raised-button (click)="exportarExcel()">
-          <mat-icon>file_copy</mat-icon>
+        <button mat-raised-button (click)="exportarExcel()" matTooltip="Exportar a excel">
+          <mat-icon svgIcon="excel"></mat-icon>
           <strong>EXPORTAR</strong>
         </button>
       </mat-card-actions>
@@ -72,7 +72,7 @@
 
             <ng-container *ngFor="let column of columnsGrilla" [matColumnDef]="column.columnDef">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column.header }} </th>
-              <td mat-cell *matCellDef="let row"> {{ column.cell(row) }} </td>
+              <td mat-cell *matCellDef="let row" [ngClass]="column.style"> {{ column.cell(row) }} </td>
             </ng-container>
 
             <ng-container matColumnDef="opt" stickyEnd>

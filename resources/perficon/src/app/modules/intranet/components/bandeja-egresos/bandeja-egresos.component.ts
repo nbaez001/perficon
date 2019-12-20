@@ -38,36 +38,38 @@ export class BandejaEgresosComponent implements OnInit {
   dataSource: MatTableDataSource<Egreso>;
   isLoading: boolean = false;
 
+  fechaRep: Date = null;
+
   listaEgresos: Egreso[] = [];
   columnsGrilla = [
     {
       columnDef: 'nombre',
       header: 'Nombre',
-      cell: (egreso: Egreso) => `${egreso.nombre}`
+      cell: (egreso: Egreso) => `${(egreso.nombre) ? egreso.nombre : ''}`
     }, {
       columnDef: 'nomTipoEgreso',
       header: 'Tipo egreso',
-      cell: (egreso: Egreso) => `${egreso.nomTipoEgreso}`
+      cell: (egreso: Egreso) => `${(egreso.nomTipoEgreso) ? egreso.nomTipoEgreso : ''}`
     }, {
       columnDef: 'nomUnidadMedida',
       header: 'Unidad medida',
-      cell: (egreso: Egreso) => `${egreso.nomUnidadMedida}`
+      cell: (egreso: Egreso) => `${(egreso.nomUnidadMedida) ? egreso.nomUnidadMedida : ''}`
     }, {
       columnDef: 'cantidad',
       header: 'Cantidad',
-      cell: (egreso: Egreso) => `${this.decimalPipe.transform(egreso.cantidad, '1.1-1')}`
+      cell: (egreso: Egreso) => `${(egreso.cantidad) ? this.decimalPipe.transform(egreso.cantidad, '1.1-1') : ''}`
     }, {
       columnDef: 'precio',
       header: 'Precio',
-      cell: (egreso: Egreso) => `${this.decimalPipe.transform(egreso.precio, '1.2-2')}`
+      cell: (egreso: Egreso) => `${(egreso.precio) ? this.decimalPipe.transform(egreso.precio, '1.2-2') : ''}`
     }, {
       columnDef: 'total',
       header: 'Total',
-      cell: (egreso: Egreso) => `${this.decimalPipe.transform(egreso.total, '1.2-2')}`
+      cell: (egreso: Egreso) => `${(egreso.total) ? this.decimalPipe.transform(egreso.total, '1.2-2') : ''}`
     }, {
       columnDef: 'dia',
       header: 'Dia',
-      cell: (egreso: Egreso) => `${egreso.dia}`
+      cell: (egreso: Egreso) => `${(egreso.dia) ? egreso.dia : ''}`
     }, {
       columnDef: 'fecha',
       header: 'Fecha',
@@ -103,22 +105,25 @@ export class BandejaEgresosComponent implements OnInit {
 
   public inicializarVariables(): void {
     if (sessionStorage.getItem('restDias')) {
-      let dias = parseInt(sessionStorage.getItem('restDias'));
-      let fec = new Date();
-      let time = fec.getTime() - (dias * 24 * 60 * 60 * 1000);
-      let fechaRep = new Date(time);
-      console.log(fec);
-      console.log(fechaRep);
-
-      this.bdjEgresoGrp.get('fechaInicio').setValue(fechaRep);
-      this.bdjEgresoGrp.get('fechaFin').setValue(fechaRep);
+      this.obtFechaBarChart();
+      this.bdjEgresoGrp.get('fechaInicio').setValue(this.fechaRep);
+      this.bdjEgresoGrp.get('fechaFin').setValue(this.fechaRep);
       sessionStorage.setItem('restDias', null);
+
+      this.paginator.pageSize = 50;
     }
 
     this.comboTiposEgreso();
     this.comboDias();
     this.buscar();
     this.spinnerService.hide();
+  }
+
+  obtFechaBarChart(): void {
+    let dias = parseInt(sessionStorage.getItem('restDias'));
+    let fec = new Date(this.datePipe.transform(new Date(),'MM/dd/yyyy'));
+    let time = fec.getTime() - (dias * 24 * 60 * 60 * 1000);
+    this.fechaRep = new Date(time);
   }
 
   definirTabla(): void {
@@ -178,7 +183,8 @@ export class BandejaEgresosComponent implements OnInit {
         if (typeof data[0] != undefined && data[0].rcodigo == 0) {
           let result = JSON.parse(data[0].result);
 
-          this.listaEgresos = result;
+          this.listaEgresos = result ? result : [];
+          this.agregarFilaResumen();
           this.cargarDatosTabla();
           this.isLoading = false;
         } else {
@@ -226,6 +232,20 @@ export class BandejaEgresosComponent implements OnInit {
         this.cargarDatosTabla();
       }
     });
+  }
+
+  agregarFilaResumen(): void {
+    if (this.fechaRep) {
+      let res = new Egreso();
+      res.nombre = 'TOTAL EGRESOS ' + this.datePipe.transform(this.fechaRep, 'dd/MM/yyyy');
+      res.total = 0;
+
+      this.listaEgresos.forEach(el => {
+        res.total += el.total;
+      });
+
+      this.listaEgresos.push(res);
+    }
   }
 
 }

@@ -30,13 +30,13 @@
           <mat-icon>search</mat-icon>
           <strong> BUSCAR</strong>
         </button>
-        <button mat-raised-button (click)="regCuentaBanco(null)">
+        <button mat-raised-button (click)="regCuentaBanco(null)" matTooltip="Nueva cuenta banco">
           <mat-icon>add_box</mat-icon>
-          <strong> NUEVA CUENTA</strong>
+          <strong> NUEVA</strong>
         </button>
-        <button mat-raised-button (click)="exportarExcel()">
-          <mat-icon>file_copy</mat-icon>
-          <strong>EXPORTAR A EXCEL</strong>
+        <button mat-raised-button (click)="exportarExcel()" matTooltip="Exportar a excel">
+          <mat-icon svgIcon="excel"></mat-icon>
+          <strong>EXPORTAR</strong>
         </button>
       </mat-card-actions>
     </mat-card>
@@ -51,7 +51,8 @@
 
             <ng-container *ngFor="let column of columnsGrilla" [matColumnDef]="column.columnDef">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column.header }} </th>
-              <td mat-cell *matCellDef="let row"> {{ column.cell(row) }} </td>
+              <td mat-cell *matCellDef="let row" [ngClass]="{'right-column': (column.columnDef=='saldo')}">
+                {{ column.cell(row) }} </td>
             </ng-container>
 
             <ng-container matColumnDef="opt" stickyEnd>

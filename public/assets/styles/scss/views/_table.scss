@@ -43,6 +43,11 @@
     position: sticky !important;
     z-index: 10 !important;
   }
+
+  .right-column {
+    text-align: right;
+    padding-right: 3%;
+  }
 }
 
 .table-container table {
@@ -68,4 +73,9 @@ td.mat-cell:last-of-type,
 td.mat-footer-cell:last-of-type,
 th.mat-header-cell:last-of-type {
   padding-right: 0px;
+}
+
+.sobresaltarUltimo {
+  // color: rgb(66, 54, 241);
+  background-color: rgb(157, 176, 228) !important;
 }

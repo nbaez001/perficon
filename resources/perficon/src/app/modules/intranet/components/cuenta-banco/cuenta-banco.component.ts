@@ -3,7 +3,7 @@ import { CuentaBanco } from 'src/app/model/cuenta-banco.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { CuentaBancoService } from 'src/app/services/intranet/cuenta-banco.service';
 import { RegCuentaBancoComponent } from './reg-cuenta-banco/reg-cuenta-banco.component';
 import { MENSAJES } from 'src/app/common';
@@ -49,7 +49,7 @@ export class CuentaBancoComponent implements OnInit {
     }, {
       columnDef: 'saldo',
       header: 'Saldo',
-      cell: (cuentaBanco: CuentaBanco) => `${cuentaBanco.saldo}`
+      cell: (cuentaBanco: CuentaBanco) => `S/. ${this.decimalPipe.transform(cuentaBanco.saldo, '1.2-2')}`
     }, {
       columnDef: 'nroCuenta',
       header: 'Numero cuenta',
@@ -83,7 +83,8 @@ export class CuentaBancoComponent implements OnInit {
     public dialog: MatDialog,
     private spinnerService: Ng4LoadingSpinnerService,
     @Inject(CuentaBancoService) private cuentaBancoService: CuentaBancoService,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe,
+    private decimalPipe: DecimalPipe) { }
 
   ngOnInit() {
     this.spinnerService.show();
