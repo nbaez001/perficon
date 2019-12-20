@@ -104,11 +104,10 @@ export class BandejaEgresosComponent implements OnInit {
   }
 
   public inicializarVariables(): void {
-    if (sessionStorage.getItem('restDias')) {
+    if (sessionStorage.getItem('restDias') != null) {
       this.obtFechaBarChart();
       this.bdjEgresoGrp.get('fechaInicio').setValue(this.fechaRep);
       this.bdjEgresoGrp.get('fechaFin').setValue(this.fechaRep);
-      sessionStorage.setItem('restDias', null);
 
       this.paginator.pageSize = 50;
     }
@@ -121,7 +120,7 @@ export class BandejaEgresosComponent implements OnInit {
 
   obtFechaBarChart(): void {
     let dias = parseInt(sessionStorage.getItem('restDias'));
-    let fec = new Date(this.datePipe.transform(new Date(),'MM/dd/yyyy'));
+    let fec = new Date(this.datePipe.transform(new Date(), 'MM/dd/yyyy'));
     let time = fec.getTime() - (dias * 24 * 60 * 60 * 1000);
     this.fechaRep = new Date(time);
   }
@@ -178,8 +177,6 @@ export class BandejaEgresosComponent implements OnInit {
     this.isLoading = true;
     this.egresoService.listarEgreso(request).subscribe(
       (data: ApiResponse[]) => {
-        console.log('RESULTADO CONSULTA EGRESO');
-        console.log(data);
         if (typeof data[0] != undefined && data[0].rcodigo == 0) {
           let result = JSON.parse(data[0].result);
 
@@ -235,7 +232,8 @@ export class BandejaEgresosComponent implements OnInit {
   }
 
   agregarFilaResumen(): void {
-    if (this.fechaRep) {
+    if (sessionStorage.getItem('restDias') != null) {
+      sessionStorage.removeItem('restDias');
       let res = new Egreso();
       res.nombre = 'TOTAL EGRESOS ' + this.datePipe.transform(this.fechaRep, 'dd/MM/yyyy');
       res.total = 0;

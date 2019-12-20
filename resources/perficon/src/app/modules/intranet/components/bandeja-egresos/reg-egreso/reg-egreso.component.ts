@@ -108,7 +108,7 @@ export class RegEgresoComponent implements OnInit {
       this.egresoGrp.get('ubicacion').setValue(this.egresoEdit.ubicacion);
       this.egresoGrp.get('fecha').setValue(new Date(this.datePipe.transform(this.egresoEdit.fecha, 'MM/dd/yyyy')));
     } else {
-      this.egresoGrp.get('fecha').setValue(new Date());
+      this.egresoGrp.get('fecha').setValue(new Date(this.datePipe.transform(new Date(),'MM/dd/yyyy')));
       this.egresoGrp.get('tipoEgreso').setValue(this.tiposEgreso[0]);
       this.egresoGrp.get('unidadMedida').setValue(this.unidadesMedida[0]);
     }

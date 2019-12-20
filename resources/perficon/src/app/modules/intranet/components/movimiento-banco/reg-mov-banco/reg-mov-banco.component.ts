@@ -86,7 +86,7 @@ export class RegMovBancoComponent implements OnInit {
       this.formularioGrp.get('monto').setValue(this.movimientoBancoEdit.monto);
       this.formularioGrp.get('fecha').setValue(new Date(this.datePipe.transform(this.movimientoBancoEdit.fecha, 'MM/dd/yyyy')));
     } else {
-      this.formularioGrp.get('fecha').setValue(new Date());
+      this.formularioGrp.get('fecha').setValue(new Date(this.datePipe.transform(new Date(),'MM/dd/yyyy')));
     }
   }
 
