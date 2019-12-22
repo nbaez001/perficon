@@ -1,7 +1,7 @@
 <app-navbar>
   <div class="page-bandeja">
     <ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
-    <mat-grid-list cols="12" rowHeight="412px">
+    <mat-grid-list cols="12" rowHeight="417px">
       <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 12, md: 4, lg: 4, xl: 6}">
         <mat-card class="home-card">
           <mat-card-header>
@@ -69,7 +69,15 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <canvas id="lineChart"></canvas>
+        <div class="normal-chart">
+          <canvas id="lineChart"></canvas>
+        </div>
+        <div class="medium-chart">
+          <canvas id="lineChart2"></canvas>
+        </div>
+        <div class="small-chart">
+          <canvas id="lineChart3"></canvas>
+        </div>
       </mat-card-content>
     </mat-card>
 
@@ -81,7 +89,15 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <canvas id="barChart"></canvas>
+        <div class="normal-chart">
+          <canvas id="barChart"></canvas>
+        </div>
+        <div class="medium-chart">
+          <canvas id="barChart2"></canvas>
+        </div>
+        <div class="small-chart">
+          <canvas id="barChart3"></canvas>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

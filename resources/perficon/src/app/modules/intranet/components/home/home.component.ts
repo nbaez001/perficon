@@ -26,7 +26,13 @@ export class HomeComponent implements OnInit {
   isLoadingBar: boolean = true;
 
   LineChart = [];
+  LineChart2 = [];
+  LineChart3 = [];
+  
   BarChart = [];
+  BarChart2 = [];
+  BarChart3 = [];
+
   PieChart = [];
 
   result = [];
@@ -54,62 +60,6 @@ export class HomeComponent implements OnInit {
     this.cargarBarChart();
 
     this.spinnerService.hide();
-  }
-
-  cargarLineChart() {
-    let req = new LineChartRequest();
-    req.anio = new Date().getFullYear();
-    req.mes = new Date().getMonth();
-
-    this.reportService.lineChartReport(req).subscribe(
-      (data: ApiResponse[]) => {
-        this.isLoadingLine = false;
-        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
-          let labels: string[] = [];
-          let datas: number[] = [];
-
-          let result = JSON.parse(data[0].result);
-          result = result.reverse();
-          result.forEach((val, i) => {
-            labels.push(this.commonService.obtenerNombreMes(val.label).nombre);
-            datas.push(val.data);
-          });
-
-          this.LineChart = new Chart('lineChart', {
-            type: 'line',
-            data: {
-              labels: labels,//['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
-              datasets: [{
-                label: 'Gasto promedio por meses',
-                data: datas,//[9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
-                fill: true,
-                lineTension: 0.2,
-                borderColor: 'red',
-                borderWidth: 1
-              }]
-            },
-            options: {
-              title: {
-                text: 'Linea de egresos',
-                display: true
-              },
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true
-                  }
-                }]
-              }
-            }
-          });
-        } else {
-          console.error('Ocurrio un error al buscar egreso');
-        }
-      }, error => {
-        console.log(error);
-        this.isLoadingLine = false;
-      }
-    );
   }
 
   cargarPieChart() {
@@ -174,6 +124,116 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  cargarLineChart() {
+    let req = new LineChartRequest();
+    req.anio = new Date().getFullYear();
+    req.mes = new Date().getMonth();
+
+    this.reportService.lineChartReport(req).subscribe(
+      (data: ApiResponse[]) => {
+        this.isLoadingLine = false;
+        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+          let labels: string[] = [];
+          let datas: number[] = [];
+
+          let result = JSON.parse(data[0].result);
+          result = result.reverse();
+          result.forEach((val, i) => {
+            labels.push(this.commonService.obtenerNombreMes(val.label).nombre);
+            datas.push(val.data);
+          });
+
+          this.LineChart = new Chart('lineChart', {
+            type: 'line',
+            data: {
+              labels: labels,//['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
+              datasets: [{
+                label: 'Gasto promedio por meses',
+                data: datas,//[9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
+                fill: true,
+                lineTension: 0.2,
+                borderColor: 'red',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Linea de egresos',
+                display: true
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+          this.LineChart2 = new Chart('lineChart2', {
+            type: 'line',
+            data: {
+              labels: labels.slice(labels.length / 2, labels.length),//['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
+              datasets: [{
+                label: 'Gasto promedio por meses',
+                data: datas.slice(labels.length / 2, labels.length),//[9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
+                fill: true,
+                lineTension: 0.2,
+                borderColor: 'red',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Linea de egresos',
+                display: true
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+          this.LineChart3 = new Chart('lineChart3', {
+            type: 'line',
+            data: {
+              labels: labels.slice(labels.length / 3, labels.length),
+              datasets: [{
+                label: 'Gasto promedio por meses',
+                data: datas.slice(labels.length / 3, labels.length),
+                fill: true,
+                lineTension: 0.2,
+                borderColor: 'red',
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Linea de egresos',
+                display: true
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+        } else {
+          console.error('Ocurrio un error al buscar egreso');
+        }
+      }, error => {
+        console.log(error);
+        this.isLoadingLine = false;
+      }
+    );
+  }
+
   cargarBarChart() {
     let fec = new Date();
     let req = new BarChartRequest();
@@ -212,6 +272,76 @@ export class HomeComponent implements OnInit {
                 data: datas,
                 backgroundColor: backColors,
                 borderColor: borderColors,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Grafico de egresos',
+                display: true
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              },
+              onClick: (c, i) => {
+                // let e = i[0];
+                // var x_value = this.data.labels[e._index];
+                // var y_value = this.data.datasets[0].data[e._index];
+                // console.log(e._index)
+                // console.log(x_value);
+                // console.log(y_value);
+                this.verDetalleEgresos(c, i);
+              }
+            }
+          });
+          this.BarChart2 = new Chart('barChart2', {
+            type: 'bar',
+            data: {
+              labels: labels.slice(labels.length / 2, labels.length),
+              datasets: [{
+                label: 'Gasto por dia',
+                data: datas.slice(labels.length / 2, labels.length),
+                backgroundColor: backColors.slice(labels.length / 2, labels.length),
+                borderColor: borderColors.slice(labels.length / 2, labels.length),
+                borderWidth: 1
+              }]
+            },
+            options: {
+              title: {
+                text: 'Grafico de egresos',
+                display: true
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              },
+              onClick: (c, i) => {
+                // let e = i[0];
+                // var x_value = this.data.labels[e._index];
+                // var y_value = this.data.datasets[0].data[e._index];
+                // console.log(e._index)
+                // console.log(x_value);
+                // console.log(y_value);
+                this.verDetalleEgresos(c, i);
+              }
+            }
+          });
+          this.BarChart3 = new Chart('barChart3', {
+            type: 'bar',
+            data: {
+              labels: labels.slice(labels.length / 4, labels.length),
+              datasets: [{
+                label: 'Gasto por dia',
+                data: datas.slice(labels.length / 4, labels.length),
+                backgroundColor: backColors.slice(labels.length / 4, labels.length),
+                borderColor: borderColors.slice(labels.length / 4, labels.length),
                 borderWidth: 1
               }]
             },
@@ -320,7 +450,5 @@ export class HomeComponent implements OnInit {
       return (prev.data > current.data) ? prev : current
     })
   }
-
-
 
 }

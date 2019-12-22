@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SesionRoutingModule } from './sesion-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { MaterialModule } from '../material.module';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { MaterialModule } from '../material.module';
   imports: [
     CommonModule,
     SesionRoutingModule,
-    MaterialModule
+    MaterialModule,
+    Ng4LoadingSpinnerModule.forRoot()
   ]
 })
 export class SesionModule { }

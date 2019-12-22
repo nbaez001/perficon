@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Persona } from 'src/app/model/persona.model';
 import { Router } from '@angular/router';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { Cookie } from 'ng2-cookies/ng2-cookies';
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +14,7 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class NavbarComponent {
   @Input() showSubmenu1: boolean;
-  
+
   persona: Persona;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -32,6 +33,7 @@ export class NavbarComponent {
   }
 
   salir() {
+    Cookie.delete('recordar');
     this.router.navigate(['sesion/login']);
   }
 

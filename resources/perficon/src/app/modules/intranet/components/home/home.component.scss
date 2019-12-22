@@ -97,3 +97,33 @@
   top: 6px;
   display: inline-block;
 }
+
+$breakpoint-xs: 360px;
+$breakpoint-sm: 767px;
+$breakpoint-md: 1023px;
+$breakpoint-lg: 1360px;
+
+@media (max-width: $breakpoint-xs) {
+  .normal-chart {
+    display: none;
+  }
+  .medium-chart {
+    display: none;
+  }
+}
+@media (min-width: $breakpoint-sm) and (max-width: $breakpoint-sm) {
+  .normal-chart {
+    display: none;
+  }
+  .small-chart {
+    display: none;
+  }
+}
+@media (min-width: $breakpoint-md) {
+  .medium-chart {
+    display: none;
+  }
+  .small-chart {
+    display: none;
+  }
+}

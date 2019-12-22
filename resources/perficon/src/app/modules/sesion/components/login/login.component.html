@@ -1,3 +1,4 @@
+<ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
 <mat-card class="login-card">
   <mat-card-header>
     <div mat-card-avatar class="login-card-header-image"></div>
@@ -20,7 +21,7 @@
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile [responsiveRows]="{xs:12, sm: 12, md:12, lg:12, xl:12}">
-          <mat-checkbox>Recordar</mat-checkbox>
+          <mat-checkbox formControlName="recordar">Recordar</mat-checkbox>
         </mat-grid-tile>
       </mat-grid-list>
       <mat-grid-list cols="12" rowHeight="25px" *ngIf="mostrar">
