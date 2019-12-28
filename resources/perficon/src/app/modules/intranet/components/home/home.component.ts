@@ -60,7 +60,6 @@ export class HomeComponent implements OnInit {
     this.spinnerService.show();
     this.calcularSaldoMensual();
 
-    this.getSumaMesCategoria();
     this.cargarPieChart();
     this.cargarLineChart();
     this.cargarBarChart();
@@ -122,6 +121,9 @@ export class HomeComponent implements OnInit {
               maintainAspectRatio: false
             }
           });
+
+          let egresosOrdenados = result.sort((a, b) => (a.data < b.data) ? 1 : -1);
+          this.getSumaMesCategoria(egresosOrdenados);
         } else {
           console.error('Ocurrio un error al registrar egreso');
         }
@@ -405,11 +407,6 @@ export class HomeComponent implements OnInit {
 
   verDetalleEgresos(evt: any, i: any, cant: number): void {
     if (evt.type == 'click') {
-      console.log('Mouse Click');
-      console.log(i);
-      console.log(cant);
-      console.log('DIFERENCIA:');
-      console.log((cant - (i[0]._index + 1)));
       if (evt.detail > 1) {
         sessionStorage.setItem('restDias', (cant - (i[0]._index + 1)).toString());
         this.router.navigate(['intranet/bandeja-egresos']);
@@ -429,13 +426,11 @@ export class HomeComponent implements OnInit {
     sm.fecha = fecha;
     sm.idUsuarioCrea = this.user.getIdUsuario;
     sm.fecUsuarioCrea = new Date();
-    console.log(sm);
 
     this.saldoMensualService.calcularSaldoMensual(sm).subscribe(
       (data: ApiResponse[]) => {
         if (typeof data[0] != undefined && data[0].rcodigo == 0) {
           console.log('' + data[0].rmensaje);
-          console.log(data[0]);
         } else {
           console.log(data[0]);
         }
@@ -454,15 +449,12 @@ export class HomeComponent implements OnInit {
     sm.anio = fecha.getFullYear();
     sm.mes = fecha.getMonth();
     sm.fecha = fecha;
-    console.log(sm);
 
     this.saldoMensualService.obtenerSaldoActual(sm).subscribe(
       (data: ApiResponse[]) => {
         if (typeof data[0] != undefined && data[0].rcodigo == 0) {
           this.saldoActual = JSON.parse(data[0].result)[0];
           this.cargando = false;
-          console.log('Saldo actual');
-          console.log(this.saldoActual);
         } else {
           console.log(data[0]);
         }
@@ -478,32 +470,40 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  getSumaMesCategoria() {
+  getSumaMesCategoria(lista: any[]) {
     let req = new PieChartRequest();
     req.anio = new Date().getFullYear();
     req.mes = new Date().getMonth() + 1;
     req.idTabla = 1;//MAESTRA TIPO EGRESO
 
     let cantDias = new Date().getDate();
-    console.log(cantDias);
+
     this.reportService.getSumaMesCategoria(req).subscribe(
       (data: ApiResponse[]) => {
         this.cargandoPieChart = false;
         if (typeof data[0] != undefined && data[0].rcodigo == 0) {
 
-          this.sumaCategoria = JSON.parse(data[0].result);
-          let suma = 0;
-          let sumaOtr = 0;
-          this.sumaCategoria.forEach(el => {
-            if (el.label != 'CUARTO' && el.label != 'ALIMENTACION') {
-              sumaOtr += el.data;
+          let result = JSON.parse(data[0].result);
+          let sumaTotal = 0;
+          let sumaOtros = 0;
+
+          //PREPARACION DE LOS 5 MAXIMOS EGRESOS
+          let filterArray: string[] = [];
+          for (let i = 0; i < 4; i++) {
+            filterArray.push(lista[i].label);
+          }
+
+          //SUMA LOS VALORES QUE NO ESTAN EL EL ARRAY DE MAXIMOS EGRESOS
+          result.forEach(el => {
+            if (!filterArray.find(x => x == el.label)) {
+              sumaOtros += el.data;
             }
-            suma += el.data;
+            sumaTotal += el.data;
           });
 
-          this.sumaCategoria = this.sumaCategoria.filter(el => (el.label == 'CUARTO' || el.label == 'ALIMENTACION'));
-          this.sumaCategoria.unshift({ label: 'PROMEDIO DIA', data: suma })
-          this.sumaCategoria.push({ label: 'OTROS', data: sumaOtr })
+          this.sumaCategoria = result.filter(({ label }) => filterArray.includes(label));
+          this.sumaCategoria.unshift({ label: 'PROMEDIO DIA', data: sumaTotal })
+          this.sumaCategoria.push({ label: 'OTROS', data: sumaOtros })
 
           this.sumaCategoria.forEach(el => {
             el.label == 'CUARTO' ? el.promedio = el.data / 30 : el.promedio = el.data / cantDias;

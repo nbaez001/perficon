@@ -139,6 +139,11 @@ $breakpoint-lg: 1360px;
   border-radius: 10px;
   margin-right: auto;
   margin-left: auto;
+  span {
+    color: darkslateblue;
+    font-weight: bold;
+    text-align: center;
+  }
 }
 .tv-soporte {
   width: 20px;

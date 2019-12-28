@@ -8,7 +8,7 @@
         <!-- <div class="col-ss-12 col-xs-12 col-sm-4 col-md-4 col-lg-5"> -->
         <mat-card class="home-card">
           <mat-card-header>
-            <mat-card-title>Dinero en mano</mat-card-title>
+            <mat-card-title>Efectivo</mat-card-title>
             <mat-card-subtitle>Monto actual:
               <ng-container *ngIf="cargando">
                 <div class="lds-ellipsis">
@@ -25,6 +25,7 @@
           </mat-card-header>
           <mat-card-content>
             <div class="tv-panel">
+              <span>Promedio egreso diario por categorias</span>
               <ul class="tv-panel-list">
                 <li *ngFor="let item of sumaCategoria">{{item.label}}:
                   <b>S/.{{item.promedio | number: '1.2-2'}}</b>
@@ -105,7 +106,7 @@
 
     <mat-card class="bar-chart">
       <mat-card-header>
-        <mat-card-title>Linea de egresos
+        <mat-card-title>Barra de egresos
           <mat-progress-spinner [diameter]="20" color="primary" mode="indeterminate" *ngIf="isLoadingBar">
           </mat-progress-spinner>
         </mat-card-title>
