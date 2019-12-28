@@ -25,4 +25,8 @@ export class ReportService {
   public barChartReport(request: BarChartRequest): Observable<ApiResponse[]> {
     return this.http.post<ApiResponse[]>(`${webServiceEndpoint}dashboard/bar-chart`, request);
   }
+
+  public getSumaMesCategoria(request: PieChartRequest): Observable<ApiResponse[]> {
+    return this.http.post<ApiResponse[]>(`${webServiceEndpoint}dashboard/suma-categoria`, request);
+  }
 }

@@ -2,7 +2,10 @@
   <div class="page-bandeja">
     <ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
     <mat-grid-list cols="12" rowHeight="417px">
-      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 12, md: 4, lg: 4, xl: 6}">
+      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 12, md: 4, lg: 4, xl: 5}">
+        <!-- <div class="container"> -->
+        <!-- <div class="row"> -->
+        <!-- <div class="col-ss-12 col-xs-12 col-sm-4 col-md-4 col-lg-5"> -->
         <mat-card class="home-card">
           <mat-card-header>
             <mat-card-title>Dinero en mano</mat-card-title>
@@ -20,8 +23,20 @@
               </ng-container>
             </mat-card-subtitle>
           </mat-card-header>
-          <img mat-card-image src="../../../../../assets/images/icons/perficon-home.png" alt="Photo of a Shiba Inu">
           <mat-card-content>
+            <div class="tv-panel">
+              <ul class="tv-panel-list">
+                <li *ngFor="let item of sumaCategoria">{{item.label}}:
+                  <b>S/.{{item.promedio | number: '1.2-2'}}</b>
+                </li>
+              </ul>
+              <!-- <h6 style="text-align:center; position: absolute; top:78px;"></h6>
+              <h6 style="text-align:center; position: absolute; top:95px;"></h6> -->
+              <!-- <img style="position: absolute; height: 100px; width: auto; top: 100px; right: 30px;"
+                src="../../../../../assets/images/icons/gear.png" alt="Photo"> -->
+            </div>
+            <div class="tv-soporte"></div>
+            <div class="tv-plataforma"></div>
             <p>
               Control financiero.
             </p>
@@ -31,8 +46,11 @@
             <button [routerLink]="[ '/intranet/cuenta-banco']" mat-raised-button>Cuentas</button>
           </mat-card-actions>
         </mat-card>
+        <!-- </div> -->
+
       </mat-grid-tile>
-      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 12, md: 8, lg: 8, xl: 6}">
+      <mat-grid-tile class="chart-grid" [responsiveRows]="{xs: 12, sm: 12, md: 8, lg: 8, xl: 7}">
+        <!-- <div class="col-ss-12 col-xs-12 col-sm-8 col-md-8 col-lg-7"> -->
         <mat-card class="home-card">
           <mat-card-header>
             <mat-card-title style="flex: content;">
@@ -54,12 +72,16 @@
               </ng-container>
             </mat-card-subtitle>
           </mat-card-header>
-          <mat-card-content style="height: 280px;">
+          <mat-card-content class="chart-container">
             <canvas id="pieChart"></canvas>
           </mat-card-content>
         </mat-card>
+        <!-- </div> -->
       </mat-grid-tile>
     </mat-grid-list>
+
+    <!-- </div>
+    </div> -->
 
     <mat-card class="chart-card">
       <mat-card-header>
@@ -69,13 +91,13 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <div class="normal-chart">
+        <div class="normal-chart" style="height: 500px;">
           <canvas id="lineChart"></canvas>
         </div>
-        <div class="medium-chart">
+        <div class="medium-chart" style="height: 400px;">
           <canvas id="lineChart2"></canvas>
         </div>
-        <div class="small-chart">
+        <div class="small-chart" style="height: 300px;">
           <canvas id="lineChart3"></canvas>
         </div>
       </mat-card-content>
@@ -89,13 +111,13 @@
         </mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <div class="normal-chart">
+        <div class="normal-chart" style="height: 500px;">
           <canvas id="barChart"></canvas>
         </div>
-        <div class="medium-chart">
+        <div class="medium-chart" style="height: 400px;">
           <canvas id="barChart2"></canvas>
         </div>
-        <div class="small-chart">
+        <div class="small-chart" style="height: 300px;">
           <canvas id="barChart3"></canvas>
         </div>
       </mat-card-content>

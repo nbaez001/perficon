@@ -100,7 +100,6 @@ export class MovimientoBancoComponent implements OnInit {
 
   public inicializarVariables(): void {
     this.comboCuentaBancaria();
-    this.buscar();
     this.spinnerService.hide();
   }
 
@@ -131,7 +130,8 @@ export class MovimientoBancoComponent implements OnInit {
         cb.nombre = 'TODOS';
         this.listaCuentasBanco.unshift(cb);
 
-        this.bandejaGrp.get('cuentaBanco').setValue(this.listaCuentasBanco[0]);
+        this.filtrarCuentaEspecifica();
+        this.buscar();
       }, error => {
         console.log(error);
       }
@@ -168,6 +168,16 @@ export class MovimientoBancoComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  filtrarCuentaEspecifica() {
+    if (sessionStorage.getItem('cuentaBanco') != null) {
+      let idCuenta = parseInt(sessionStorage.getItem('cuentaBanco'));
+      this.bandejaGrp.get('cuentaBanco').setValue(this.listaCuentasBanco.filter(el => el.id == idCuenta)[0]);
+      sessionStorage.removeItem('cuentaBanco');
+    } else {
+      this.bandejaGrp.get('cuentaBanco').setValue(this.listaCuentasBanco[0]);
+    }
   }
 
   exportarExcel() {

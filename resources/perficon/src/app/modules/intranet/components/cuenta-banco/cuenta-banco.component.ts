@@ -7,6 +7,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { CuentaBancoService } from 'src/app/services/intranet/cuenta-banco.service';
 import { RegCuentaBancoComponent } from './reg-cuenta-banco/reg-cuenta-banco.component';
 import { MENSAJES } from 'src/app/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cuenta-banco',
@@ -84,7 +85,8 @@ export class CuentaBancoComponent implements OnInit {
     private spinnerService: Ng4LoadingSpinnerService,
     @Inject(CuentaBancoService) private cuentaBancoService: CuentaBancoService,
     private datePipe: DatePipe,
-    private decimalPipe: DecimalPipe) { }
+    private decimalPipe: DecimalPipe,
+    private router: Router) { }
 
   ngOnInit() {
     this.spinnerService.show();
@@ -183,6 +185,11 @@ export class CuentaBancoComponent implements OnInit {
         this.cargarDatosTabla();
       }
     });
+  }
+
+  regMovimiento(el) {
+    sessionStorage.setItem('cuentaBanco', el.id);
+    this.router.navigate(['intranet/bandeja-movimientos']);
   }
 
 }

@@ -49,6 +49,19 @@ class DashBoardController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sumaCategoria(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+        $resp = DB::select('call PFC_S_SUMA_CATEGORIA(?,?,?)', [$data['anio'], $data['mes'], $data['idTabla']]);
+        return $resp;
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

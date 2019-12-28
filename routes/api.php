@@ -46,3 +46,4 @@ Route::post('saldo-mensual/obtener-actual', 'Administracion\SaldoMensualControll
 Route::post('dashboard/pie-chart', 'Administracion\DashBoardController@pieChart');
 Route::post('dashboard/line-chart', 'Administracion\DashBoardController@lineChart');
 Route::post('dashboard/bar-chart', 'Administracion\DashBoardController@barChart');
+Route::post('dashboard/suma-categoria', 'Administracion\DashBoardController@sumaCategoria');

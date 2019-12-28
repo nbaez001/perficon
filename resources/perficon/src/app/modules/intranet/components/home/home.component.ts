@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   LineChart = [];
   LineChart2 = [];
   LineChart3 = [];
-  
+
   BarChart = [];
   BarChart2 = [];
   BarChart3 = [];
@@ -37,10 +37,15 @@ export class HomeComponent implements OnInit {
 
   result = [];
 
+  sumaCategoria = [];
+
   meses = [{ 'id': 0, nombre: 'ENERO' }];
 
-  tipoEgresoMayor: any;
+  tipoEgresoMayor: any = {};
   cargandoPieChart: boolean = true;
+
+  cuarto: any = {};
+  alimentacion: any = {};
 
   constructor(
     @Inject(SaldoMensualService) private saldoMensualService: SaldoMensualService,
@@ -55,6 +60,7 @@ export class HomeComponent implements OnInit {
     this.spinnerService.show();
     this.calcularSaldoMensual();
 
+    this.getSumaMesCategoria();
     this.cargarPieChart();
     this.cargarLineChart();
     this.cargarBarChart();
@@ -111,7 +117,9 @@ export class HomeComponent implements OnInit {
                     beginAtZero: true
                   }
                 }]
-              }
+              },
+              responsive: true,
+              maintainAspectRatio: false
             }
           });
         } else {
@@ -167,7 +175,9 @@ export class HomeComponent implements OnInit {
                     beginAtZero: true
                   }
                 }]
-              }
+              },
+              responsive: true,
+              maintainAspectRatio: false
             }
           });
           this.LineChart2 = new Chart('lineChart2', {
@@ -194,16 +204,18 @@ export class HomeComponent implements OnInit {
                     beginAtZero: true
                   }
                 }]
-              }
+              },
+              responsive: true,
+              maintainAspectRatio: false
             }
           });
           this.LineChart3 = new Chart('lineChart3', {
             type: 'line',
             data: {
-              labels: labels.slice(labels.length / 3, labels.length),
+              labels: labels.slice(labels.length * (2 / 3), labels.length),
               datasets: [{
                 label: 'Gasto promedio por meses',
-                data: datas.slice(labels.length / 3, labels.length),
+                data: datas.slice(labels.length * (2 / 3), labels.length),
                 fill: true,
                 lineTension: 0.2,
                 borderColor: 'red',
@@ -221,7 +233,9 @@ export class HomeComponent implements OnInit {
                     beginAtZero: true
                   }
                 }]
-              }
+              },
+              responsive: true,
+              maintainAspectRatio: false
             }
           });
         } else {
@@ -263,6 +277,7 @@ export class HomeComponent implements OnInit {
             datas.push(val.data);
           });
 
+          let cantBarChart = labels.length;
           this.BarChart = new Chart('barChart', {
             type: 'bar',
             data: {
@@ -287,6 +302,8 @@ export class HomeComponent implements OnInit {
                   }
                 }]
               },
+              responsive: true,
+              maintainAspectRatio: false,
               onClick: (c, i) => {
                 // let e = i[0];
                 // var x_value = this.data.labels[e._index];
@@ -294,19 +311,21 @@ export class HomeComponent implements OnInit {
                 // console.log(e._index)
                 // console.log(x_value);
                 // console.log(y_value);
-                this.verDetalleEgresos(c, i);
+                this.verDetalleEgresos(c, i, cantBarChart);
               }
             }
           });
+
+          let cantBarChart2 = labels.length - parseInt((labels.length / 2).toFixed(1));
           this.BarChart2 = new Chart('barChart2', {
             type: 'bar',
             data: {
-              labels: labels.slice(labels.length / 2, labels.length),
+              labels: labels.slice(parseInt((labels.length / 2).toFixed(1)), labels.length),
               datasets: [{
                 label: 'Gasto por dia',
-                data: datas.slice(labels.length / 2, labels.length),
-                backgroundColor: backColors.slice(labels.length / 2, labels.length),
-                borderColor: borderColors.slice(labels.length / 2, labels.length),
+                data: datas.slice(parseInt((labels.length / 2).toFixed(1)), labels.length),
+                backgroundColor: backColors.slice(parseInt((labels.length / 2).toFixed(1)), labels.length),
+                borderColor: borderColors.slice(parseInt((labels.length / 2).toFixed(1)), labels.length),
                 borderWidth: 1
               }]
             },
@@ -322,6 +341,8 @@ export class HomeComponent implements OnInit {
                   }
                 }]
               },
+              responsive: true,
+              maintainAspectRatio: false,
               onClick: (c, i) => {
                 // let e = i[0];
                 // var x_value = this.data.labels[e._index];
@@ -329,19 +350,21 @@ export class HomeComponent implements OnInit {
                 // console.log(e._index)
                 // console.log(x_value);
                 // console.log(y_value);
-                this.verDetalleEgresos(c, i);
+                this.verDetalleEgresos(c, i, cantBarChart2);
               }
             }
           });
+
+          let cantBarChart3 = labels.length - parseInt((labels.length * (3 / 4)).toFixed(1));
           this.BarChart3 = new Chart('barChart3', {
             type: 'bar',
             data: {
-              labels: labels.slice(labels.length / 4, labels.length),
+              labels: labels.slice(parseInt((labels.length * (3 / 4)).toFixed(1)), labels.length),
               datasets: [{
                 label: 'Gasto por dia',
-                data: datas.slice(labels.length / 4, labels.length),
-                backgroundColor: backColors.slice(labels.length / 4, labels.length),
-                borderColor: borderColors.slice(labels.length / 4, labels.length),
+                data: datas.slice(parseInt((labels.length * (3 / 4)).toFixed(1)), labels.length),
+                backgroundColor: backColors.slice(parseInt((labels.length * (3 / 4)).toFixed(1)), labels.length),
+                borderColor: borderColors.slice(parseInt((labels.length * (3 / 4)).toFixed(1)), labels.length),
                 borderWidth: 1
               }]
             },
@@ -357,6 +380,8 @@ export class HomeComponent implements OnInit {
                   }
                 }]
               },
+              responsive: true,
+              maintainAspectRatio: false,
               onClick: (c, i) => {
                 // let e = i[0];
                 // var x_value = this.data.labels[e._index];
@@ -364,7 +389,7 @@ export class HomeComponent implements OnInit {
                 // console.log(e._index)
                 // console.log(x_value);
                 // console.log(y_value);
-                this.verDetalleEgresos(c, i);
+                this.verDetalleEgresos(c, i, cantBarChart3);
               }
             }
           });
@@ -378,13 +403,15 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  verDetalleEgresos(evt: any, i: any): void {
+  verDetalleEgresos(evt: any, i: any, cant: number): void {
     if (evt.type == 'click') {
       console.log('Mouse Click');
-      console.log(evt);
-      console.log(evt.detail);
+      console.log(i);
+      console.log(cant);
+      console.log('DIFERENCIA:');
+      console.log((cant - (i[0]._index + 1)));
       if (evt.detail > 1) {
-        sessionStorage.setItem('restDias', (30 - i[0]._index).toString());
+        sessionStorage.setItem('restDias', (cant - (i[0]._index + 1)).toString());
         this.router.navigate(['intranet/bandeja-egresos']);
       }
     } else {
@@ -449,6 +476,45 @@ export class HomeComponent implements OnInit {
     this.tipoEgresoMayor = lista.reduce(function (prev, current) {
       return (prev.data > current.data) ? prev : current
     })
+  }
+
+  getSumaMesCategoria() {
+    let req = new PieChartRequest();
+    req.anio = new Date().getFullYear();
+    req.mes = new Date().getMonth() + 1;
+    req.idTabla = 1;//MAESTRA TIPO EGRESO
+
+    let cantDias = new Date().getDate();
+    console.log(cantDias);
+    this.reportService.getSumaMesCategoria(req).subscribe(
+      (data: ApiResponse[]) => {
+        this.cargandoPieChart = false;
+        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+
+          this.sumaCategoria = JSON.parse(data[0].result);
+          let suma = 0;
+          let sumaOtr = 0;
+          this.sumaCategoria.forEach(el => {
+            if (el.label != 'CUARTO' && el.label != 'ALIMENTACION') {
+              sumaOtr += el.data;
+            }
+            suma += el.data;
+          });
+
+          this.sumaCategoria = this.sumaCategoria.filter(el => (el.label == 'CUARTO' || el.label == 'ALIMENTACION'));
+          this.sumaCategoria.unshift({ label: 'PROMEDIO DIA', data: suma })
+          this.sumaCategoria.push({ label: 'OTROS', data: sumaOtr })
+
+          this.sumaCategoria.forEach(el => {
+            el.label == 'CUARTO' ? el.promedio = el.data / 30 : el.promedio = el.data / cantDias;
+          });
+        } else {
+          console.log('Ocurrio un error al registrar egreso');
+        }
+      }, error => {
+        console.log(error);
+      }
+    );
   }
 
 }
