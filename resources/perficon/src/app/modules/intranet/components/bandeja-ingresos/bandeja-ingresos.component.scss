@@ -1,0 +1,36 @@
+@import "../../../../../assets/styles/scss/views/table";
+
+.page {
+  .table-resultados {
+    // margin-bottom: 0px;
+    .table-container {
+      max-height: auto;
+    }
+  }
+}
+
+@include mat-table-columns(
+  (
+    id: (
+      width: 2rem
+    ),
+    nombre: (
+      width: 8rem
+    ),
+    nomTipoIngreso: (
+      width: 7rem
+    ),
+    monto: (
+      width: 5rem
+    ),
+    fecha: (
+      width: 6rem
+    ),
+    observacion: (
+      width: 12rem
+    ),
+    opt: (
+      width: 2.5rem
+    )
+  )
+);

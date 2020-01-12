@@ -5,6 +5,7 @@ import { BandejaEgresosComponent } from './components/bandeja-egresos/bandeja-eg
 import { ConfiguracionMaestraComponent } from './components/configuracion-maestra/configuracion-maestra.component';
 import { CuentaBancoComponent } from './components/cuenta-banco/cuenta-banco.component';
 import { MovimientoBancoComponent } from './components/movimiento-banco/movimiento-banco.component';
+import { BandejaIngresosComponent } from './components/bandeja-ingresos/bandeja-ingresos.component';
 
 const intranetRoutes: Routes = [
   {
@@ -22,6 +23,10 @@ const intranetRoutes: Routes = [
         path: 'bandeja-egresos',
         component: BandejaEgresosComponent,
         data: { title: 'Bandeja egresos' }
+      }, {
+        path: 'bandeja-ingresos',
+        component: BandejaIngresosComponent,
+        data: { title: 'Bandeja ingresos' }
       }, {
         path: 'bandeja-movimientos',
         component: MovimientoBancoComponent,

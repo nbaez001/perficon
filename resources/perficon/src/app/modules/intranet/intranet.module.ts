@@ -17,6 +17,9 @@ import { RegCuentaBancoComponent } from './components/cuenta-banco/reg-cuenta-ba
 import { MovimientoBancoComponent } from './components/movimiento-banco/movimiento-banco.component';
 import { RegMovBancoComponent } from './components/movimiento-banco/reg-mov-banco/reg-mov-banco.component';
 import { ConfirmComponent } from './components/shared/confirm/confirm.component';
+import { BandejaIngresosComponent } from './components/bandeja-ingresos/bandeja-ingresos.component';
+import { RegIngresoComponent } from './components/bandeja-ingresos/reg-ingreso/reg-ingreso.component';
+import { BuscEgresoComponent } from './components/bandeja-ingresos/busc-egreso/busc-egreso.component';
 
 @NgModule({
   entryComponents: [
@@ -26,6 +29,8 @@ import { ConfirmComponent } from './components/shared/confirm/confirm.component'
     RegCuentaBancoComponent,
     RegMovBancoComponent,
     ConfirmComponent,
+    RegIngresoComponent,
+    BuscEgresoComponent,
   ],
   declarations: [
     RegMaestraComponent,
@@ -34,6 +39,8 @@ import { ConfirmComponent } from './components/shared/confirm/confirm.component'
     RegCuentaBancoComponent,
     RegMovBancoComponent,
     ConfirmComponent,
+    RegIngresoComponent,
+    BuscEgresoComponent,
 
     HomeComponent,
     NavbarComponent,
@@ -41,6 +48,7 @@ import { ConfirmComponent } from './components/shared/confirm/confirm.component'
     ConfiguracionMaestraComponent,
     CuentaBancoComponent,
     MovimientoBancoComponent,
+    BandejaIngresosComponent,
   ],
   imports: [
     CommonModule,

@@ -47,3 +47,9 @@ Route::post('dashboard/pie-chart', 'Administracion\DashBoardController@pieChart'
 Route::post('dashboard/line-chart', 'Administracion\DashBoardController@lineChart');
 Route::post('dashboard/bar-chart', 'Administracion\DashBoardController@barChart');
 Route::post('dashboard/suma-categoria', 'Administracion\DashBoardController@sumaCategoria');
+
+Route::post('ingreso/lista', 'Administracion\IngresoController@list');
+Route::post('ingreso/store', 'Administracion\IngresoController@store');
+Route::post('ingreso/update', 'Administracion\IngresoController@update');
+Route::post('ingreso/show', 'Administracion\IngresoController@show');
+Route::post('ingreso/lista-egresos-retorno', 'Administracion\IngresoController@listaEgresoRetorno');

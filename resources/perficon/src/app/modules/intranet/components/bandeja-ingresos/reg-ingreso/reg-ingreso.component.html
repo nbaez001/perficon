@@ -1,0 +1,94 @@
+<ng4-loading-spinner [timeout]="300000"></ng4-loading-spinner>
+<h5 mat-dialog-title>{{data.title}}</h5>
+<div mat-dialog-content>
+  <form [formGroup]="ingresoGrp">
+    <mat-grid-list cols="12" rowHeight="50px">
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="nombre" placeholder="Nombre" type="text"
+            [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased] cdkFocusInitial>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <mat-label>Tipo ingreso</mat-label>
+          <mat-select formControlName="tipoIngreso" [ngClass]="{'is-invalid': formErrors.tipoIngreso}">
+            <mat-option *ngFor="let tipoIngreso of tiposIngreso" [value]="tipoIngreso">
+              {{tipoIngreso.nombre}} - {{tipoIngreso.orden}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="monto" placeholder="Monto" type="number"
+            [ngClass]="{'is-invalid': formErrors.monto}" (change)="evaluarRetorno()">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-form-field>
+          <input matInput formControlName="fecha" [matDatepicker]="picker" placeholder="Fecha">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="12" rowHeight="70px">
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 12, md: 12, lg: 12, xl: 12}">
+        <mat-form-field>
+          <textarea formControlName="observacion" matInput placeholder="Observacion" [Uppercased]></textarea>
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+  <h4 style="margin-bottom: 5px;margin-top: 5px;">Lista de egresos</h4>
+  <button mat-raised-button color="primary" type="button" (click)="buscarEgresos()" [disabled]="inhabilitarBuscar">
+    <mat-icon>search</mat-icon>
+    Agregar egresos
+  </button>
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> N° </th>
+        <td mat-cell *matCellDef="let row; let i=index">
+          {{(row.id?(paginator.pageSize * paginator.pageIndex + i + 1):'')}}
+        </td>
+      </ng-container>
+
+      <ng-container *ngFor="let column of columnsGrilla" [matColumnDef]="column.columnDef">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ column.header }} </th>
+        <td mat-cell *matCellDef="let row"> {{ column.cell(row) }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="opt" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef>OPT.</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button matTooltip="Quitar egreso" (click)="quitarEgreso(element)"
+            [disabled]="inhabilitarBuscar">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div class="empty" *ngIf="!isLoading && dataSource === null">
+      No existe datos para mostrar en la tabla
+    </div>
+
+    <div *ngIf="isLoading" class="spinerTable">
+      <mat-progress-spinner [diameter]="35" color="primary" mode="indeterminate">
+      </mat-progress-spinner>
+    </div>
+
+    <mat-paginator class="mat-paginator-sticky" [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-raised-button color="primary" type="button" (click)="editIngreso()" *ngIf="data.objeto">Modificar</button>
+  <button mat-raised-button color="primary" type="button" (click)="regIngreso()" *ngIf="!data.objeto">Guardar</button>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Salir</button>
+</div>

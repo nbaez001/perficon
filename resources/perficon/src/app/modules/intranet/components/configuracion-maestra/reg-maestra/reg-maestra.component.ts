@@ -7,6 +7,7 @@ import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { ApiResponse } from 'src/app/model/api-response.model';
 import { DataDialog } from 'src/app/model/data-dialog.model';
+import { ValidationService } from 'src/app/services/validation.service';
 
 @Component({
   selector: 'app-reg-maestra',
@@ -15,15 +16,16 @@ import { DataDialog } from 'src/app/model/data-dialog.model';
 })
 export class RegMaestraComponent implements OnInit {
   maestraGrp: FormGroup;
+  maestraEdit: Maestra;
   messages = {
     'nombre': {
-      'required': 'Field is required'
+      'required': 'Campo obligatorio'
     },
     'codigo': {
-      'required': 'Field is required'
+      'required': 'Campo obligatorio'
     },
     'valor': {
-      'required': 'Field is required'
+      'required': 'Campo obligatorio'
     }
   };
   formErrors = {
@@ -37,6 +39,7 @@ export class RegMaestraComponent implements OnInit {
     private spinnerService: Ng4LoadingSpinnerService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(UsuarioService) private user: UsuarioService,
+    @Inject(ValidationService) private validationService: ValidationService,
     @Inject(MAT_DIALOG_DATA) public data: DataDialog) { }
 
   ngOnInit() {
@@ -48,57 +51,23 @@ export class RegMaestraComponent implements OnInit {
 
     this.maestraGrp.valueChanges.subscribe((val: any) => {
       console.log(JSON.stringify(val));
-      this.logValidationErrors(this.maestraGrp, this.messages, this.formErrors);
+      this.validationService.getValidationErrors(this.maestraGrp, this.messages, this.formErrors, false);
     });
 
     this.inicializarVariables();
   }
 
   public inicializarVariables(): void {
-  }
-
-  validateForm(): void {
-    this.logValidationErrors(this.maestraGrp, this.messages, this.formErrors);
-  }
-
-  logValidationErrors(group: FormGroup, messages: any, formErrors: any): void {
-    Object.keys(group.controls).forEach((key: string) => {
-      let abstractControl = group.get(key);
-      if (abstractControl instanceof FormGroup) {
-        this.logValidationErrors(abstractControl, messages[key], formErrors[key]);
-      } else {
-        formErrors[key] = '';
-        if (abstractControl && abstractControl.invalid && (abstractControl.touched || abstractControl.dirty)) {
-          let msg = messages[key];
-          for (let errorKey in abstractControl.errors) {
-            if (errorKey) {
-              formErrors[key] += msg[errorKey] + ' ';
-            }
-          }
-        }
-      }
-    });
-  }
-
-  logKeyValuePairs(group: FormGroup): void {
-    Object.keys(group.controls).forEach((key: string) => {
-      let abstractControl = group.get(key);
-      if (abstractControl instanceof FormGroup) {
-        this.logKeyValuePairs(abstractControl);
-      } else {
-        //abstractControl.disable();
-        abstractControl.markAsTouched();
-        console.log('key =' + key + ' value =' + abstractControl.value);
-      }
-    });
+    if (this.data.objeto) {
+      this.maestraEdit = JSON.parse(JSON.stringify(this.data.objeto));
+      this.maestraGrp.get('nombre').setValue(this.maestraEdit.nombre);
+      this.maestraGrp.get('codigo').setValue(this.maestraEdit.codigo);
+      this.maestraGrp.get('valor').setValue(this.maestraEdit.valor);
+    }
   }
 
   regMaestra(): void {
-    console.log(this.maestraGrp);
     if (this.maestraGrp.valid) {
-      console.log('VALIDO');
-      console.log(this.maestraGrp.value);
-
       let mae = new Maestra();
       mae.id = 0;
       mae.idMaestraPadre = 0;
@@ -126,13 +95,36 @@ export class RegMaestraComponent implements OnInit {
         }
       );
     } else {
-      this.logKeyValuePairs(this.maestraGrp);
-      this.validateForm();
+      this.validationService.getValidationErrors(this.maestraGrp, this.messages, this.formErrors, true);
     }
   }
 
-  buscar() {
-    console.log('Buscar');
+  editMaestra(): void {
+    if (this.maestraGrp.valid) {
+      let obj: Maestra = JSON.parse(JSON.stringify(this.data.objeto));
+      obj.nombre = this.maestraGrp.get('nombre').value;
+      obj.codigo = this.maestraGrp.get('codigo').value;
+      obj.valor = this.maestraGrp.get('valor').value;
+      obj.idUsuarioMod = this.user.getIdUsuario;
+      obj.fecUsuarioMod = new Date();
+
+      this.spinnerService.show();
+      this.maestraService.editMaestra(obj).subscribe(
+        (data: ApiResponse[]) => {
+          if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+            console.log('Exito al modificar');
+            this.dialogRef.close(obj);
+            this.spinnerService.hide();
+          } else {
+            console.error('Ocurrio un error al modificar maestra');
+          }
+        }, error => {
+          console.error('Error al modificar maestra');
+        }
+      );
+    } else {
+      this.validationService.getValidationErrors(this.maestraGrp, this.messages, this.formErrors, true);
+    }
   }
 
 }

@@ -18,6 +18,9 @@ export const MENSAJES = {
                 REGISTRAR: {
                     TITLE: 'REGISTRAR MAESTRA'
                 },
+                MODIFICAR: {
+                    TITLE: 'MODIFICAR MAESTRA'
+                },
                 REGISTRARCHILD: {
                     TITLE: 'REGISTRAR HIJOS MAESTRA'
                 }
@@ -38,6 +41,19 @@ export const MENSAJES = {
                 },
                 EDITAR: {
                     TITLE: 'MODIFICAR EGRESO'
+                }
+            }
+        },
+        BANDEJAINGRESOS: {
+            INGRESO: {
+                REGISTRAR: {
+                    TITLE: 'REGISTRAR INGRESO'
+                },
+                EDITAR: {
+                    TITLE: 'MODIFICAR INGRESO'
+                },
+                BUSCAREGRESO: {
+                    TITLE: 'BUSCAR EGRESO'
                 }
             }
         },

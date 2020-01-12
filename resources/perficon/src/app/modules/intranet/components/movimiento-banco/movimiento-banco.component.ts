@@ -227,9 +227,6 @@ export class MovimientoBancoComponent implements OnInit {
         );
       }
     });
-
-
-
   }
 
 }

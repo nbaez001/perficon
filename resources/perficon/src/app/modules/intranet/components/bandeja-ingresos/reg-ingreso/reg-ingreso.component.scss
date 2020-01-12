@@ -1,0 +1,34 @@
+@import "../../../../../../assets/styles/scss/views/table";
+
+.table-container {
+  max-height: auto;
+}
+
+@include mat-table-columns(
+  (
+    id: (
+      width: 2rem
+    ),
+    nomTipoEgreso: (
+      width: 7rem
+    ),
+    nombre: (
+      width: 8rem
+    ),
+    fecha: (
+      width: 6rem
+    ),
+    total: (
+      width: 4.5rem
+    ),
+    totalRetorno: (
+      width: 4.5rem
+    ),
+    porRetornar: (
+      width: 4.5rem
+    ),
+    opt: (
+      width: 2.5rem
+    )
+  )
+);

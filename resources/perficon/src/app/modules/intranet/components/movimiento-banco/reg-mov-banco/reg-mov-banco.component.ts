@@ -146,9 +146,11 @@ export class RegMovBancoComponent implements OnInit {
             this.spinnerService.hide();
           } else {
             console.error('Ocurrio un error al registrar movimiento');
+            this.spinnerService.hide();
           }
         }, error => {
           console.error('Error al registrar movimiento');
+          this.spinnerService.hide();
         }
       );
     } else {

@@ -1,6 +1,6 @@
 export class EgresoRequest {
     idTipoEgreso: number;
-    dia: number;
+    dia: string;
     indicio: string;
     fechaInicio: Date;
     fechaFin: Date;

@@ -190,6 +190,27 @@ export class ConfiguracionMaestraComponent implements OnInit {
     });
   }
 
+  editMaestra(obj: Maestra) {
+    let index = this.listaMaestra.indexOf(obj);
+    const dialogRef = this.dialog.open(RegMaestraComponent, {
+      width: '500px',
+      disableClose: false,
+      data: {
+        title: MENSAJES.INTRANET.CONFIGURACION.MAESTRA.MODIFICAR.TITLE,
+        objeto: obj
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.listaMaestra.splice(index, 1);
+        this.listaMaestra.unshift(result);
+        this.cargarDatosTabla();
+      }
+    });
+  }
+
+
   regMaestraChild(obj: Maestra) {
     const dialogRef = this.dialog.open(RegMaestraChildComponent, {
       width: '500px',
