@@ -25,16 +25,15 @@
           </mat-card-header>
           <mat-card-content>
             <div class="tv-panel">
-              <span>Promedio egreso diario por categorias</span>
-              <ul class="tv-panel-list">
-                <li *ngFor="let item of sumaCategoria">{{item.label}}:
-                  <b>S/.{{item.promedio | number: '1.2-2'}}</b>
-                </li>
-              </ul>
-              <!-- <h6 style="text-align:center; position: absolute; top:78px;"></h6>
-              <h6 style="text-align:center; position: absolute; top:95px;"></h6> -->
-              <!-- <img style="position: absolute; height: 100px; width: auto; top: 100px; right: 30px;"
-                src="../../../../../assets/images/icons/gear.png" alt="Photo"> -->
+              <span>Egreso diario por categorias</span>
+              <div class="detalle-tv-panel">
+                <div *ngFor="let item of sumaCategoria">
+                  <mat-checkbox [(ngModel)]="item.mostrar" [disabled]="item.deshabilitado" (change)="$event ? realizarCalculo() : null">
+                    {{item.label}}:
+                  </mat-checkbox>
+                  <b matTooltip="{{item.data | number: '1.2-2'}}" #tooltip="matTooltip" (click)="tooltip.toggle()">S/.{{item.promedio | number: '1.2-2'}}</b>
+                </div>
+              </div>
             </div>
             <div class="tv-soporte"></div>
             <div class="tv-plataforma"></div>

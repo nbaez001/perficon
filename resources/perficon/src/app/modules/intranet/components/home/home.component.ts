@@ -471,50 +471,96 @@ export class HomeComponent implements OnInit {
   }
 
   getSumaMesCategoria(lista: any[]) {
-    let req = new PieChartRequest();
-    req.anio = new Date().getFullYear();
-    req.mes = new Date().getMonth() + 1;
-    req.idTabla = 1;//MAESTRA TIPO EGRESO
+    let cantDias = this.daysIntoYear(new Date());
+    let sumaTotal = 0;
+    let sumaOtros = 0;
 
-    let cantDias = new Date().getDate();
+    //PREPARACION DE LOS 5 MAXIMOS EGRESOS
+    let filterArray: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      filterArray.push(lista[i].label);
+    }
 
-    this.reportService.getSumaMesCategoria(req).subscribe(
-      (data: ApiResponse[]) => {
-        this.cargandoPieChart = false;
-        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
-
-          let result = JSON.parse(data[0].result);
-          let sumaTotal = 0;
-          let sumaOtros = 0;
-
-          //PREPARACION DE LOS 5 MAXIMOS EGRESOS
-          let filterArray: string[] = [];
-          for (let i = 0; i < 4; i++) {
-            filterArray.push(lista[i].label);
-          }
-
-          //SUMA LOS VALORES QUE NO ESTAN EL EL ARRAY DE MAXIMOS EGRESOS
-          result.forEach(el => {
-            if (!filterArray.find(x => x == el.label)) {
-              sumaOtros += el.data;
-            }
-            sumaTotal += el.data;
-          });
-
-          this.sumaCategoria = result.filter(({ label }) => filterArray.includes(label));
-          this.sumaCategoria.unshift({ label: 'PROMEDIO DIA', data: sumaTotal })
-          this.sumaCategoria.push({ label: 'OTROS', data: sumaOtros })
-
-          this.sumaCategoria.forEach(el => {
-            el.label == 'CUARTO' ? el.promedio = el.data / 30 : el.promedio = el.data / cantDias;
-          });
-        } else {
-          console.log('Ocurrio un error al registrar egreso');
-        }
-      }, error => {
-        console.log(error);
+    //SUMA LOS VALORES QUE NO ESTAN EL EL ARRAY DE MAXIMOS EGRESOS
+    lista.forEach(el => {
+      if (!filterArray.find(x => x == el.label)) {
+        sumaOtros += el.data;
       }
-    );
+      sumaTotal += el.data;
+    });
+
+    this.sumaCategoria = lista.filter(({ label }) => filterArray.includes(label));
+    this.sumaCategoria.unshift({ label: 'PROMEDIO DIA', data: sumaTotal })
+    this.sumaCategoria.push({ label: 'OTROS', data: sumaOtros })
+
+    this.sumaCategoria.forEach(el => {
+      el.mostrar = true;
+      el.label == 'CUARTO' ? el.promedio = el.data / (30 * el.cantidad) : el.promedio = el.data / cantDias;
+      el.label == 'PROMEDIO DIA' ? el.deshabilitado = true : el.deshabilitado = false;
+    });
+    this.realizarCalculo();
   }
+
+  realizarCalculo(): void {
+    this.sumaCategoria[0].promedio = 0.0;
+    this.sumaCategoria[0].data = 0.0;
+    this.sumaCategoria.forEach(el => {
+      if (el.mostrar && !el.deshabilitado) {
+        this.sumaCategoria[0].promedio += el.promedio;
+        this.sumaCategoria[0].data += el.data;
+      }
+    });
+  }
+
+  daysIntoYear(date) {
+    return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
+  }
+
+  // getSumaMesCategoria(lista: any[]) {
+  //   let req = new PieChartRequest();
+  //   req.anio = new Date().getFullYear();
+  //   req.mes = new Date().getMonth() + 1;
+  //   req.idTabla = 1;//MAESTRA TIPO EGRESO
+
+  //   let cantDias = new Date().getDate();
+
+  //   this.reportService.getSumaMesCategoria(req).subscribe(
+  //     (data: ApiResponse[]) => {
+  //       this.cargandoPieChart = false;
+  //       if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+
+  //         let result = JSON.parse(data[0].result);
+  //         let sumaTotal = 0;
+  //         let sumaOtros = 0;
+
+  //         //PREPARACION DE LOS 5 MAXIMOS EGRESOS
+  //         let filterArray: string[] = [];
+  //         for (let i = 0; i < 4; i++) {
+  //           filterArray.push(lista[i].label);
+  //         }
+
+  //         //SUMA LOS VALORES QUE NO ESTAN EL EL ARRAY DE MAXIMOS EGRESOS
+  //         result.forEach(el => {
+  //           if (!filterArray.find(x => x == el.label)) {
+  //             sumaOtros += el.data;
+  //           }
+  //           sumaTotal += el.data;
+  //         });
+
+  //         this.sumaCategoria = result.filter(({ label }) => filterArray.includes(label));
+  //         this.sumaCategoria.unshift({ label: 'PROMEDIO DIA', data: sumaTotal })
+  //         this.sumaCategoria.push({ label: 'OTROS', data: sumaOtros })
+
+  //         this.sumaCategoria.forEach(el => {
+  //           el.label == 'CUARTO' ? el.promedio = el.data / 30 : el.promedio = el.data / cantDias;
+  //         });
+  //       } else {
+  //         console.log('Ocurrio un error al registrar egreso');
+  //       }
+  //     }, error => {
+  //       console.log(error);
+  //     }
+  //   );
+  // }
 
 }

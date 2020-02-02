@@ -167,11 +167,15 @@ $breakpoint-lg: 1360px;
   padding-left: 20px;
   font-size: 12px;
   text-align: left;
-  li {
-    padding-bottom: 5px;
-    b {
-      float: right;
-      padding-right: 5px;
-    }
+}
+
+.detalle-tv-panel {
+  padding: 5px;
+  font-size: 12px;
+  text-align: left !important;
+  b {
+    padding-top: 5px;
+    float: right !important;
+    cursor: pointer;
   }
 }
