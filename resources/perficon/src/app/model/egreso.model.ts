@@ -17,4 +17,6 @@ export class Egreso {
     idUsuarioMod: number;
     fecUsuarioMod: Date;
     totalEgreso: number;
+
+    editar: boolean;
 }

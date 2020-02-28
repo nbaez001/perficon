@@ -28,4 +28,10 @@ export class CommonService {
     }
     return new Date(anio, mes, 0).getDate();
   }
+
+  calcularDiferenciaDias(fecInicio: Date, fecFin: Date): number {
+    console.log(fecFin);
+    console.log(fecInicio);
+    return Math.round((fecFin.getTime() - fecInicio.getTime()) / (1000 * 60 * 60 * 24));
+  }
 }

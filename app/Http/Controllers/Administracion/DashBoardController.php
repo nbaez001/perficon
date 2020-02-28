@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DateTime;
 use DB;
+use Storage;
 
 class DashBoardController extends Controller
 {
@@ -104,5 +105,22 @@ class DashBoardController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getFile(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (Storage::disk('local')->exists($data['url'])) {
+            return Storage::disk('local')->get($data['url']);
+        }
+
+        throw new FileNotFoundException(sprintf('File not found: %s', $filename), 404);
     }
 }

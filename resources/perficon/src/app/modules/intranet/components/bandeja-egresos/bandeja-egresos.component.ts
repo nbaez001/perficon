@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
-import { MatTableDataSource, MatDialog, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatPaginator, MatSort, PageEvent } from '@angular/material';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DIAS, MENSAJES } from 'src/app/common';
 import { Maestra } from 'src/app/model/maestra.model';
@@ -12,6 +12,7 @@ import { RegEgresoComponent } from './reg-egreso/reg-egreso.component';
 import { EgresoService } from 'src/app/services/intranet/egreso.service';
 import { EgresoRequest } from 'src/app/model/dto/egreso.request';
 import { ApiResponse } from 'src/app/model/api-response.model';
+import { CommonService } from 'src/app/services/common.service';
 
 @Component({
   selector: 'app-bandeja-egresos',
@@ -86,7 +87,8 @@ export class BandejaEgresosComponent implements OnInit {
     private decimalPipe: DecimalPipe,
     @Inject(EgresoService) private egresoService: EgresoService,
     @Inject(MaestraService) private maestraService: MaestraService,
-    @Inject(ValidationService) private validationService: ValidationService) { }
+    @Inject(ValidationService) private validationService: ValidationService,
+    @Inject(CommonService) private commonService: CommonService) { }
 
   ngOnInit() {
     this.spinnerService.show();
@@ -137,10 +139,19 @@ export class BandejaEgresosComponent implements OnInit {
   public cargarDatosTabla(): void {
     this.dataSource = null;
     if (this.listaEgresos.length > 0) {
+      this.setBanderaEditar(this.listaEgresos);
       this.dataSource = new MatTableDataSource(this.listaEgresos);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     }
+  }
+
+  setBanderaEditar(list: Egreso[]): void {
+    list.forEach(el => {
+      let dias = Math.round((new Date(this.datePipe.transform(new Date(), 'yyyy/MM/dd')).getTime() - new Date(this.datePipe.transform(el.fecUsuarioCrea, 'yyyy/MM/dd')).getTime()) / (1000 * 60 * 60 * 24));
+      console.log(dias);
+      dias > 2 ? el.editar = false : el.editar = true;
+    });
   }
 
   comboTiposEgreso(): void {
@@ -245,5 +256,25 @@ export class BandejaEgresosComponent implements OnInit {
       this.listaEgresos.push(res);
     }
   }
+
+  // pageEvent: PageEvent;
+  // length = 1000;
+  // pageIndex: number = 0;
+  // pageSize: number = 50;
+  // lowValue: number = 0;
+  // highValue: number = 50;
+
+  // getPaginatorData(event) {
+  //   console.log(event);
+  //   if (event.pageIndex === this.pageIndex + 1) {
+  //     this.lowValue = this.lowValue + this.pageSize;
+  //     this.highValue = this.highValue + this.pageSize;
+  //   }
+  //   else if (event.pageIndex === this.pageIndex - 1) {
+  //     this.lowValue = this.lowValue - this.pageSize;
+  //     this.highValue = this.highValue - this.pageSize;
+  //   }
+  //   this.pageIndex = event.pageIndex;
+  // }
 
 }

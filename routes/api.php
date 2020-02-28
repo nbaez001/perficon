@@ -47,6 +47,7 @@ Route::post('dashboard/pie-chart', 'Administracion\DashBoardController@pieChart'
 Route::post('dashboard/line-chart', 'Administracion\DashBoardController@lineChart');
 Route::post('dashboard/bar-chart', 'Administracion\DashBoardController@barChart');
 Route::post('dashboard/suma-categoria', 'Administracion\DashBoardController@sumaCategoria');
+Route::post('dashboard/get-file', 'Administracion\DashBoardController@getFile');
 
 Route::post('ingreso/lista', 'Administracion\IngresoController@list');
 Route::post('ingreso/store', 'Administracion\IngresoController@store');
