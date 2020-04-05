@@ -54,3 +54,6 @@ Route::post('ingreso/store', 'Administracion\IngresoController@store');
 Route::post('ingreso/update', 'Administracion\IngresoController@update');
 Route::post('ingreso/show', 'Administracion\IngresoController@show');
 Route::post('ingreso/lista-egresos-retorno', 'Administracion\IngresoController@listaEgresoRetorno');
+
+Route::post('email/send-email', 'Administracion\EmailController@sendEmail');
+Route::post('email/custom-email', 'Administracion\EmailController@customEmail');

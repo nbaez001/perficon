@@ -13,6 +13,7 @@ import { CommonService } from 'src/app/services/common.service';
 import { BarChartRequest } from 'src/app/model/dto/bar-chart.request';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { ApiOutResponse } from 'src/app/model/dto/api-out.response';
 
 @Component({
   selector: 'app-home',
@@ -140,17 +141,19 @@ export class HomeComponent implements OnInit {
     req.mes = new Date().getMonth();
 
     this.reportService.lineChartReport(req).subscribe(
-      (data: ApiResponse[]) => {
+      (data: ApiOutResponse) => {
         this.isLoadingLine = false;
-        if (typeof data[0] != undefined && data[0].rcodigo == 0) {
+        if (data.rCodigo == 0) {
           let labels: string[] = [];
           let datas: number[] = [];
+          let datas2: number[] = [];
 
-          let result = JSON.parse(data[0].result);
+          let result = data.result;
           result = result.reverse();
           result.forEach((val, i) => {
             labels.push(this.commonService.obtenerNombreMes(val.label).nombre);
             datas.push(val.data);
+            datas2.push(val.dataIng + val.dataIngMov);
           });
 
           this.LineChart = new Chart('lineChart', {
@@ -158,11 +161,18 @@ export class HomeComponent implements OnInit {
             data: {
               labels: labels,//['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
               datasets: [{
-                label: 'Gasto promedio por meses',
+                label: 'Gasto mensual',
                 data: datas,//[9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
                 fill: true,
                 lineTension: 0.2,
                 borderColor: 'red',
+                borderWidth: 1
+              }, {
+                label: 'Ingreso mensual',
+                data: datas2,//[9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
+                fill: true,
+                lineTension: 0.2,
+                borderColor: 'blue',
                 borderWidth: 1
               }]
             },
@@ -187,11 +197,18 @@ export class HomeComponent implements OnInit {
             data: {
               labels: labels.slice(labels.length / 2, labels.length),//['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic'],
               datasets: [{
-                label: 'Gasto promedio por meses',
-                data: datas.slice(labels.length / 2, labels.length),//[9, 7, 3, 5, 2, 10, 15, 16, 19, 3, 1, 9],
+                label: 'Gasto mensual',
+                data: datas.slice(labels.length / 2, labels.length),
                 fill: true,
                 lineTension: 0.2,
                 borderColor: 'red',
+                borderWidth: 1
+              }, {
+                label: 'Ingreso mensual',
+                data: datas2.slice(labels.length / 2, labels.length),
+                fill: true,
+                lineTension: 0.2,
+                borderColor: 'blue',
                 borderWidth: 1
               }]
             },
@@ -216,11 +233,18 @@ export class HomeComponent implements OnInit {
             data: {
               labels: labels.slice(labels.length * (2 / 3), labels.length),
               datasets: [{
-                label: 'Gasto promedio por meses',
+                label: 'Gasto mensual',
                 data: datas.slice(labels.length * (2 / 3), labels.length),
                 fill: true,
                 lineTension: 0.2,
                 borderColor: 'red',
+                borderWidth: 1
+              }, {
+                label: 'Ingreso mensual',
+                data: datas2.slice(labels.length * (2 / 3), labels.length),
+                fill: true,
+                lineTension: 0.2,
+                borderColor: 'blue',
                 borderWidth: 1
               }]
             },

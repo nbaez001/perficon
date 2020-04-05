@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Administracion;
 
 use App\Http\Controllers\Controller;
+use App\Http\Dto\ApiOutResponse;
+use App\Http\Service\DashBoardService;
+use App\Providers\api_testCPE;
 use Illuminate\Http\Request;
 use DateTime;
 use DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
 use Storage;
 
 class DashBoardController extends Controller
@@ -32,8 +37,8 @@ class DashBoardController extends Controller
     public function lineChart(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $resp = DB::select('call PFC_S_LINE_CHART(?,?)', [$data['anio'], $data['mes']]);
-        return $resp;
+        $dashService = new DashBoardService();
+        return response()->json($dashService->lineChart($data));
     }
 
     /**
