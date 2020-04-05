@@ -74,8 +74,8 @@ class BackupDatabase extends Command
                 storage_path("app/backups/{$filename}")
             ));
 
-            if (!File::exists(storage_path() . "/backups")) {
-                File::makeDirectory(storage_path() . '/backups');
+            if (!File::exists(storage_path() . "/app/backups")) {
+                File::makeDirectory(storage_path() . '/app/backups');
             }
 
             $this->process->mustRun();
@@ -88,8 +88,8 @@ class BackupDatabase extends Command
             );
             Mail::send(new SendMail($data));
 
-            if (!File::exists(storage_path() . "/backups/{$filename}")) {
-                File::delete(storage_path() . "/backups/{$filename}");
+            if (File::exists(storage_path() . "/app/backups/{$filename}")) {
+                File::delete(storage_path() . "/app/backups/{$filename}");
             }
             $this->info('The backup has been proceed successfully.');
         } catch (ProcessFailedException $exception) {
