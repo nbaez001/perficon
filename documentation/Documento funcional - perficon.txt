@@ -1,0 +1,54 @@
+Los que suman entrada y salida de dinero
+WALLET Y MOVIMIENTO WALLET
+* salida (Todos seran marcados como EGRESO)
+* ingreso (Marcados como ingreso)
+
+*****CASOS DE USO*****
+
+CUENTAS Y MOVIMIENTO CUENTAS
+* retiro (retiro, transferencia, descuento)
+  => hay retiros pero que no constituyen un egreso
+  => debe haber una opcion para marcar que es un movimiento a WALLET
+  => debe haber una opcion para marcar que es un EGRESO
+* deposito (pago, interes)
+  => debe haber una opcion para marcar que es un PRESTAMO
+. Las cuentas solo deben ser una tabla asociada a movimientos de tipo 
+  retiro o deposito
+. la opcion egreso permitira dejar un flag "egreso" en el movimiento 
+  y realizara un registro en la tabla EGRESO
+
+EGRESO
+Constituyen los registros de egresos, al registrarse se debe seleccionar de 
+=> Egreso neto (GASTOS)
+=> Egreso retornable (PRESTAMO)
+=> Egreso saneo (PAGO DEUDA)
+CASOS DE USO:
+=> Registrar egreso
+   * Se debe regitrar el egreso, debe afectar a WALLET o CUENTA BANCO
+   * Se debe seleccionar NETO, RETORNABLE o SANEO
+     - RETORNABLE: registra en POR_COBRAR con id_egreso
+	 - SANEO: registra con un flag de pendiente de regularizar en POR_PAGAR
+	 
+INGRESO
+Constituyen la suma de depositos y ingresos wallet
+=> Ingreso neto (TRABAJO)
+=> Ingreso retornable (DEUDA)
+=> Ingreso saneo (COBRO PRESTAMO)
+CASOS DE USO:
+=> Registrar ingreso
+   * Se debe registrar el ingreso, debe afectar a WALLET o CUENTA BANCO
+   * Se debe seleccionar TRABAJO, PRESTAMO o OTROS
+     - RETORNABLE: registra en POR_PAGAR con id_ingreso
+	 - SANEO: registra con un flag de pendiente de regularizar en POR_COBRAR
+
+POR_COBRAR(PRESTAMO)
+Contituye las salidas (WALLET) y retiros (CUENTA) que son marcados como PRESTAMO
+CASOS DE USO:
+=> Regularizar pagado
+
+
+POR_PAGAR(DEUDA)
+Constotuye los ingresos (WALLET) y depositos(CUENTA) que son marcados como DEUDA
+=> Regularizar prestado
+
+
