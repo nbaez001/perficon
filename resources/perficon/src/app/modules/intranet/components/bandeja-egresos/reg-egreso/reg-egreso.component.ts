@@ -75,6 +75,7 @@ export class RegEgresoComponent implements OnInit {
 
   ngOnInit() {
     this.egresoGrp = this.fb.group({
+      cuenta:['',[Validators.required]],
       tipoEgreso: ['', [Validators.required]],
       nombre: ['', [Validators.required]],
       unidadMedida: ['', [Validators.required]],

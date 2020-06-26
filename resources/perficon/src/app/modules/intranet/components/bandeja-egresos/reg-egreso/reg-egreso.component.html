@@ -4,6 +4,22 @@
   <form [formGroup]="egresoGrp">
     <mat-grid-list cols="12" rowHeight="50px">
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-label>Cuenta</mat-label>
+          <mat-select formControlName="cuenta" [ngClass]="{'is-invalid': formErrors.cuenta}">
+            <mat-option *ngFor="let cuenta of cuentas" [value]="cuenta">
+              {{cuenta.nombre}}
+            </mat-option>
+          </mat-select>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
+        <mat-label>Cuenta</mat-label>
+          <mat-select formControlName="cuenta" [ngClass]="{'is-invalid': formErrors.cuenta}">
+            <mat-option *ngFor="let cuenta of cuentas" [value]="cuenta">
+              {{cuenta.nombre}}
+            </mat-option>
+          </mat-select>
+      </mat-grid-tile>
+      <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <input matInput formControlName="nombre" placeholder="Nombre" type="text"
             [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased] cdkFocusInitial>
