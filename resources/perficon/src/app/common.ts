@@ -1,6 +1,3 @@
-// export const webServiceEndpoint: string = 'http://perficon.test/api/';
-export const webServiceEndpoint: string = 'http://perficon.elnazarenovraem.edu.pe/api/';
-
 export const DIAS: Object[] = [
     { id: 1, nombre: 'LUNES' },
     { id: 2, nombre: 'MARTES' },
