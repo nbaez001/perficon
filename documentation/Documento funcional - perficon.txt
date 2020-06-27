@@ -18,7 +18,11 @@ CUENTAS Y MOVIMIENTO CUENTAS
   y realizara un registro en la tabla EGRESO
 
 EGRESO
+<<<<<<< HEAD
 Constituyen la suma de los retiros y salidas marcados como EGRESO
+=======
+Constituyen los registros de egresos, al registrarse se debe seleccionar de 
+>>>>>>> master
 => Egreso neto (GASTOS)
 => Egreso retornable (PRESTAMO)
 => Egreso saneo (PAGO DEUDA)
