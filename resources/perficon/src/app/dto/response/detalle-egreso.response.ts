@@ -1,4 +1,4 @@
-export class Egreso {
+export class DetalleEgresoResponse {
     id: number;
     idCategoriaEgreso: number;
     nomCategoriaEgreso: string;

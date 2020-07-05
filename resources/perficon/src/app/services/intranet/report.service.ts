@@ -7,6 +7,7 @@ import { LineChartRequest } from 'src/app/model/dto/line-chart.request';
 import { BarChartRequest } from 'src/app/model/dto/bar-chart.request';
 import { ApiOutResponse } from 'src/app/model/dto/api-out.response';
 import { environment } from 'src/environments/environment';
+import { LineChartResponse } from 'src/app/dto/response/line-chart.response';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class ReportService {
     return this.http.post<ApiResponse[]>(`${environment.webServiceEndpoint}dashboard/pie-chart`, request);
   }
 
-  public lineChartReport(request: LineChartRequest): Observable<ApiOutResponse> {
-    return this.http.post<ApiOutResponse>(`${environment.webServiceEndpoint}dashboard/line-chart`, request);
+  public lineChartReport(request: LineChartRequest): Observable<ApiOutResponse<LineChartResponse[]>> {
+    return this.http.post<ApiOutResponse<LineChartResponse[]>>(`${environment.webServiceEndpoint}dashboard/line-chart`, request);
   }
 
   public barChartReport(request: BarChartRequest): Observable<ApiResponse[]> {

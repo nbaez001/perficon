@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { ApiResponse } from 'src/app/model/api-response.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
@@ -10,7 +10,19 @@ import { ValidationService } from 'src/app/services/validation.service';
 import { Egreso } from 'src/app/model/egreso.model';
 import { EgresoService } from 'src/app/services/intranet/egreso.service';
 import { Maestra } from 'src/app/model/maestra.model';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { tablasMaestra } from 'src/app/common';
+import { BuscarWalletRequest } from 'src/app/dto/request/buscar-wallet.request';
+import { ApiOutResponse } from 'src/app/model/dto/api-out.response';
+import { WalletResponse } from 'src/app/dto/response/wallet.response';
+import { BuscarCuentaBancoRequest } from 'src/app/dto/request/buscar-cuenta-banco.request';
+import { CuentaBancoService } from 'src/app/services/intranet/cuenta-banco.service';
+import { WalletService } from 'src/app/services/intranet/wallet.service';
+import { CuentaBancoResponse } from 'src/app/dto/response/cuenta-banco.response';
+import { CambiarCuentaComponent } from './cambiar-cuenta/cambiar-cuenta.component';
+import { MENSAJES } from 'src/app/common';
+import { DetalleEgresoResponse } from 'src/app/dto/response/detalle-egreso.response';
+import { RegDetEgresoComponent } from './reg-det-egreso/reg-det-egreso.component';
 
 @Component({
   selector: 'app-reg-egreso',
@@ -18,114 +30,134 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./reg-egreso.component.scss']
 })
 export class RegEgresoComponent implements OnInit {
-  tiposEgreso: Maestra[] = [];
-  unidadesMedida: Maestra[] = [];
-  dias = ["LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO", "DOMINGO"];
+  categoriasEgreso: Maestra[] = [];
+
+  listaWallet: WalletResponse[] = [];
+  listaCuentaBanco: CuentaBancoResponse[] = [];
+  flgCuenta: number = -1;
+
   egresoEdit: Egreso;
 
-  egresoGrp: FormGroup;
+  formularioGrp: FormGroup;
   messages = {
-    'tipoEgreso': {
-      'required': 'Field is required'
-    },
-    'nombre': {
-      'required': 'Field is required'
-    },
-    'unidadMedida': {
-      'required': 'Field is required'
-    },
-    'cantidad': {
-      'required': 'Field is required'
-    },
-    'precio': {
-      'required': 'Field is required'
-    },
-    'total': {
-      'required': 'Field is required'
-    },
-    'fecha': {
-      'required': 'Field is required'
-    },
-    'descripcion': {
-    },
-    'ubicacion': {
+    'categoriaEgreso': {
+      'required': 'Campo requerido'
     }
   };
   formErrors = {
-    'tipoEgreso': '',
-    'nombre': '',
-    'unidadMedida': '',
-    'cantidad': '',
-    'precio': '',
-    'total': '',
-    'fecha': '',
-    'descripcion': '',
-    'ubicacion': ''
+    'categoriaEgreso': '',
   };
 
+  displayedColumns: string[];
+  dataSource: MatTableDataSource<DetalleEgresoResponse> = new MatTableDataSource([]);
+  isLoading: boolean = false;
+  listaDetalleEgresos: DetalleEgresoResponse[] = [];
+  columnsGrilla = [
+    {
+      columnDef: 'nombre',
+      header: 'Nombre',
+      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.nombre) ? detEgreso.nombre : ''}`
+    }, {
+      columnDef: 'nomTipoEgreso',
+      header: 'Tipo egreso',
+      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.nomTipoEgreso) ? detEgreso.nomTipoEgreso : ''}`
+    }, {
+      columnDef: 'nomUnidadMedida',
+      header: 'Unidad medida',
+      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.nomUnidadMedida) ? detEgreso.nomUnidadMedida : ''}`
+    }, {
+      columnDef: 'cantidad',
+      header: 'Cantidad',
+      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.cantidad) ? this.decimalPipe.transform(detEgreso.cantidad, '1.1-1') : ''}`
+    }, {
+      columnDef: 'precio',
+      header: 'Precio',
+      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.precio) ? this.decimalPipe.transform(detEgreso.precio, '1.2-2') : ''}`
+    }, {
+      columnDef: 'total',
+      header: 'Total',
+      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.total) ? this.decimalPipe.transform(detEgreso.total, '1.2-2') : ''}`
+    }, {
+      columnDef: 'dia',
+      header: 'Dia',
+      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.dia) ? detEgreso.dia : ''}`
+    }, {
+      columnDef: 'fecha',
+      header: 'Fecha',
+      cell: (detEgreso: DetalleEgresoResponse) => this.datePipe.transform(detEgreso.fecha, 'dd/MM/yyyy')
+    }
+  ];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private fb: FormBuilder,
+    public dialog: MatDialog,
     public dialogRef: MatDialogRef<RegEgresoComponent>,
     private spinnerService: Ng4LoadingSpinnerService,
     private datePipe: DatePipe,
+    private decimalPipe: DecimalPipe,
     @Inject(ValidationService) private validationService: ValidationService,
     @Inject(MaestraService) private maestraService: MaestraService,
     @Inject(EgresoService) private egresoService: EgresoService,
     @Inject(UsuarioService) private user: UsuarioService,
+    @Inject(WalletService) private walletService: WalletService,
+    @Inject(CuentaBancoService) private cuentaBancoService: CuentaBancoService,
     @Inject(MAT_DIALOG_DATA) public data: DataDialog) { }
 
   ngOnInit() {
-    this.egresoGrp = this.fb.group({
-      cuenta:['',[Validators.required]],
-      tipoEgreso: ['', [Validators.required]],
-      nombre: ['', [Validators.required]],
-      unidadMedida: ['', [Validators.required]],
-      cantidad: ['', [Validators.required]],
-      precio: ['', [Validators.required]],
-      total: ['', [Validators.required]],
-      fecha: ['', [Validators.required]],
-      descripcion: ['', []],
-      ubicacion: ['', []]
+    this.formularioGrp = this.fb.group({
+      cuenta: ['', [Validators.required]],
+      categoriaEgreso: ['', [Validators.required]],
     });
 
-    this.egresoGrp.valueChanges.subscribe((val: any) => {
-      this.validationService.getValidationErrors(this.egresoGrp, this.messages, this.formErrors, false);
+    this.formularioGrp.valueChanges.subscribe((val: any) => {
+      this.validationService.getValidationErrors(this.formularioGrp, this.messages, this.formErrors, false);
     });
 
+    this.definirTabla();
     this.inicializarVariables();
   }
 
   public inicializarVariables(): void {
-    this.comboTiposEgreso();
-    this.comboUnidadesMedida();
+    this.comboCategoriaEgreso();
+    this.radioWallet();
     if (this.data.objeto) {
       this.egresoEdit = JSON.parse(JSON.stringify(this.data.objeto));
-      this.egresoGrp.get('tipoEgreso').setValue((this.tiposEgreso.filter(el => el.id == this.egresoEdit.idTipoEgreso))[0]);
-      this.egresoGrp.get('unidadMedida').setValue((this.unidadesMedida.filter(el => el.id == this.egresoEdit.idUnidadMedida))[0]);
-      this.egresoGrp.get('nombre').setValue(this.egresoEdit.nombre);
-      this.egresoGrp.get('cantidad').setValue(this.egresoEdit.cantidad);
-      this.egresoGrp.get('precio').setValue(this.egresoEdit.precio);
-      this.egresoGrp.get('total').setValue(this.egresoEdit.total);
-      this.egresoGrp.get('descripcion').setValue(this.egresoEdit.descripcion);
-      this.egresoGrp.get('ubicacion').setValue(this.egresoEdit.ubicacion);
-      this.egresoGrp.get('fecha').setValue(new Date(this.datePipe.transform(this.egresoEdit.fecha, 'MM/dd/yyyy')));
+      // this.egresoGrp.get('categoriaEgreso').setValue((this.categoriasEgreso.filter(el => el.id == this.egresoEdit.idCategoriaEgreso))[0]);
     } else {
-      this.egresoGrp.get('fecha').setValue(new Date(this.datePipe.transform(new Date(),'MM/dd/yyyy')));
-      this.egresoGrp.get('tipoEgreso').setValue(this.tiposEgreso[0]);
-      this.egresoGrp.get('unidadMedida').setValue(this.unidadesMedida[0]);
+      // this.egresoGrp.get('fecha').setValue(new Date(this.datePipe.transform(new Date(), 'MM/dd/yyyy')));
     }
   }
 
-  comboTiposEgreso(): void {
+  definirTabla(): void {
+    this.displayedColumns = [];
+    this.columnsGrilla.forEach(c => {
+      this.displayedColumns.push(c.columnDef);
+    });
+    this.displayedColumns.unshift('id');
+    this.displayedColumns.push('opt');
+  }
+
+  public cargarDatosTabla(): void {
+    this.dataSource = null;
+    if (this.listaDetalleEgresos.length > 0) {
+      this.dataSource = new MatTableDataSource(this.listaDetalleEgresos);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
+  }
+
+  comboCategoriaEgreso(): void {
     let maestra = new Maestra();
-    maestra.idMaestraPadre = 1;//10=>TIPOS EGRESO
+    maestra.idMaestraPadre = tablasMaestra.CATEGORIA_EGRESO.id;//10=>TIPOS EGRESO
     this.maestraService.listarMaestra(maestra).subscribe(
       (data: Maestra[]) => {
-        this.tiposEgreso = data;
+        this.categoriasEgreso = data;
 
         if (this.data.objeto) {
-          this.egresoGrp.get('tipoEgreso').setValue((this.tiposEgreso.filter(el => el.id == this.egresoEdit.idTipoEgreso))[0]);
+          this.formularioGrp.get('categoriaEgreso').setValue((this.categoriasEgreso.filter(el => el.id == this.egresoEdit.idCategoriaEgreso))[0]);
         } else {
-          this.egresoGrp.get('tipoEgreso').setValue(this.tiposEgreso[2]);
+          this.formularioGrp.get('categoriaEgreso').setValue(this.categoriasEgreso[0]);
         }
       }, error => {
         console.log(error);
@@ -133,17 +165,33 @@ export class RegEgresoComponent implements OnInit {
     );
   }
 
-  comboUnidadesMedida(): void {
-    let maestra = new Maestra();
-    maestra.idMaestraPadre = 2;//10=>TIPOS EGRESO
-    this.maestraService.listarMaestra(maestra).subscribe(
-      (data: Maestra[]) => {
-        this.unidadesMedida = data;
+  radioWallet(): void {
+    let req = new BuscarWalletRequest();
+    this.walletService.listarWallet(req).subscribe(
+      (data: ApiOutResponse<WalletResponse[]>) => {
+        if (data.rCodigo == 0) {
+          this.listaWallet = data.result;
+          this.flgCuenta = 0;
+          this.formularioGrp.get('cuenta').setValue(this.listaWallet[0]);
+        }
+        this.radioCuentaBanco();
+      }, error => {
+        console.log(error);
+        this.radioCuentaBanco();
+      }
+    );
+  }
 
-        if (this.data.objeto) {
-          this.egresoGrp.get('unidadMedida').setValue((this.unidadesMedida.filter(el => el.id == this.egresoEdit.idUnidadMedida))[0]);
-        } else {
-          this.egresoGrp.get('unidadMedida').setValue(this.unidadesMedida[0]);
+  radioCuentaBanco(): void {
+    let req = new BuscarCuentaBancoRequest();
+    this.cuentaBancoService.listarCuentaBanco(req).subscribe(
+      (data: ApiOutResponse<CuentaBancoResponse[]>) => {
+        if (data.rCodigo == 0) {
+          this.listaCuentaBanco = data.result;
+          if (this.flgCuenta == -1) {
+            this.flgCuenta = 1;
+            this.formularioGrp.get('cuenta').setValue(this.listaCuentaBanco[0]);
+          }
         }
       }, error => {
         console.log(error);
@@ -151,89 +199,36 @@ export class RegEgresoComponent implements OnInit {
     );
   }
 
-  regEgreso(): void {
-    if (this.egresoGrp.valid) {
-      let obj = new Egreso();
-      obj.id = 0;
-      obj.idTipoEgreso = this.egresoGrp.get('tipoEgreso').value.id;
-      obj.nomTipoEgreso = this.egresoGrp.get('tipoEgreso').value.nombre;
-      obj.idUnidadMedida = this.egresoGrp.get('unidadMedida').value.id;
-      obj.nomUnidadMedida = this.egresoGrp.get('unidadMedida').value.nombre;
-      obj.nombre = this.egresoGrp.get('nombre').value;
-      obj.cantidad = this.egresoGrp.get('cantidad').value;
-      obj.precio = this.egresoGrp.get('precio').value;
-      obj.total = this.egresoGrp.get('total').value;
-      obj.descripcion = this.egresoGrp.get('descripcion').value;
-      obj.ubicacion = this.egresoGrp.get('ubicacion').value;
-      obj.fecha = this.egresoGrp.get('fecha').value;
-      obj.dia = this.dias[(obj.fecha.getDay() == 0 ? 7 : obj.fecha.getDay()) - 1];
-      obj.idUsuarioCrea = this.user.getIdUsuario;
-      obj.fecUsuarioCrea = new Date();
-
-      this.spinnerService.show();
-      this.egresoService.regEgreso(obj).subscribe(
-        (data: ApiResponse[]) => {
-          if (typeof data[0] != undefined && data[0].rcodigo == 0) {
-            obj.id = data[0].rid;
-            this.dialogRef.close(obj);
-            this.spinnerService.hide();
-          } else {
-            console.error('Ocurrio un error al registrar egreso');
-          }
-        }, error => {
-          console.error('Error al registrar egreso');
-        }
-      );
-    } else {
-      this.validationService.getValidationErrors(this.egresoGrp, this.messages, this.formErrors, true);
-    }
+  cambiarCuenta(cod: number): void {
+    this.flgCuenta = cod;
   }
 
-  editEgreso(): void {
-    if (this.egresoGrp.valid) {
-      let obj: Egreso = JSON.parse(JSON.stringify(this.data.objeto));
-      obj.idTipoEgreso = this.egresoGrp.get('tipoEgreso').value.id;
-      obj.nomTipoEgreso = this.egresoGrp.get('tipoEgreso').value.nombre;
-      obj.idUnidadMedida = this.egresoGrp.get('unidadMedida').value.id;
-      obj.nomUnidadMedida = this.egresoGrp.get('unidadMedida').value.nombre;
-      obj.nombre = this.egresoGrp.get('nombre').value;
-      obj.cantidad = this.egresoGrp.get('cantidad').value;
-      obj.precio = this.egresoGrp.get('precio').value;
-      obj.total = this.egresoGrp.get('total').value;
-      obj.descripcion = this.egresoGrp.get('descripcion').value;
-      obj.ubicacion = this.egresoGrp.get('ubicacion').value;
-      obj.fecha = this.egresoGrp.get('fecha').value;
-      obj.dia = this.dias[(obj.fecha.getDay() == 0 ? 7 : obj.fecha.getDay()) - 1];
-      obj.idUsuarioMod = this.user.getIdUsuario;
-      obj.fecUsuarioMod = new Date();
-
-      console.log(obj)
-
-      this.spinnerService.show();
-      this.egresoService.editEgreso(obj).subscribe(
-        (data: ApiResponse[]) => {
-          if (typeof data[0] != undefined && data[0].rcodigo == 0) {
-            console.log('Exito al modificar');
-            this.dialogRef.close(obj);
-            this.spinnerService.hide();
-          } else {
-            console.error('Ocurrio un error al modificar egreso');
-          }
-        }, error => {
-          console.error('Error al modificar egreso');
-        }
-      );
-    } else {
-      this.validationService.getValidationErrors(this.egresoGrp, this.messages, this.formErrors, true);
-    }
+  toggleCuenta(lista: any[]): void {
+    console.log('TOGGLE WALLET');
+    const dialogRef = this.dialog.open(CambiarCuentaComponent, {
+      width: '300px',
+      data: { title: MENSAJES.INTRANET.BANDEJAEGRESOS.EGRESO.REGISTRAR.CAMBIAR_CUENTA.TITLE, objeto: lista }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        lista = result;
+      }
+    });
   }
 
-  calcularTotal(): void {
-    this.egresoGrp.get('total').setValue((this.egresoGrp.get('cantidad').value * this.egresoGrp.get('precio').value).toFixed(2));
+  regDetEgreso(): void {
+    let dialofRef = this.dialog.open(RegDetEgresoComponent, {
+      width: '600px',
+      data: { title: MENSAJES.INTRANET.BANDEJAEGRESOS.EGRESO.DETALLE_EGRESO.TITLE, objeto: null }
+    });
+
+    dialofRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.listaDetalleEgresos.unshift(result);
+        this.cargarDatosTabla();
+      }
+    });
   }
 
-  calcularCantidad(): void {
-    this.egresoGrp.get('cantidad').setValue((this.egresoGrp.get('total').value / this.egresoGrp.get('precio').value).toFixed(2));
-  }
 
 }

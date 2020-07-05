@@ -57,3 +57,6 @@ Route::post('ingreso/lista-egresos-retorno', 'Administracion\IngresoController@l
 
 Route::post('email/send-email', 'Administracion\EmailController@sendEmail');
 Route::post('email/custom-email', 'Administracion\EmailController@customEmail');
+
+//NUEVAS
+Route::post('wallet/listar-wallet', 'Cuenta\WalletController@listarWallet');

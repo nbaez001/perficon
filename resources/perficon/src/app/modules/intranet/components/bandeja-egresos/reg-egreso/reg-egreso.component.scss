@@ -1,0 +1,46 @@
+@import "../../../../../../assets/styles/scss/views/table";
+
+.table-resultados {
+    .table-container {
+        max-height: auto;
+    }
+}
+
+@include mat-table-columns(
+    (
+        id: (
+            width: 2rem,
+        ),
+        nomTipoEgreso: (
+            width: 7rem,
+        ),
+        nombre: (
+            width: 8rem,
+        ),
+        nomUnidadMedida: (
+            width: 6rem,
+        ),
+        cantidad: (
+            width: 5rem,
+        ),
+        precio: (
+            width: 5rem,
+        ),
+        total: (
+            width: 5rem,
+        ),
+        dia: (
+            width: 6rem,
+        ),
+        fecha: (
+            width: 6rem,
+        ),
+        opt: (
+            width: 2.5rem,
+        ),
+    )
+);
+
+.none {
+    display: none !important;
+}

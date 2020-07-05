@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Dto;
+namespace App\Http\Dto\Response;
 
 class LineChartResponse
 {

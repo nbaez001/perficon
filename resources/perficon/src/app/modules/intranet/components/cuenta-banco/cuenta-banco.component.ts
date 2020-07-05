@@ -8,6 +8,9 @@ import { CuentaBancoService } from 'src/app/services/intranet/cuenta-banco.servi
 import { RegCuentaBancoComponent } from './reg-cuenta-banco/reg-cuenta-banco.component';
 import { MENSAJES } from 'src/app/common';
 import { Router } from '@angular/router';
+import { ApiOutResponse } from 'src/app/model/dto/api-out.response';
+import { CuentaBancoResponse } from 'src/app/dto/response/cuenta-banco.response';
+import { BuscarCuentaBancoRequest } from 'src/app/dto/request/buscar-cuenta-banco.request';
 
 @Component({
   selector: 'app-cuenta-banco',
@@ -15,10 +18,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./cuenta-banco.component.scss']
 })
 export class CuentaBancoComponent implements OnInit {
-  listaCuentaBanco: CuentaBanco[];
+  listaCuentaBanco: CuentaBancoResponse[];
 
   displayedColumns: string[];
-  dataSource: MatTableDataSource<CuentaBanco>;
+  dataSource: MatTableDataSource<CuentaBancoResponse>;
   isLoading: boolean = false;
 
   bandejaGrp: FormGroup;
@@ -125,13 +128,19 @@ export class CuentaBancoComponent implements OnInit {
   }
 
   listarCuentaBanco(): void {
+    let req = new BuscarCuentaBancoRequest();
     this.dataSource = null;
     this.isLoading = true;
 
-    this.cuentaBancoService.listarCuentaBanco().subscribe(
-      (data: CuentaBanco[]) => {
-        this.listaCuentaBanco = data;
-        this.cargarDatosTabla();
+    this.cuentaBancoService.listarCuentaBanco(req).subscribe(
+      (data: ApiOutResponse<CuentaBancoResponse[]>) => {
+        if (data.rCodigo == 0) {
+          this.listaCuentaBanco = data.result;
+          this.cargarDatosTabla();
+        } else {
+          this.listaCuentaBanco = [];
+          this.cargarDatosTabla();
+        }
         this.isLoading = false;
       },
       error => {
@@ -167,7 +176,7 @@ export class CuentaBancoComponent implements OnInit {
     });
   }
 
-  editCuentaBanco(obj: CuentaBanco) {
+  editCuentaBanco(obj: CuentaBancoResponse) {
     let index = this.listaCuentaBanco.indexOf(obj);
     const dialogRef = this.dialog.open(RegCuentaBancoComponent, {
       width: '500px',

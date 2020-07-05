@@ -1,0 +1,24 @@
+form {
+    mat-grid-list {
+        mat-grid-tile {
+            mat-radio-group {
+                margin-right: 10px;
+                margin-left: 10px;
+                width: 100%;
+                mat-radio-button {
+                    width: 50%;
+                }
+            }
+            //FOR SPINNER ON FORM
+            div {
+                mat-progress-spinner {
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+}
+
+.none {
+    display: none !important;
+}

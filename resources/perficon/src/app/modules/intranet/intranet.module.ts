@@ -20,6 +20,8 @@ import { ConfirmComponent } from './components/shared/confirm/confirm.component'
 import { BandejaIngresosComponent } from './components/bandeja-ingresos/bandeja-ingresos.component';
 import { RegIngresoComponent } from './components/bandeja-ingresos/reg-ingreso/reg-ingreso.component';
 import { BuscEgresoComponent } from './components/bandeja-ingresos/busc-egreso/busc-egreso.component';
+import { CambiarCuentaComponent } from './components/bandeja-egresos/reg-egreso/cambiar-cuenta/cambiar-cuenta.component';
+import { RegDetEgresoComponent } from './components/bandeja-egresos/reg-egreso/reg-det-egreso/reg-det-egreso.component';
 
 @NgModule({
   entryComponents: [
@@ -31,6 +33,8 @@ import { BuscEgresoComponent } from './components/bandeja-ingresos/busc-egreso/b
     ConfirmComponent,
     RegIngresoComponent,
     BuscEgresoComponent,
+    CambiarCuentaComponent,
+    RegDetEgresoComponent,
   ],
   declarations: [
     RegMaestraComponent,
@@ -41,6 +45,8 @@ import { BuscEgresoComponent } from './components/bandeja-ingresos/busc-egreso/b
     ConfirmComponent,
     RegIngresoComponent,
     BuscEgresoComponent,
+    CambiarCuentaComponent,
+    RegDetEgresoComponent,
 
     HomeComponent,
     NavbarComponent,

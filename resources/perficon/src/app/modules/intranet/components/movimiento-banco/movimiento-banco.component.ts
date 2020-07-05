@@ -15,6 +15,9 @@ import { MaestraService } from 'src/app/services/intranet/maestra.service';
 import { ApiResponse } from 'src/app/model/api-response.model';
 import { ConfirmComponent } from '../shared/confirm/confirm.component';
 import { MovimientoBancoRequest } from 'src/app/model/dto/movimiento-banco.request';
+import { CuentaBancoResponse } from 'src/app/dto/response/cuenta-banco.response';
+import { ApiOutResponse } from 'src/app/model/dto/api-out.response';
+import { BuscarCuentaBancoRequest } from 'src/app/dto/request/buscar-cuenta-banco.request';
 
 @Component({
   selector: 'app-movimiento-banco',
@@ -22,7 +25,7 @@ import { MovimientoBancoRequest } from 'src/app/model/dto/movimiento-banco.reque
   styleUrls: ['./movimiento-banco.component.scss']
 })
 export class MovimientoBancoComponent implements OnInit {
-  listaCuentasBanco: CuentaBanco[];
+  listaCuentasBanco: CuentaBancoResponse[];
 
   bandejaGrp: FormGroup;
   messages = {
@@ -122,16 +125,24 @@ export class MovimientoBancoComponent implements OnInit {
   }
 
   comboCuentaBancaria(): void {
-    this.cuentaBancoService.listarCuentaBanco().subscribe(
-      (data: CuentaBanco[]) => {
-        this.listaCuentasBanco = data;
-        let cb = new CuentaBanco();
-        cb.id = 0;
-        cb.nombre = 'TODOS';
-        this.listaCuentasBanco.unshift(cb);
-
+    let req = new BuscarCuentaBancoRequest();
+    this.cuentaBancoService.listarCuentaBanco(req).subscribe(
+      (data: ApiOutResponse<CuentaBancoResponse[]>) => {
+        if (data.rCodigo == 0) {
+          this.listaCuentasBanco = data.result;
+          let cb = new CuentaBancoResponse();
+          cb.id = 0;
+          cb.nombre = 'TODOS';
+          this.listaCuentasBanco.unshift(cb);
+        } else {
+          this.listaCuentasBanco = [];
+          let cb = new CuentaBancoResponse();
+          cb.id = 0;
+          cb.nombre = 'TODOS';
+          this.listaCuentasBanco.unshift(cb);
+        }
         this.filtrarCuentaEspecifica();
-        this.buscar();
+          this.buscar();
       }, error => {
         console.log(error);
       }

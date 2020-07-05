@@ -34,10 +34,16 @@ export const MENSAJES = {
         BANDEJAEGRESOS: {
             EGRESO: {
                 REGISTRAR: {
-                    TITLE: 'REGISTRAR EGRESO'
+                    TITLE: 'REGISTRAR EGRESO',
+                    CAMBIAR_CUENTA: {
+                        TITLE: 'CAMBIAR CUENTA',
+                    }
                 },
                 EDITAR: {
                     TITLE: 'MODIFICAR EGRESO'
+                },
+                DETALLE_EGRESO: {
+                    TITLE: 'REGISTRAR DETALLE EGRESO'
                 }
             }
         },
@@ -113,8 +119,9 @@ export const borderColorChart: string[] = [
     'rgba(114,55,114,1)',
 ];
 
-export const tablasMaestra = [
-    { idTabla: 1, tipoEgreso: 'TIPO EGRESO' },
-    { idTabla: 2, tipoEgreso: 'UNIDAD MEDIDA' },
-    { idTabla: 3, tipoEgreso: 'TIPO MOVIMIENTO' },
-];
+export const tablasMaestra = {
+    TIPO_EGRESO: { id: 1, nombre: 'TIPO EGRESO' },
+    UNIDAD_MEDIDA: { id: 2, nombre: 'UNIDAD MEDIDA' },
+    TIPO_MOVIMIENTO: { id: 3, nombre: 'TIPO MOVIMIENTO' },
+    CATEGORIA_EGRESO: { id: 33, nombre: 'CATEGORIA EGRESO' },
+};

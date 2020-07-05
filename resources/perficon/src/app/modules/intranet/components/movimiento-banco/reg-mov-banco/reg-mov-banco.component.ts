@@ -13,6 +13,9 @@ import { DataDialog } from 'src/app/model/data-dialog.model';
 import { ApiResponse } from 'src/app/model/api-response.model';
 import { Maestra } from 'src/app/model/maestra.model';
 import { MaestraService } from 'src/app/services/intranet/maestra.service';
+import { ApiOutResponse } from 'src/app/model/dto/api-out.response';
+import { CuentaBancoResponse } from 'src/app/dto/response/cuenta-banco.response';
+import { BuscarCuentaBancoRequest } from 'src/app/dto/request/buscar-cuenta-banco.request';
 
 @Component({
   selector: 'app-reg-mov-banco',
@@ -20,7 +23,7 @@ import { MaestraService } from 'src/app/services/intranet/maestra.service';
   styleUrls: ['./reg-mov-banco.component.scss']
 })
 export class RegMovBancoComponent implements OnInit {
-  listaCuentasbanco: CuentaBanco[] = [];
+  listaCuentasbanco: CuentaBancoResponse[] = [];
   tiposMovimiento: Maestra[];
   movimientoBancoEdit: MovimientoBanco;
 
@@ -86,19 +89,24 @@ export class RegMovBancoComponent implements OnInit {
       this.formularioGrp.get('monto').setValue(this.movimientoBancoEdit.monto);
       this.formularioGrp.get('fecha').setValue(new Date(this.datePipe.transform(this.movimientoBancoEdit.fecha, 'MM/dd/yyyy')));
     } else {
-      this.formularioGrp.get('fecha').setValue(new Date(this.datePipe.transform(new Date(),'MM/dd/yyyy')));
+      this.formularioGrp.get('fecha').setValue(new Date(this.datePipe.transform(new Date(), 'MM/dd/yyyy')));
     }
   }
 
   comboCuentaBanco(): void {
-    this.cuentaBancoService.listarCuentaBanco().subscribe(
-      (data: CuentaBanco[]) => {
-        this.listaCuentasbanco = data;
+    let req = new BuscarCuentaBancoRequest();
+    this.cuentaBancoService.listarCuentaBanco(req).subscribe(
+      (data: ApiOutResponse<CuentaBancoResponse[]>) => {
+        if (data.rCodigo == 0) {
+          this.listaCuentasbanco = data.result;
 
-        if (this.data.objeto) {
-          this.formularioGrp.get('cuentaBanco').setValue((this.listaCuentasbanco.filter(el => el.id == this.movimientoBancoEdit.idCuentaBanco))[0]);
-        } else {
-          this.formularioGrp.get('cuentaBanco').setValue(this.listaCuentasbanco[0]);
+          if (this.data.objeto) {
+            this.formularioGrp.get('cuentaBanco').setValue((this.listaCuentasbanco.filter(el => el.id == this.movimientoBancoEdit.idCuentaBanco))[0]);
+          } else {
+            this.formularioGrp.get('cuentaBanco').setValue(this.listaCuentasbanco[0]);
+          }
+        }else{
+          this.listaCuentasbanco = [];
         }
       }, error => {
         console.log(error);

@@ -3,7 +3,7 @@
 namespace App\Http\Dao;
 
 use App\Http\Dto\ApiOutResponse;
-use App\Http\Dto\LineChartResponse;
+use App\Http\Dto\Response\LineChartResponse;
 use DB;
 
 class DashBoardDao

@@ -14,6 +14,8 @@ import { BarChartRequest } from 'src/app/model/dto/bar-chart.request';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ApiOutResponse } from 'src/app/model/dto/api-out.response';
+import { WalletResponse } from 'src/app/dto/response/wallet.response';
+import { LineChartResponse } from 'src/app/dto/response/line-chart.response';
 
 @Component({
   selector: 'app-home',
@@ -141,7 +143,7 @@ export class HomeComponent implements OnInit {
     req.mes = new Date().getMonth();
 
     this.reportService.lineChartReport(req).subscribe(
-      (data: ApiOutResponse) => {
+      (data: ApiOutResponse<LineChartResponse[]>) => {
         this.isLoadingLine = false;
         if (data.rCodigo == 0) {
           let labels: string[] = [];

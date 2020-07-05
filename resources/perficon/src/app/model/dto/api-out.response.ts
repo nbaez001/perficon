@@ -1,5 +1,5 @@
-export class ApiOutResponse {
+export class ApiOutResponse<T> {
     rCodigo: number;
     rMensaje: string;
-    result: any;
+    result: T;
 }

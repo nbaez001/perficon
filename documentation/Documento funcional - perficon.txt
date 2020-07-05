@@ -18,32 +18,50 @@ CUENTAS Y MOVIMIENTO CUENTAS
   y realizara un registro en la tabla EGRESO
 
 EGRESO
-<<<<<<< HEAD
-Constituyen la suma de los retiros y salidas marcados como EGRESO
-=======
-Constituyen los registros de egresos, al registrarse se debe seleccionar de 
->>>>>>> master
+Constituyen los registros de egresos, tendra los siguientes tipos:
 => Egreso neto (GASTOS)
 => Egreso retornable (PRESTAMO)
 => Egreso saneo (PAGO DEUDA)
 CASOS DE USO:
 => Registrar egreso
-   * Se debe regitrar el egreso, debe afectar a WALLET o CUENTA BANCO
    * Se debe seleccionar NETO, RETORNABLE o SANEO
-     - RETORNABLE: registra en POR_COBRAR con id_egreso
-	 - SANEO: registra con un flag de pendiente de regularizar en POR_PAGAR
-	 
+     - NETO: 
+       1) Genera un registro en tabla EGRESO
+       2) Genera un registro de tipo RETIRO en CUENTA o WALLET
+     - RETORNABLE:
+       1) Genera un registro en la tabla EGRESO
+       2) Genera un registro de tipo RETIRO en CUENTA o WALLET
+       3) Genera un registro en la tabla PRESTAMOS(POR_COBRAR) con id_egreso
+	   - SANEO: 
+       1) Genera un registro en la tabla EGRESO con flag flg_reg_deuda
+          (Posteriormente se debe ingresar a la bandeja de DEUDAS y asociar
+           a que deudas se sanea con este egreso)
+       2) Genera un registro de tipo RETIRO en CUENTA o WALLET
+       
+
+SE PLANTEA TENER UNA VISTA DE EGRESO Y DETALLE DE EGRESO.
+
 INGRESO
-Constituyen la suma de depositos y ingresos wallet
+Constituyen los registro de ingresos, tendra los siguientes tipos:
 => Ingreso neto (TRABAJO)
 => Ingreso retornable (DEUDA)
 => Ingreso saneo (COBRO PRESTAMO)
 CASOS DE USO:
 => Registrar ingreso
    * Se debe registrar el ingreso, debe afectar a WALLET o CUENTA BANCO
-   * Se debe seleccionar TRABAJO, PRESTAMO o OTROS
-     - RETORNABLE: registra en POR_PAGAR con id_ingreso
-	 - SANEO: registra con un flag de pendiente de regularizar en POR_COBRAR
+   * Se debe seleccionar NETO, PRESTAMO o OTROS
+     - NETO:
+       1) Genera un registro en la tabla INGRESO
+       2) Genera un registro en tipo DEPOSITO en CUENTA o WALLET
+     - RETORNABLE:
+       1) Genera un registro en la tabla INGRESO
+       2) Genera un registro en tipo DEPOSITO en CUENTA o WALLET
+       3) Genera un registro en la tabla DEUDA(POR_PAGAR) con id_ingreso
+	   - SANEO: registra con un flag de pendiente de regularizar en POR_COBRAR
+       1) Genera un registro en la tabla INGRESO con un flag flg_reg_prestamo
+          (Posteriormente se debe ingresara la bandeja de PRESTAMOS y asociar
+           que prestamos sanea)
+       2) Genera un registro en tipo DEPOSITO en CUENTA o WALLET
 
 POR_COBRAR(PRESTAMO)
 Contituye las salidas (WALLET) y retiros (CUENTA) que son marcados como PRESTAMO
