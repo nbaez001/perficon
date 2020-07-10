@@ -1,0 +1,737 @@
+{
+	"info": {
+		"_postman_id": "aeee9731-663d-4fba-be92-0d3c1d26b0a2",
+		"name": "PERFICON",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CUENTA",
+			"item": [
+				{
+					"name": "Listar Wallet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fechaInicio\":null,\r\n    \"fechaFin\":null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://perficon.test/api/wallet/listar-wallet",
+							"protocol": "http",
+							"host": [
+								"perficon",
+								"test"
+							],
+							"path": [
+								"api",
+								"wallet",
+								"listar-wallet"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "00.Listar egreso",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idMaestraPadre\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/lista",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"lista"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01.Insertar maestra",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idMaestraPadre\":0,\n\t\"orden\": 0,\n\t\"nombre\":\"VAR2\",\n\t\"codigo\": \"V2\",\n\t\"valor\":\"\",\n\t\"idUsuarioCrea\": \"NBAEZ\",\n\t\"fecUsuarioCrea\": \"2019-11-05\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/store",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"store"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01.Actualizar maestra",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 3,\n        \"idMaestraPadre\": 0,\n        \"orden\": 0,\n        \"nombre\": \"VAR3\",\n        \"codigo\": \"V3\",\n        \"valor\": \"\",\n        \"idUsuarioCrea\": \"NBAEZ\",\n        \"fecUsuarioCrea\": \"2019-11-05\",\n        \"idUsuarioMod\": \"NBAEZ\",\n        \"fecUsuarioMod\": \"2019-11-05\"\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/update",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01.Listar maestra",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idMaestraPadre\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/lista",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"lista"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "01.Get maestra",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idMaestraPadre\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/lista",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"lista"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02.Insertar cuenta banco",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idMaestraPadre\":0,\n\t\"orden\": 0,\n\t\"nombre\":\"VAR2\",\n\t\"codigo\": \"V2\",\n\t\"valor\":\"\",\n\t\"idUsuarioCrea\": \"NBAEZ\",\n\t\"fecUsuarioCrea\": \"2019-11-05\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/store",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"store"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02.Actualizar cuenta banco",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":1,\n\t\"nroCuenta\":\"0122201134\",\n\t\"cci\": \"1212124\",\n\t\"nombre\":\"INTERBANK\",\n\t\"saldo\": 1400.00,\n\t\"idUsuarioMod\": 1,\n\t\"fecUsuarioMod\": \"2019-11-05\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/update",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02.Listar Cuenta banco",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/cuenta-banco/lista",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"cuenta-banco",
+						"lista"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02.Get cuenta banco",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idMaestraPadre\": \"0\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/lista",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"lista"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03.Insertar mov banco",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idMaestraPadre\":0,\n\t\"orden\": 0,\n\t\"nombre\":\"VAR2\",\n\t\"codigo\": \"V2\",\n\t\"valor\":\"\",\n\t\"idUsuarioCrea\": \"NBAEZ\",\n\t\"fecUsuarioCrea\": \"2019-11-05\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/maestra/store",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"maestra",
+						"store"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04.Get saldo mensual",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"dia\": \"1\",\n\t\"mes\": \"9\",\n\t\"anio\": \"2019\",\n\t\"fecha\": \"2019-09-01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/saldo-mensual/obtener",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"saldo-mensual",
+						"obtener"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04.Calcular saldo mensual",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"dia\": \"1\",\n\t\"mes\": \"9\",\n\t\"anio\": \"2019\",\n\t\"fecha\": \"2019-09-01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/saldo-mensual/obtener",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"saldo-mensual",
+						"obtener"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04.Calcular saldo actual",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"dia\": \"1\",\n\t\"mes\": \"9\",\n\t\"anio\": \"2019\",\n\t\"fecha\": \"2019-09-01\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/saldo-mensual/obtener",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"saldo-mensual",
+						"obtener"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05.Pie Chart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idTabla\": 1,\n\t\"anio\": 2019\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/dashboard/pie-chart",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"pie-chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05.Suma categoria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idTabla\": 1,\n\t\"anio\": 2019\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/dashboard/pie-chart",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"pie-chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05.Line Chart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"mes\": 3,\n\t\"anio\": 2020\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/dashboard/line-chart",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"line-chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05.Bar Chart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"mes\": 11,\n\t\"anio\": 2019\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/dashboard/line-chart",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"line-chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05.File",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"idTabla\": 1,\n\t\"anio\": 2019\n}"
+				},
+				"url": {
+					"raw": "http://perficon.test/api/dashboard/pie-chart",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"dashboard",
+						"pie-chart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05.sendEmail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"asunto\":\"Welcome to perficon\",\n\t\"destinatario\":\"nbaez001@gmail.com\",\n\t\"mensaje\":\"HOLA MUNDO 3\",\n\t\"url\":\"/files/formato01-fondoEncargo.pd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://perficon.test/api/email/custom-email",
+					"protocol": "http",
+					"host": [
+						"perficon",
+						"test"
+					],
+					"path": [
+						"api",
+						"email",
+						"custom-email"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
