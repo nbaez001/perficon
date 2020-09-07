@@ -136,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "perficon"
+  "defaultProject": "perficon",
+  "cli": {
+    "analytics": "5bd864b9-7c92-4f2e-89c4-5f17a81c6b00"
+  }
 }
