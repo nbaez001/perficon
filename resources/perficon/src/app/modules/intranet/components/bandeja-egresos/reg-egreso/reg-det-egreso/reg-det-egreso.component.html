@@ -5,14 +5,13 @@
     <mat-grid-list cols="12" rowHeight="50px">
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="nombre" placeholder="Nombre" type="text"
-            [ngClass]="{'is-invalid': formErrors.nombre}" [Uppercased] cdkFocusInitial>
+          <input matInput formControlName="nombre" placeholder="Nombre" type="text" [Uppercased] cdkFocusInitial>
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <mat-label>Tipo egreso</mat-label>
-          <mat-select formControlName="tipoEgreso" [ngClass]="{'is-invalid': formErrors.tipoEgreso}">
+          <mat-select formControlName="tipoEgreso">
             <mat-option *ngFor="let tipoEgreso of tiposEgreso" [value]="tipoEgreso">
               {{tipoEgreso.nombre}} - {{tipoEgreso.orden}}
             </mat-option>
@@ -22,7 +21,7 @@
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
           <mat-label>Unidad medida</mat-label>
-          <mat-select formControlName="unidadMedida" [ngClass]="{'is-invalid': formErrors.unidadMedida}">
+          <mat-select formControlName="unidadMedida">
             <mat-option *ngFor="let unidadMedida of unidadesMedida" [value]="unidadMedida">
               {{unidadMedida.nombre}}
             </mat-option>
@@ -31,20 +30,17 @@
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="cantidad" placeholder="Cantidad" type="number"
-            [ngClass]="{'is-invalid': formErrors.cantidad}" (change)="calcularTotal()">
+          <input matInput formControlName="cantidad" placeholder="Cantidad" type="number" (change)="calcularTotal()">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="precio" placeholder="Precio" type="number"
-            [ngClass]="{'is-invalid': formErrors.precio}" (change)="calcularTotal()">
+          <input matInput formControlName="precio" placeholder="Precio" type="number" (change)="calcularTotal()">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="total" placeholder="Total" type="number"
-            [ngClass]="{'is-invalid': formErrors.total}" (change)="calcularCantidad()">
+          <input matInput formControlName="subtotal" placeholder="Total" type="number" (change)="calcularCantidad()">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
@@ -56,8 +52,7 @@
       </mat-grid-tile>
       <mat-grid-tile [responsiveRows]="{xs: 12, sm: 6, md: 6, lg: 6, xl: 6}">
         <mat-form-field>
-          <input matInput formControlName="ubicacion" placeholder="Ubicacion" type="text"
-            [ngClass]="{'is-invalid': formErrors.ubicacion}" [Uppercased]>
+          <input matInput formControlName="ubicacion" placeholder="Ubicacion" type="text" [Uppercased]>
         </mat-form-field>
       </mat-grid-tile>
     </mat-grid-list>

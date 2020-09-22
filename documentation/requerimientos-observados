@@ -1,0 +1,6 @@
+AL REGISTRAR UN EGRESO AL DIA SIGUIENTE DE FINALIZADO EL MES YA QUEDA ALTERADO
+DEBIDO A QUE EL CALCULADOR DE WALLET CALCULA A PARTIR DEL ULTIMO REGISTRO DE SALDO PARA DELANTE
+Ejemplo: registrar un egreso perteneciente al 31/08/2019 al dia siguiente osea 01/09/2020
+         Se altera el saldo, porque al final del dia se calcula el saldo y no contempla ese egreso registrado porteriormente
+
+Solucion: 

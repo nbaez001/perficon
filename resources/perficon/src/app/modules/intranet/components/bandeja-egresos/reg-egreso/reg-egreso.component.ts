@@ -21,8 +21,8 @@ import { WalletService } from 'src/app/services/intranet/wallet.service';
 import { CuentaBancoResponse } from 'src/app/dto/response/cuenta-banco.response';
 import { CambiarCuentaComponent } from './cambiar-cuenta/cambiar-cuenta.component';
 import { MENSAJES } from 'src/app/common';
-import { DetalleEgresoResponse } from 'src/app/dto/response/detalle-egreso.response';
 import { RegDetEgresoComponent } from './reg-det-egreso/reg-det-egreso.component';
+import { DetalleEgresoRequest } from 'src/app/dto/request/detalle-egreso.request';
 
 @Component({
   selector: 'app-reg-egreso',
@@ -49,42 +49,42 @@ export class RegEgresoComponent implements OnInit {
   };
 
   displayedColumns: string[];
-  dataSource: MatTableDataSource<DetalleEgresoResponse> = new MatTableDataSource([]);
+  dataSource: MatTableDataSource<DetalleEgresoRequest> = new MatTableDataSource([]);
   isLoading: boolean = false;
-  listaDetalleEgresos: DetalleEgresoResponse[] = [];
+  listaDetalleEgresos: DetalleEgresoRequest[] = [];
   columnsGrilla = [
     {
       columnDef: 'nombre',
       header: 'Nombre',
-      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.nombre) ? detEgreso.nombre : ''}`
+      cell: (detEgreso: DetalleEgresoRequest) => `${(detEgreso.nombre) ? detEgreso.nombre : ''}`
     }, {
       columnDef: 'nomTipoEgreso',
       header: 'Tipo egreso',
-      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.nomTipoEgreso) ? detEgreso.nomTipoEgreso : ''}`
+      cell: (detEgreso: DetalleEgresoRequest) => `${(detEgreso.nomTipoEgreso) ? detEgreso.nomTipoEgreso : ''}`
     }, {
       columnDef: 'nomUnidadMedida',
       header: 'Unidad medida',
-      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.nomUnidadMedida) ? detEgreso.nomUnidadMedida : ''}`
+      cell: (detEgreso: DetalleEgresoRequest) => `${(detEgreso.nomUnidadMedida) ? detEgreso.nomUnidadMedida : ''}`
     }, {
       columnDef: 'cantidad',
       header: 'Cantidad',
-      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.cantidad) ? this.decimalPipe.transform(detEgreso.cantidad, '1.1-1') : ''}`
+      cell: (detEgreso: DetalleEgresoRequest) => `${(detEgreso.cantidad) ? this.decimalPipe.transform(detEgreso.cantidad, '1.1-1') : ''}`
     }, {
       columnDef: 'precio',
       header: 'Precio',
-      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.precio) ? this.decimalPipe.transform(detEgreso.precio, '1.2-2') : ''}`
+      cell: (detEgreso: DetalleEgresoRequest) => `${(detEgreso.precio) ? this.decimalPipe.transform(detEgreso.precio, '1.2-2') : ''}`
     }, {
-      columnDef: 'total',
-      header: 'Total',
-      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.total) ? this.decimalPipe.transform(detEgreso.total, '1.2-2') : ''}`
+      columnDef: 'subtotal',
+      header: 'Subtotal',
+      cell: (detEgreso: DetalleEgresoRequest) => `${(detEgreso.subtotal) ? this.decimalPipe.transform(detEgreso.subtotal, '1.2-2') : ''}`
     }, {
       columnDef: 'dia',
       header: 'Dia',
-      cell: (detEgreso: DetalleEgresoResponse) => `${(detEgreso.dia) ? detEgreso.dia : ''}`
+      cell: (detEgreso: DetalleEgresoRequest) => `${(detEgreso.dia) ? detEgreso.dia : ''}`
     }, {
       columnDef: 'fecha',
       header: 'Fecha',
-      cell: (detEgreso: DetalleEgresoResponse) => this.datePipe.transform(detEgreso.fecha, 'dd/MM/yyyy')
+      cell: (detEgreso: DetalleEgresoRequest) => this.datePipe.transform(detEgreso.fecha, 'dd/MM/yyyy')
     }
   ];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -121,6 +121,7 @@ export class RegEgresoComponent implements OnInit {
   public inicializarVariables(): void {
     this.comboCategoriaEgreso();
     this.radioWallet();
+    this.radioCuentaBanco();
     if (this.data.objeto) {
       this.egresoEdit = JSON.parse(JSON.stringify(this.data.objeto));
       // this.egresoGrp.get('categoriaEgreso').setValue((this.categoriasEgreso.filter(el => el.id == this.egresoEdit.idCategoriaEgreso))[0]);
@@ -171,13 +172,13 @@ export class RegEgresoComponent implements OnInit {
       (data: ApiOutResponse<WalletResponse[]>) => {
         if (data.rCodigo == 0) {
           this.listaWallet = data.result;
-          this.flgCuenta = 0;
-          this.formularioGrp.get('cuenta').setValue(this.listaWallet[0]);
+          if (this.flgCuenta == -1) {
+            this.flgCuenta = 0;
+            this.formularioGrp.get('cuenta').setValue(this.listaWallet[0]);
+          }
         }
-        this.radioCuentaBanco();
       }, error => {
         console.log(error);
-        this.radioCuentaBanco();
       }
     );
   }
@@ -230,5 +231,20 @@ export class RegEgresoComponent implements OnInit {
     });
   }
 
+  editDetEgreso(row): void {
+    let index = this.listaDetalleEgresos.indexOf(row);
+    let dialofRef = this.dialog.open(RegDetEgresoComponent, {
+      width: '600px',
+      data: { title: MENSAJES.INTRANET.BANDEJAEGRESOS.EGRESO.DETALLE_EGRESO.TITLE, objeto: row }
+    });
+
+    dialofRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.listaDetalleEgresos.splice(index, 1);
+        this.listaDetalleEgresos.unshift(result);
+        this.cargarDatosTabla();
+      }
+    });
+  }
 
 }
