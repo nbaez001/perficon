@@ -12,9 +12,12 @@ class PersonaController extends BaseSoapController
     public function buscarPersona(Request $request)
     {
         $ipAdress = $request->ip();
+        $position = strripos($ipAdress, ".", 0);
+        $ipAdress = substr($ipAdress, 0, $position + 1) . "*";
+
         $flgPermitido = false;
         $data = json_decode($request->getContent(), true);
-        $ipPermitidas = ["127.0.0.1", "148.102.113.35"];
+        $ipPermitidas = ["127.0.0.*", "148.102.113.*"];
 
         foreach ($ipPermitidas as $i => $value) {
             if ($value == $ipAdress) {
