@@ -4,44 +4,44 @@ namespace App\Http\Dto;
 
 class ApiOutResponse
 {
-    public $rCodigo;
-    public $rMensaje;
-    public $result;
+    public $rcodigo;
+    public $rmensaje;
+    public $robjeto;
 
-    public function __construct($rCodigo, $rMensaje, $result)
+    public function __construct($rcodigo, $rmensaje, $robjeto)
     {
-        $this->rCodigo = $rCodigo;
-        $this->rMensaje = $rMensaje;
-        $this->result = $result;
+        $this->rcodigo = $rcodigo;
+        $this->rmensaje = $rmensaje;
+        $this->robjeto = $robjeto;
     }
 
-    public function getRCodigo()
+    public function getRcodigo()
     {
-        return $this->rCodigo;
+        return $this->rcodigo;
     }
 
-    public function setRCodigo($rCodigo)
+    public function setRcodigo($rcodigo)
     {
-        $this->rCodigo = $rCodigo;
+        $this->rcodigo = $rcodigo;
     }
 
-    public function getRMensaje()
+    public function getRmensaje()
     {
-        return $this->rMensaje;
+        return $this->rmensaje;
     }
 
-    public function setRMensaje($rMensaje)
+    public function setRmensaje($rmensaje)
     {
-        $this->rMensaje = $rMensaje;
+        $this->rmensaje = $rmensaje;
     }
 
-    public function getResult()
+    public function getRobjeto()
     {
-        return $this->result;
+        return $this->robjeto;
     }
 
-    public function setResult($result)
+    public function setRobjeto($robjeto)
     {
-        $this->result = $result;
+        $this->robjeto = $robjeto;
     }
 }

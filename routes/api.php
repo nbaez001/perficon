@@ -57,3 +57,5 @@ Route::post('ingreso/lista-egresos-retorno', 'Administracion\IngresoController@l
 
 Route::post('email/send-email', 'Administracion\EmailController@sendEmail');
 Route::post('email/custom-email', 'Administracion\EmailController@customEmail');
+
+Route::post('empresa/obtener-licencia', 'Administracion\EmpresaController@obtenerLicencia');
